@@ -7,9 +7,10 @@ if len(sys.argv) > 1:
     filename = sys.argv[1]
 
 if filename == '':
-    filename = 'testInput.in'
+    filename = '05.in'
 
 testInput = open(filename, 'r')
+outfile = open(filename.replace('in', 'out'), 'w')
 
 numOfTest = int(testInput.readline().replace('\n', '').replace('\r', '').strip())
 
@@ -18,6 +19,7 @@ class Graph:
         self.nodes = set()
         self.edges = defaultdict(list)
         self.distances = {}
+        self.removed = {}
     
     def add_node(self, value):
         self.nodes.add(value)
@@ -27,6 +29,17 @@ class Graph:
         self.edges[to_node].append(from_node)
         self.distances[(from_node, to_node)] = distance
         self.distances[(to_node, from_node)] = distance
+    
+    def removeEdge(self, from_node, to_node):
+        self.removed[(from_node, to_node)] = self.distances[(from_node, to_node)]
+        self.removed[(to_node, from_node)] = self.distances[(to_node, from_node)]  
+        self.distances[(from_node, to_node)] = 999999
+        self.distances[(to_node, from_node)] = 999999
+
+    def recover(self):
+        for edge in self.removed.keys():
+            self.distances[edge] = self.removed[edge]
+        self.removed = {}
 
 def dijsktra(graph, initial):
     visited = {initial: 0}
@@ -69,7 +82,7 @@ def findPosition(start, end, graph):
     # print('start: ' + str(start) + ' end: ' + str(end))
     (distance, route) = dijsktra(graph, start)
     dist = distance[end]
-    halfDist = dist/2
+    halfDist = dist * 0.5
     # print('distance: ' + str(dist))
     # print(end)
     nextNode = end
@@ -91,9 +104,10 @@ def findPosition(start, end, graph):
             break          
         # print(nextNode)
     # print("------------")
-    return resultString
+    return (resultString, dist)
 
 for i in range(numOfTest):
+   
     graph = Graph()
     line = testInput.readline().replace('\n', '').replace('\r', '').strip()
     ins = line.split(' ')
@@ -116,25 +130,44 @@ for i in range(numOfTest):
     for j in range(numOfQuery):
         line = testInput.readline().replace('\n', '').replace('\r', '').strip()
         ins = line.split(' ')
-        resultA = findPosition(int(ins[0]), int(ins[1]), graph)
-        resultB = findPosition(int(ins[1]), int(ins[0]), graph)
-        if resultA != resultB:
-            [a1, a2] = resultA.split(' ')
-            [b1, b2] = resultB.split(' ')
-            a1 = int(a1)
-            a2 = int(a2)
-            b1 = int(b1)
-            b2 = int(b2)
-            if a1 < b1:
-                print(resultA)
-            elif a1 > b1:
-                print(resultB)
+        resultStrings = []
+        resultPairs = []
+        (result, dist) = findPosition(int(ins[0]), int(ins[1]), graph)
+
+        resultStrings.append(result)
+        o = result.split(' ')
+        pair = (int(o[0]), int(o[1]))
+        resultPairs.append(pair)
+            
+        distance = dist
+
+        res = resultStrings[0].split(' ')
+        graph.removeEdge(int(res[0]), int(res[1]))
+
+        while True:
+            if res[0] == res[1]:
+                break
+    
+            (result, dist) = findPosition(int(ins[0]), int(ins[1]), graph)
+
+            if dist <= distance:
+                resultStrings.append(result)
+                o = result.split(' ')
+                pair = (int(o[0]), int(o[1]))
+                resultPairs.append(pair)
+
+                if o[0] != o[1]:
+                    break
+                graph.removeEdge(int(o[0]), int(o[1]))
+
             else:
-                if a2 < b2:
-                    print(resultA)
-                else:
-                    print(resultB)
-        else:
-            print(resultA)
+                break
+
+        resultPairs.sort()
+        print(resultPairs)
+        outfile.write(str(resultPairs[0][0]) + ' ' + str(resultPairs[0][1]) + '\n')
+
+        graph.recover()
+
 
 testInput.close()
