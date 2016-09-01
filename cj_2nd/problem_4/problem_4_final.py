@@ -2,6 +2,10 @@ import sys
 import time
 from time import strftime
 
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
 startTime = time.time()
 
 filename = ''
@@ -195,6 +199,24 @@ def getBoundLength(points):
 
     return lenOut
 
+
+def updatePlot(i, points, edges):
+    if i < len(points):
+        (x, y) = points[i]
+        plt.plot(x, y, 'x')
+    else:
+        k = i - len(points)
+        xs = []
+        ys = []
+        for x in range(len(edges)):
+            xs.append(edges[x][0])
+            ys.append(edges[x][1])
+        xs.append(edges[0][0])
+        ys.append(edges[0][1])
+
+        print(xs[0:k], ys[0:k])
+        plt.plot(xs[0:k], ys[0:k], '-r')
+
 def calcMinLength(points):
     lengthList = []
     localPoints = []
@@ -204,6 +226,18 @@ def calcMinLength(points):
     
     outers = []
     outers = getOuters(localPoints)
+
+    fig = plt.figure()
+
+    plt.xlim(-1000, 11000)
+    plt.ylim(-1000, 11000)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.title('Points')
+    plt.axes().set_aspect('equal')
+
+    dot_ani = animation.FuncAnimation(fig, updatePlot, len(points) + len(outers) + 2, fargs=[points, outers], blit=False, repeat=False)
+    plt.show()    
 
     for outer in outers:
         localPoints[:] = []
@@ -234,6 +268,7 @@ def calcMinLength(points):
     localPoints.remove(outers[0])
     lengthBound = getBoundLength(localPoints)
     lengthList.append(lengthBound + twoPointLen)
+    
     
     return min(lengthList)    
 
