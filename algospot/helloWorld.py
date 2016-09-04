@@ -1,5 +1,5 @@
 # 
-# https://algospot.com/judge/problem/read/WHITECOLLAR
+# https://algospot.com/judge/problem/read/HELLOWORLD
 #
 
 import sys
