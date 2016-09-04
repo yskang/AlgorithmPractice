@@ -43,6 +43,7 @@ def dijsktra(graph, start, target):
         for node in graph.edges[minNode]:
             newDistance = distance[minNode] + graph.distances[(minNode, node)]
             if newDistance < distance[node]:
+                path[node][:] = []
                 distance[node] = newDistance
                 path[node].append(minNode)
             elif newDistance == distance[node]:
