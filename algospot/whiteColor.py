@@ -3,97 +3,99 @@
 #
 
 import sys
-import collections
-from collections import defaultdict
+# import collections
+# from collections import defaultdict
 
-# rl = lambda: sys.stdin.readline()
+# rl = lambda: sys.stdin.readline().replace('\n', '').replace('\r', '').strip()
+rl = lambda: input()
 
-testData = [
-'2',
-'4 5',
-'1 2',
-'2 1',
-'1 3',
-'3 4',
-'4 3',
-'5 6',
-'1 2',
-'1 3',
-'2 5',
-'3 4',
-'3 5',
-'4 5'    
-]
+# testData = [
+# '2',
+# '4 5',
+# '1 2',
+# '2 1',
+# '1 3',
+# '3 4',
+# '4 3',
+# '5 6',
+# '1 2',
+# '1 3',
+# '2 5',
+# '3 4',
+# '3 5',
+# '4 5'    
+# ]
 
-testData.reverse()
+# testData.reverse()
 
-rl = lambda: testData.pop()
+# rl = lambda: testData.pop()
     
 numOfTestCase = int(rl())
 
 class Graph:
     def __init__(self):
-        self.nodes = set()
-        self.edges = defaultdict(list)
-        self.distances = {}
-        self.removed = {}
+        self.nodes = []
+        self.edges = {}
+        self.distances ={}
+
+    def addNode(self, node):
+        self.nodes.append(node)
+        self.edges[node] = []
     
-    def add_node(self, value):
-        self.nodes.add(value)
-
-    def add_edge_oneWay(self, from_node, to_node, distance):
-        self.edges[from_node].append(to_node)
-        self.distances[(from_node, to_node)] = distance
-
-    def add_edge_twoWay(self, from_node, to_node, distance):
-        self.edges[from_node].append(to_node)
-        self.edges[to_node].append(from_node)
-        self.distances[(from_node, to_node)] = distance
-        self.distances[(to_node, from_node)] = distance        
-    
-    def removeEdgeTwoWay(self, from_node, to_node):
-        self.removed[(from_node, to_node)] = self.distances[(from_node, to_node)]
-        self.removed[(to_node, from_node)] = self.distances[(to_node, from_node)]  
-        self.distances[(from_node, to_node)] = 999999
-        self.distances[(to_node, from_node)] = 999999
-
-    def removeEdgeOneWay(self, from_node, to_node):
-        self.removed[(from_node, to_node)] = self.distances[(from_node, to_node)]
-        self.distances[(from_node, to_node)] = 999999
-
-    def recover(self):
-        for edge in self.removed.keys():
-            self.distances[edge] = self.removed[edge]
-        self.removed = {}
-
-def dijsktra(graph, initial):
-    visited = {initial: 0}
+    def addEdge(self, startNode, toNode, distance):
+        self.edges[startNode].append(toNode)
+        self.distances[(startNode, toNode)] = distance
+        
+def dijsktra(graph, start, target):
+    allPath = []
+    visited = []
+    distance = {}
+    restNode = []
     path = {}
 
-    nodes = set(graph.nodes)
+    for node in graph.nodes:
+        distance[node] = sys.maxsize
+        restNode.append(node)
+        path[node] = []
 
-    while nodes: 
-        min_node = None
-        for node in nodes:
-            if node in visited:
-                if min_node is None:
-                    min_node = node
-                elif visited[node] < visited[min_node]:
-                    min_node = node
+    distance[start] = 0
 
-        if min_node is None:
-            break
+    while restNode != []:
+        minNode = None
+        minDistance = sys.maxsize
 
-        nodes.remove(min_node)
-        current_weight = visited[min_node]
+        for node in distance:
+            if distance[node] < minDistance and node not in visited:
+                minDistance = distance[node]
+                minNode = node
+        
+        restNode.remove(minNode)
 
-        for edge in graph.edges[min_node]:
-            weight = current_weight + graph.distances[(min_node, edge)]
-            if edge not in visited or weight < visited[edge]:
-                visited[edge] = weight
-                path[edge] = min_node
+        for node in graph.edges[minNode]:
+            newDistance = distance[minNode] + graph.distances[(minNode, node)]
+            if newDistance < distance[node]:
+                path[node][:] = []
+                distance[node] = newDistance
+                path[node].append(minNode)
+            elif newDistance == distance[node]:
+                path[node].append(minNode)
+        
+        visited.append(minNode)
 
-    return visited, path
+    return (path, distance)
+
+def getMultiPath(path, start, end, past, multiPath):
+    if start != end:
+        past.append(end)
+    else:
+        past.append(start)
+    for node in path[end]:
+        getMultiPath(path, start, node, past, multiPath)
+    if past[len(past)-1] == start:
+        newPath = past[:]
+        multiPath.append(newPath)
+    past.pop()
+
 
 for n in range(numOfTestCase):
     line = rl()
@@ -102,25 +104,25 @@ for n in range(numOfTestCase):
 
     graph = Graph()
     for i in range(numOfCity):
-        graph.add_node(i+1)
+        graph.addNode(i+1)
 
     for i in range(numOfRoad):
         line = rl()
         fromNode = int(line.split(' ')[0])
         toNode = int(line.split(' ')[1])
-        graph.add_edge_oneWay(fromNode, toNode, 1)
+        graph.addEdge(fromNode, toNode, 1)
 
-    (visited, path) = dijsktra(graph, 1)
+    path = dijsktra(graph, 1, numOfCity)[0]
+    past = []
+    multiPath = []
+    getMultiPath(path, 1, numOfCity, past, multiPath)
+    cities = []
+    for l in multiPath:
+        for city in l:
+            cities.append(city)
+    
+    result = set(cities)
+    print(" ".join(str(x) for x in result))
 
-    results = []
-    results.append(numOfCity)
-
-    while True:
-        while True:
-            last = path[results[len(results)-1]]
-            results.append(last)
-            if last == 1:
-                break
-
-    r = set(results.sort())
-    print(results)
+        
+            
