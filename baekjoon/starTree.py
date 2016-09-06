@@ -22,12 +22,11 @@
 #   *     *     *     *     *     *     *     *   
 #  * *   * *   * *   * *   * *   * *   * *   * *  
 # ***** ***** ***** ***** ***** ***** ***** *****
+n = int(input())
+w = n * 2 - 1
+h = n
 
-# n = int(input())
-n = 30
-
-def printTriangle(position, map):
-    edges = []
+def unit(map, position):
     (x, y) = position
     map.set(x, y, '*')
     map.set(x-1, y+1, '*')
@@ -37,10 +36,6 @@ def printTriangle(position, map):
     map.set(x, y+2, '*')
     map.set(x+1, y+2, '*')
     map.set(x+2, y+2, '*')
-    if x-3 > 0 and x + 3 < map.w and y + 3 < map.h:
-        edges.append((x-3, y+3))
-        edges.append((x+3, y+3))
-    return edges
 
 class Map:
     def __init__(self, w, h, value):
@@ -55,17 +50,45 @@ class Map:
         for i in range(h):
             print(''.join(self.map[i]))
 
-w = (int)((n/3)*5+(n/3-1))
-h = n
+def drawTriangle(map, w, h):
+    y = h - 1
+    for x in range(h):
+        map.set(x, y, '*')
+        map.set(x, h-1, '*')
+        y = y - 1
+
+    for x in range(h-2, h+x):
+        map.set(x, y, '*')
+        map.set(x, h-1, '*')
+        y = y + 1
+    
+def drawDivide(map, w, h, startPoint):
+    if w == 5:
+        return
+
+    results = []
+    (offsetX, offsetY) = startPoint
+    width = int((w+1)/3)
+    middleY = int(h / 2) - 1 
+
+    for x in range(middleY + 2, w - middleY - 2):
+        map.set(x+offsetX, middleY+offsetY, '*')
+    
+    x = middleY + 1
+    for y in range(middleY+2, h-1):
+        map.set(x+offsetX, y+offsetY, '*')
+        map.set(w-x-1+offsetX, y+offsetY, '*')
+        x = x + 1
+
+    map.set(int(w/2)+offsetX, h-1+offsetY, ' ')
+
+    drawDivide(map, int((w-1)/2), int(h/2), (middleY + 1 + offsetX, offsetY))
+    drawDivide(map, int((w-1)/2), int(h/2), (offsetX, middleY+offsetY+1))
+    drawDivide(map, int((w-1)/2), int(h/2), (int((w-1)/2+1)+offsetX, middleY+offsetY+1))
+    
 
 map = Map(w, h, ' ')
-start = n - 1 
-nextPoints = printTriangle((start, 0), map)
-while nextPoints:
-    point = nextPoints.pop()
-    tempPoints = printTriangle(point, map)
-    for p in tempPoints:
-        nextPoints.append(p)
-    
+drawTriangle(map, w, h)
+drawDivide(map, w, h, (0, 0))
 map.draw()
-        
+
