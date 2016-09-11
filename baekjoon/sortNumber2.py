@@ -1,37 +1,12 @@
 import sys
-
-
-testData = [
-'10',
-'5',
-'2',
-'3',
-'1',
-'4',
-'2',
-'3',
-'5',
-'1',
-'10000',
-'9'
-]
-
-# testData.reverse()
-rl = lambda: testData.pop()
-rls = lambda: '\n'.join(testData)
-
-# rl = lambda:sys.stdin.readline().replace('\n', '')
-# rls = lambda:sys.stdin.readlines()
-
+ 
+rl = lambda:sys.stdin.readline()
+ 
 nums = [(x, 0) for x in range(10001)]
-ins = rls().split('\n')
-numOfNums = int(ins[0])
-
+numOfNums = int(rl())
+ 
 for i in range(1, numOfNums + 1):
-    index = int(ins[i])
+    index = int(rl())
     nums[index] = (index, nums[index][1] + 1)
-
-print(''.join(['\n'.join([str(index) for x in range(value)])+'\n' for (index, value) in nums if value != 0]))
-
-
-
+ 
+print('\n'.join(['\n'.join([str(index) for x in range(value)]) for (index, value) in nums if value != 0]))
