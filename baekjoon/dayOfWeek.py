@@ -1,3 +1,6 @@
+# Year 2007
+# https://www.acmicpc.net/problem/1924
+
 line = input()
 month = int(line.split(' ')[0])
 day = int(line.split(' ')[1])
