@@ -1,3 +1,5 @@
+# Remainder
+# https://www.acmicpc.net/problem/10430
 import sys
 
 # testData = [
