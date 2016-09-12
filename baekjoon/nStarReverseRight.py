@@ -1,3 +1,6 @@
+# Print Star - 4
+# https://www.acmicpc.net/problem/2441
+
 n = int(input())
 output = []
 for i in range(n, 0, -1):
