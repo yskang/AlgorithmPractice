@@ -1,3 +1,6 @@
+# Repeat String
+# https://www.acmicpc.net/problem/2675
+
 numOfTest = int(input())
 
 for test in range(numOfTest):
