@@ -1,3 +1,6 @@
+# OX Quiz
+# https://www.acmicpc.net/problem/8958
+
 numOfcase = int(input())
 
 for case in range(numOfcase):
