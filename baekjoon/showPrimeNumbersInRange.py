@@ -1,3 +1,6 @@
+# Get Prime Numbers
+# https://www.acmicpc.net/problem/1929
+
 import sys
  
 rl = lambda:sys.stdin.readline()
