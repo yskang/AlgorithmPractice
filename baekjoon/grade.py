@@ -1,3 +1,6 @@
+# Grade
+# https://www.acmicpc.net/problem/9498
+
 score = int(input())
 
 result = ''
