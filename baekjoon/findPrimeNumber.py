@@ -1,3 +1,6 @@
+# Find Prime Numbers
+# https://www.acmicpc.net/problem/1978
+
 import sys
 from functools import reduce
  
