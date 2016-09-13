@@ -1,3 +1,6 @@
+# Print Star - 11
+# https://www.acmicpc.net/problem/2448
+
 #                        *                        
 #                       * *                       
 #                      *****                      
