@@ -1,3 +1,6 @@
+# Self Number
+# https://www.acmicpc.net/problem/4673
+
 from functools import reduce
 
 numbers = list(range(1, 10001))
