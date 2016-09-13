@@ -1,3 +1,6 @@
+# Hansoo
+# https://www.acmicpc.net/problem/1065
+
 n = int(input())
 
 def isArithmeticSequence(n):
