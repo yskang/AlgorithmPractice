@@ -1,3 +1,6 @@
+# Stack Sequence
+# https://www.acmicpc.net/problem/1874
+
 import sys
 rl = lambda:sys.stdin.readline().replace('\n', '').replace('\r', '').strip()
  
