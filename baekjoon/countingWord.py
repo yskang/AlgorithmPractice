@@ -1,3 +1,6 @@
+# Number of Word
+# https://www.acmicpc.net/problem/1152
+
 text = input()
 if text == '':
     print(0)
