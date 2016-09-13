@@ -1,3 +1,6 @@
+# Find Fractional Number
+# https://www.acmicpc.net/problem/1193
+
 n = int(input())
 i = 1
 
