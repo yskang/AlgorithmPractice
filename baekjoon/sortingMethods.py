@@ -1,24 +1,3 @@
-# Sort Numbers
-# https://www.acmicpc.net/problem/2750
-
-import sys
-
-testData = [
-'12',
-'1',
-'100',
-'-3',
-'4',
-'0',
-'1000000',
-'-9',
-'8',
-'7',
-'6',
-'-5',
-'-1000000'
-]
-
 def quickSort(xs):
     if len(xs) <= 1:
         return xs
@@ -62,20 +41,3 @@ def mergeSort(xs):
     result += lefts[l:]
     result += rights[r:]
     return result
-
-
-testData.reverse()
-rl = lambda: testData.pop()
-
-# rl = lambda: sys.sdein.readline()
-
-numOfNums = int(rl())
-temp = int(rl())
-nums = {temp}
-
-for i in range(numOfNums-1):
-    nums.add(int(rl()))
-
-x = sorted(nums)
-
-print('\n'.join(map(str, x)))
