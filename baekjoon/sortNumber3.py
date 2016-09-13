@@ -1,5 +1,5 @@
-# Sort Numbers - 2
-# https://www.acmicpc.net/problem/2751
+# Sort Numbers - 3
+# https://www.acmicpc.net/problem/10989
 
 import sys
  
