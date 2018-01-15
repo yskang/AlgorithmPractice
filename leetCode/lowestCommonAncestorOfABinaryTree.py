@@ -16,6 +16,9 @@ class Solution(object):
         self.route = []
 
     def dfs(self, node, targetA, targetB):
+        if node is None:
+            return
+
         if node is targetA or node is targetB:
             self.found += 1
             temp = self.route[:]
@@ -26,12 +29,8 @@ class Solution(object):
             return
 
         self.route.append(node)
-
-        if node.left:
-            self.dfs(node.left, targetA, targetB)
-        if node.right:
-            self.dfs(node.right, targetA, targetB)
-
+        self.dfs(node.left, targetA, targetB)
+        self.dfs(node.right, targetA, targetB)
         self.route.pop()
 
     def lowestCommonAncestor(self, root, p, q):
