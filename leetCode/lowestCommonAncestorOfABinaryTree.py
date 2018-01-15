@@ -13,32 +13,30 @@ class Solution(object):
     def __init__(self):
         self.found = 0
         self.paths = []
+        self.route = []
 
-    def dfs(self, node, route, targetA, targetB):
-        if node is None:
-            return
-
+    def dfs(self, node, targetA, targetB):
         if node is targetA or node is targetB:
             self.found += 1
-            temp = route[:]
+            temp = self.route[:]
             temp.append(node)
             self.paths.append(temp)
 
         if self.found is 2:
             return
 
-        route.append(node)
-        r1 = route[:]
-        r2 = route[:]
+        self.route.append(node)
 
-        self.dfs(node.left, r1, targetA, targetB)
-        self.dfs(node.right, r2, targetA, targetB)
+        if node.left:
+            self.dfs(node.left, targetA, targetB)
+        if node.right:
+            self.dfs(node.right, targetA, targetB)
+
+        self.route.pop()
 
     def lowestCommonAncestor(self, root, p, q):
-        route = []
-
         self.found = 0
-        self.dfs(root, route, p, q)
+        self.dfs(root, p, q)
 
         i = 0
         while True:
@@ -49,7 +47,6 @@ class Solution(object):
             else:
                 i += 1
                 continue
-
 
 node_1 = TreeNode(1)
 node_0 = TreeNode(0)
