@@ -1,6 +1,6 @@
 #
 # https://www.acmicpc.net/problem/9249
-
+import sys
 from itertools import zip_longest, islice
 
 def getLPC(str, sa, len_a):
@@ -73,8 +73,8 @@ def inverse_array(l):
         ans[l[i]] = i
     return ans
 
-str_a = input()
-str_b = input()
+str_a = sys.stdin.readline()
+str_b = sys.stdin.readline()
 
 str = str_a + "!" + str_b
 n = len(str)
