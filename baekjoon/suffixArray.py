@@ -5,16 +5,12 @@ def get_suffix_array(str):
     return sorted(range(len(str)), key=lambda i: str[i:])
 
 def sort_bucket(str, bucket, order=1):
-    print("sort_bucket", str, bucket, order)
     d = defaultdict(list)
-    print("default dick", d) 
     for i in bucket:
         key = str[i:i+order]
         d[key].append(i)
     result = []
-    print("d", d)
     for k,v in sorted(d.items()):
-        print("key",k,"value", v)
         if len(v) > 1:
             result += sort_bucket(str, v, order*2)
         else:
