@@ -12,3 +12,4 @@ if __name__ == "__main__":
         scores.append(int(sys.stdin.readline().strip()))
 
     print(int(get_average_score(scores)))
+
