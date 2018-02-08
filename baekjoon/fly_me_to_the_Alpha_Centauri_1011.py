@@ -9,9 +9,9 @@ def count_of_warp(points):
 
     while distance > warp_dist:
         warp_count += 1
-        distance = distance - 2*warp_dist
+        distance = distance - 2 * warp_dist
         if distance < 0:
-            distance = distance + 2*warp_dist
+            distance = distance + 2 * warp_dist
             warp_dist -= 1
             warp_count -= 1
             break
@@ -28,4 +28,3 @@ if __name__ == "__main__":
     T = int(input())
     for i in range(T):
         print(count_of_warp(list(map(int, sys.stdin.readline().strip().split()))))
-
