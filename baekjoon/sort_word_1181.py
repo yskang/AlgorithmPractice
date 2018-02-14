@@ -1,4 +1,5 @@
 # https://www.acmicpc.net/problem/1181
+import sys
 
 def print_words_in_order(words):
     prev = ""
@@ -13,5 +14,5 @@ if __name__ == "__main__":
     N = int(input())
     words = []
     for i in range(N):
-        words.append(input())
+        words.append(sys.stdin.readline().strip())
     print_words_in_order(words)
