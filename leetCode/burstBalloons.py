@@ -4,14 +4,14 @@ class Solution:
         ns = [1] + [i for i in nums if i > 0] + [1]
         n = len(ns)
         dp = [[0]*n for _ in range(n)]
-
+        
         for width in range(2, n):
-            for left in range(0, n-width):
-                right = left+width
-                print(width, left, right)
-                for i in range(left+1, right):
-                    dp[left][right] = max(dp[left][right], ns[left]*ns[i]*ns[right] + dp[left][i] + dp[i][right])
+            for left_index in range(0, n-width):
+                right_index = left_index+width
+                for i in range(left_index+1, right_index):
+                    dp[left_index][right_index] = max(dp[left_index][right_index], ns[left_index]*ns[i]*ns[right_index] + dp[left_index][i] + dp[i][right_index])
         return dp[0][n-1]
+
 
 if __name__ == "__main__":
     solution = Solution()
