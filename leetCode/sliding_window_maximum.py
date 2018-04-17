@@ -43,6 +43,7 @@ class Solution(object):
             result.append(current_max)
         return result
 
+
 if __name__ == "__main__":
     sol = Solution()
     print(sol.maxSlidingWindow([], 0))
