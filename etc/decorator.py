@@ -1,6 +1,6 @@
 import datetime
 import time
-
+from functools import wraps
 
 def decorator_function(original_function):
     def wrapper_function(*args, **kwargs):
@@ -43,6 +43,7 @@ def my_logger(original_function):
     import logging
     logging.basicConfig(filename='{}.log'.format(original_function.__name__), level=logging.INFO)
 
+    @wraps(original_function)
     def wrapper(*args, **kwargs):
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
         logging.info("[{}] result args - {}, kwargs - {}".format(timestamp, args, kwargs))
@@ -54,6 +55,7 @@ def my_logger(original_function):
 def my_timer(original_function):
     import time
 
+    @wraps(original_function)
     def wrapper(*args, **kwargs):
         t1 = time.time()
         result = original_function(*args, **kwargs)
@@ -62,12 +64,8 @@ def my_timer(original_function):
         return result
     return wrapper
 
-@my_logger
-def display_info(name, age):
-    time.sleep(1)
-    print("displya_info({}, {}) is executed!!".format(name, age))
-
 @my_timer
+@my_logger
 def display_info(name, age):
     time.sleep(1)
     print("displya_info({}, {}) is executed!!".format(name, age))
