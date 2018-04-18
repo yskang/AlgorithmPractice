@@ -6,7 +6,7 @@ class Solution(object):
         if m == 0 or n == 0:
             return n if m == 0 else m
 
-        d = [[0]*(m+1) for y in range(n+1)]
+        d = [[0]*(m+1) for _ in range(n+1)]
 
         for i in range(1, m+1):
             d[0][i] = i
