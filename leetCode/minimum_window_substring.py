@@ -1,3 +1,6 @@
+import collections
+
+
 class Solution():
     def __init__(self):
         self.i = -1
@@ -95,11 +98,26 @@ class Solution():
 
         return s[min_pair[0]:min_pair[1]+1]
 
+    def stephnatic(self, s, t):
+        need, missing = collections.Counter(t), len(t)
+        i = I = J = 0
+        for j, c in enumerate(s, 1):
+            missing -= need[c] > 0
+            need[c] -= 1
+            if not missing:
+                while i < j and need[s[i]] < 0:
+                    need[s[i]] += 1
+                    i += 1
+                if not J or j - i <= J - I:
+                    I, J = i, j
+        return s[I:J]
+
 
 if __name__ == '__main__':
     sol = Solution()
-    print(sol.minWindow("ab", "a"))
+    # print(sol.minWindow("ab", "a"))
     # print(sol.minWindow("a", "b"))
     # print(sol.minWindow("a", "aa"))
     # print(sol.minWindow("aaaaaaaaaaaabbbbbcdd", "abcdd"))
     # print(sol.minWindow("ADDBECODEBANC", "ABC"))
+    print(sol.stephnatic("ab", "a"))
