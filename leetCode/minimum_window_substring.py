@@ -6,7 +6,8 @@ class Solution():
         distance = len(s)
         min_pair = (0, -1)
         pairs = list(filter(lambda x: x[1] in t, enumerate(s, 0)))
-        dicts = {k: t.count(k) for k in t}
+        # dicts = {k: t.count(k) for k in t}
+        dicts = collections.Counter(t)
         spare_char = list(dicts.keys())
 
         start, end = 0, 0
