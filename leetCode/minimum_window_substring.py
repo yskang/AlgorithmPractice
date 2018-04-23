@@ -2,101 +2,35 @@ import collections
 
 
 class Solution():
-    def __init__(self):
-        self.i = -1
-
-    def to_tuple(self, s):
-        self.i += 1
-        return s, self.i
-
     def minWindow(self, s, t):
-        self.i = -1
         distance = len(s)
         min_pair = (0, -1)
-        pairs = list(filter(lambda x: t.count(x[0]) > 0, map(self.to_tuple, s)))
+        pairs = list(filter(lambda x: x[1] in t, enumerate(s, 0)))
+        dicts = {k: t.count(k) for k in t}
+        spare_char = list(dicts.keys())
 
-        t_dic = {k: t.count(k) for k in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"}
-        dicts = {}
-        for k in t_dic:
-            if t_dic[k] != 0:
-                dicts[k] = t_dic[k]
-        print(pairs)
-        print(dicts)
+        start, end = 0, 0
+        while end <= len(pairs) and start <= len(pairs):
+            while spare_char:
+                if end >= len(pairs):
+                    return s[min_pair[0]:min_pair[1] + 1]
+                dicts[pairs[end][1]] -= 1
+                if dicts[pairs[end][1]] <= 0:
+                    if spare_char.count(pairs[end][1]) > 0:
+                        spare_char.remove(pairs[end][1])
+                end += 1
 
-        if not pairs:
-            return ""
+            while not spare_char:
+                dicts[pairs[start][1]] += 1
+                if dicts[pairs[start][1]] > 0:
+                    spare_char.append(pairs[start][1])
+                start += 1
 
-        end = 0
-        dicts[pairs[0][0]] -= 1
-        count = 0
-        for k in dicts:
-            if dicts[k] <= 0:
-                count += 1
-        if count == len(dicts):
-            print("ok! [{}, {}]".format(0, end))
+            if distance > (pairs[end-1][0] - pairs[start-1][0]):
+                distance = pairs[end-1][0] - pairs[start-1][0]
+                min_pair = (pairs[start-1][0], pairs[end-1][0])
 
-            d = pairs[end][1] - pairs[0][1]
-            if d < distance:
-                distance = d
-                min_pair = (pairs[0][1], pairs[end][1])
-                print("new distance {}. min pair: ({}, {})".format(distance, pairs[0][1], pairs[end][1]))
-
-        for end in range(1, len(pairs)):
-            dicts[pairs[end][0]] -= 1
-            count = 0
-            for k in dicts:
-                if dicts[k] <= 0:
-                    count += 1
-            if count == len(dicts):
-                print("ok! [{}, {}]".format(0, end))
-
-                d = pairs[end][1] - pairs[0][1]
-                if d < distance:
-                    distance = d
-                    min_pair = (pairs[0][1], pairs[end][1])
-                    print("new distance {}. min pair: ({}, {})".format(distance, pairs[0][1], pairs[end][1]))
-
-                break
-        print("end: {}".format(end))
-
-        for start in range(1, len(pairs)):
-            dicts[pairs[start-1][0]] += 1
-
-            count = 0
-            for k in dicts:
-                if dicts[k] <= 0:
-                    count += 1
-            if count == len(dicts):
-                print("ok! [{}, {}]".format(start, end))
-
-                d = pairs[end][1] - pairs[start][1]
-                if d < distance:
-                    distance = d
-                    min_pair = (pairs[start][1], pairs[end][1])
-                    print("new distance {}. min pair: ({}, {})".format(distance, pairs[start][1], pairs[end][1]))
-
-                continue
-            else:
-                while end+1 < len(pairs):
-                    end += 1
-                    dicts[pairs[end][0]] -= 1
-
-                    count = 0
-                    for k in dicts:
-                        if dicts[k] <= 0:
-                            count += 1
-                    if count == len(dicts):
-                        print("ok! [{}, {}]".format(start, end))
-
-                        d = pairs[end][1] - pairs[start][1]
-                        if d < distance:
-                            distance = d
-                            min_pair = (pairs[start][1], pairs[end][1])
-                            print("new distance {}. min pair: ({}, {})".format(distance, pairs[start][1], pairs[end][1]))
-
-                        break
-
-        return s[min_pair[0]:min_pair[1]+1]
+        return s[min_pair[0]:min_pair[1] + 1]
 
     def stephnatic(self, s, t):
         need, missing = collections.Counter(t), len(t)
@@ -118,6 +52,7 @@ if __name__ == '__main__':
     # print(sol.minWindow("ab", "a"))
     # print(sol.minWindow("a", "b"))
     # print(sol.minWindow("a", "aa"))
+    # print(sol.minWindow("bba", "ba"))
     # print(sol.minWindow("aaaaaaaaaaaabbbbbcdd", "abcdd"))
-    # print(sol.minWindow("ADDBECODEBANC", "ABC"))
-    print(sol.stephnatic("ab", "a"))
+    print(sol.minWindow("ADDBECODEBANC", "ABC"))
+    # print(sol.stephnatic("ab", "a"))
