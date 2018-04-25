@@ -1,12 +1,12 @@
 import sys
 
 
-def is_valid(parenthesis):
+def is_valid(parentheses):
     while True:
-        temp = parenthesis.replace("()", "")
-        if temp == parenthesis:
+        temp = parentheses.replace("()", "")
+        if temp == parentheses:
             break
-        parenthesis = temp
+        parentheses = temp
 
     if temp == "":
         return True
