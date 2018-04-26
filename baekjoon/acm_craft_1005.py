@@ -27,11 +27,6 @@ def get_min_time(n, reqs, delay, cache):
     return max_d + delay[n-1]
 
 
-def get_minimum_time(D, req_list, W):
-    cache = {}
-    return get_min_time(W, req_list, D, cache)
-
-
 if __name__ == '__main__':
     T = read_single_int()
     for _ in range(T):
@@ -45,4 +40,5 @@ if __name__ == '__main__':
             else:
                 req_map[t].append(f)
         W = read_single_int()
-        print(get_minimum_time(D, req_map, W))
+        cache = {}
+        print(get_min_time(W, req_map, D, cache))
