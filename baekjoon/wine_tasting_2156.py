@@ -22,9 +22,9 @@ def get_max_wine(wines):
     d1[0] = wines[0]
     d2[0] = 0
     s[0] = 0
-    for n in range(1, len(wines)):
-        d1[n] = s[n-1] + wines[n]
-        d2[n] = d1[n-1] + wines[n]
+    for n, wine in enumerate(wines[1:], 1):
+        d1[n] = s[n-1] + wine
+        d2[n] = d1[n-1] + wine
         s[n] = max(s[n-1], d1[n-1], d2[n-1])
 
     return max(d1[-1], d2[-1], s[-1])
