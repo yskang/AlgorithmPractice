@@ -1,0 +1,64 @@
+# Title: 리모컨
+# Link: https://www.acmicpc.net/problem/1107
+
+import sys
+
+sys.setrecursionlimit(10 ** 6)
+
+
+def read_list_int():
+    return list(map(int, sys.stdin.readline().strip().split(' ')))
+
+
+def read_single_int():
+    return int(sys.stdin.readline().strip())
+
+
+def is_number_ok(num, brokens):
+    ok = True
+    for n_str in str(num):
+        ok = ok & brokens[int(n_str)]
+    return ok
+
+
+def get_press_times(N, broken_buttons):
+    broken_table = [x not in broken_buttons for x in range(10)]
+    is_zero_work = broken_table[0]
+    updown_from_100 = abs(100 - N)
+    number_from_0 = N + 1
+
+    if len(broken_buttons) == 0:
+        return min(updown_from_100, number_from_0, len(str(N)))
+    elif is_zero_work and len(broken_buttons) == 9:
+        return min(updown_from_100, number_from_0)
+    elif len(broken_buttons) == 10:
+        return updown_from_100
+    else:
+        up_number = N
+        while not is_number_ok(up_number, broken_table):
+            up_number += 1
+
+        up_press = len(str(up_number)) + up_number - N
+
+        down_number = N
+        while not is_number_ok(down_number, broken_table):
+            down_number -= 1
+            if down_number == -1:
+                break
+
+        if down_number != -1:
+            down_press = len(str(down_number)) + N - down_number
+        else:
+            down_press = 999999999
+
+        return min(up_press, down_press, updown_from_100)
+
+
+
+if __name__ == '__main__':
+    N = read_single_int()
+    M = read_single_int()
+    broken_buttons = []
+    if M != 0:
+        broken_buttons = read_list_int()
+    print(get_press_times(N, broken_buttons))
