@@ -21,6 +21,54 @@ def is_number_ok(num, brokens):
     return ok
 
 
+def minimum_ok_number(broken_table):
+    for i, v in enumerate(broken_table):
+        if v:
+            return i
+
+
+def maximum_of_number(broken_table):
+    for i in range(9, -1, -1):
+        if broken_table[i]:
+            return i
+
+
+def get_up_number(target, broken_table):
+    index = -1
+    for i, n_str in enumerate(str(target)):
+        if not broken_table[int(n_str)]:
+            index = i
+            break
+    if index == -1:
+        return target
+    else:
+        front = int(str(target)[:index+1])
+        while not is_number_ok(front, broken_table):
+            front += 1
+        return int(str(front) + str(minimum_ok_number(broken_table)) * (len(str(target))-index-1))
+
+
+def get_down_number(target, broken_table):
+    index = -1
+    for i, n_str in enumerate(str(target)):
+        if not broken_table[int(n_str)]:
+            index = i
+            break
+    if index == -1:
+        return target
+    else:
+        front = int(str(target)[:index+1])
+        while not is_number_ok(front, broken_table):
+            front -= 1
+            if front == -1:
+                if len(str(target)) - index - 1 >= 1:
+                    index += 1
+                    front = int(str(target)[:index+1])
+                else:
+                    return -1
+        return int(str(front) + str(maximum_of_number(broken_table)) * (len(str(target))-index-1))
+
+
 def get_press_times(N, broken_buttons):
     broken_table = [x not in broken_buttons for x in range(10)]
     is_zero_work = broken_table[0]
@@ -34,25 +82,16 @@ def get_press_times(N, broken_buttons):
     elif len(broken_buttons) == 10:
         return updown_from_100
     else:
-        up_number = N
-        while not is_number_ok(up_number, broken_table):
-            up_number += 1
-
+        up_number = get_up_number(N, broken_table)
         up_press = len(str(up_number)) + up_number - N
 
-        down_number = N
-        while not is_number_ok(down_number, broken_table):
-            down_number -= 1
-            if down_number == -1:
-                break
-
+        down_number = get_down_number(N, broken_table)
         if down_number != -1:
             down_press = len(str(down_number)) + N - down_number
         else:
             down_press = 999999999
 
         return min(up_press, down_press, updown_from_100)
-
 
 
 if __name__ == '__main__':
