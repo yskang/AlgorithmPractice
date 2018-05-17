@@ -15,8 +15,15 @@ def read_single_int():
 
 
 def find_kth_ant(L, K, ants):
-    print(ants)
-    return 0
+    drops_left, drops_right = [], []
+    for ant in ants:
+        if ant[1] < 0:
+            drops_left.append((ant[0], ant[1]))
+        else:
+            drops_right.append((L-ant[0], ant[1]))
+    drops = list(zip(drops_left + drops_right, ants))
+    drops = sorted(sorted(drops, key=lambda drop: drop[1][1]), key=lambda drop: drop[0][0])
+    return drops[K-1][1][1]
 
 
 if __name__ == '__main__':
