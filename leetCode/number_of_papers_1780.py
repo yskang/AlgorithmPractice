@@ -14,38 +14,47 @@ def read_single_int():
     return int(sys.stdin.readline().strip())
 
 
-def check_all_number(matrix):
-    base = matrix[0][0]
-    for row in matrix:
-        for e in row:
-            if e != base:
+def check_all_number(matrix, start_x, start_y, length):
+    base = matrix[start_y][start_x]
+
+    if length == 1:
+        return base
+
+    for y in range(start_y, start_y+length):
+        for x in range(start_x, start_x+length):
+            if matrix[y][x] != base:
                 return 9
+
     return base
 
 
-def separate(matrix):
-    parts = [[] for _ in range(9)]
-    l = len(matrix) // 3
-    for i in range(3):
-        for row in matrix[l*i:l*(i+1)]:
-            parts[i*3].append(row[0:l])
-            parts[i*3+1].append(row[l:2 * l])
-            parts[i*3+2].append(row[2 * l:3 * l])
-    return parts
-
-
-def number_of_papers(matrix):
+def number_of_papers(matrix, start_x, start_y, length):
     index = [-1, 0, 1]
     sums = {-1: 0, 0: 0, 1: 0}
-    ret = check_all_number(matrix)
-    if ret != 9:
-        sums[ret] += 1
+
+    base = matrix[start_y][start_x]
+
+    if length != 1:
+        done = False
+        for y in range(start_y, start_y+length):
+            for x in range(start_x, start_x+length):
+                if matrix[y][x] != base:
+                    base = 9
+                    done = True
+                    break
+            if done:
+                break
+
+    if base != 9:
+        sums[base] += 1
     else:
-        papers = separate(matrix)
-        for paper in papers:
-            s = number_of_papers(paper)
-            for i in index:
-                sums[i] += s[i]
+        new_length = length // 3
+
+        for x in range(3):
+            for y in range(3):
+                s = number_of_papers(matrix, start_x + new_length * x, start_y + new_length * y, new_length)
+                for i in index:
+                    sums[i] += s[i]
     return sums
 
 
@@ -54,6 +63,6 @@ if __name__ == '__main__':
     matrix = []
     for _ in range(N):
         matrix.append(read_list_int())
-    ret = number_of_papers(matrix)
+    ret = number_of_papers(matrix, 0, 0, N)
     for i in ret:
         print(ret[i])
