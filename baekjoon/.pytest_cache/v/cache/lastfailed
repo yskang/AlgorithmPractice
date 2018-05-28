@@ -1,3 +1,4 @@
 {
+  "baekjoon_tests.py::PerfectSquareNumber_1977::test_no_answer": true,
   "plus_cycle_test2.py": true
 }
