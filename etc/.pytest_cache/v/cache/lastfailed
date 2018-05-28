@@ -1,0 +1,4 @@
+{
+  "block_game_test.py::testUnit::test001_init": true,
+  "block_test.py::MyTestCase::test_2": true
+}
