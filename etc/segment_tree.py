@@ -16,6 +16,15 @@ def sum(tree, node, start, end, left, right):
     return sum(tree, node*2, start, (start+end)//2, left, right) + sum(tree, node*2+1, (start+end)//2+1, end, left, right)
 
 
+def update(tree, node, start, end, index, diff):
+    if not(start <= index <= end):
+        return
+    tree[node] += diff
+    if start != end:
+        update(tree, node*2, start, (start+end)//2, index, diff)
+        update(tree, node*2+1, (start+end)//2+1, end, index, diff)
+
+
 # init segment tree of an array from index start to end.
 # return index of minimum value of array in range from start to end.
 def init_segment_min(array, tree, node, start, end):
@@ -56,8 +65,10 @@ if __name__ == '__main__':
     tree = [0 for _ in range(len(a) * 4)]
     tree2 = [0 for _ in range(len(a) * 4)]
     init_segment_sum(a, tree, 1, 0, 11)
-    init_segment_min(a, tree2, 1, 0, 11)
-    print(tree)
-    print(tree2)
-    print(sum(tree, 1, 0, 11, 3, 9))
-    print(find_min(a, tree2, 1, 0, 11, 0, 9))
+    print('a: {}'.format(a))
+    print('segment tree(sum): {}'.format(tree))
+    print('partial sum of (3~9): {}'.format(sum(tree, 1, 0, 11, 3, 9)))
+    print('update a[3] to 8')
+    update(tree, 1, 0, 11, 3, 1)
+    print('segment tree(sum): {}'.format(tree))
+    print('partial sum of (3~9): {}'.format(sum(tree, 1, 0, 11, 3, 9)))

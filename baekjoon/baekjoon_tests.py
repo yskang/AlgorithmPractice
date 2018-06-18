@@ -2,6 +2,7 @@ import random
 import unittest
 
 import baekjoon.perfect_square_number_1977
+import baekjoon.n_n_square_number_1016
 
 
 class PerfectSquareNumber_1977(unittest.TestCase):
@@ -69,6 +70,20 @@ class PerfectSquareNumber_1977(unittest.TestCase):
                 baekjoon.perfect_square_number_1977.perfect_square_number(M, N)
             except:
                 print('fail on {}, {}'.format(M, N))
+
+
+class NN_Square_1016(unittest.TestCase):
+    def test_default(self):
+        minimum = 1
+        maximum = 10
+        res = 7
+        self.assertEqual(baekjoon.n_n_square_number_1016.num_nn_square(minimum, maximum), res)
+
+    def test_100(self):
+        minimum = 1
+        maximum = 1000000
+        res = 7
+        self.assertEqual(baekjoon.n_n_square_number_1016.num_nn_square(minimum, maximum), res)
 
 
 if __name__ == '__main__':
