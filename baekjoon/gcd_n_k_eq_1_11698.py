@@ -1,10 +1,10 @@
 # Title: GCD(n, k) = 1
 # Link: https://www.acmicpc.net/problem/11698:
-
-import sys
 import math
+import sys
 
 sys.setrecursionlimit(10 ** 6)
+
 
 def read_list_int():
     return list(map(int, sys.stdin.readline().strip().split(' ')))
@@ -15,35 +15,72 @@ def read_single_int():
 
 
 def gcd(a, b):
-    while b != 0:
-        r = a % b
-        a = b
-        b = r
-    return a
-
-def get_primes_under(n):
-    ns = {k:True for k in range(2, n+1) }
-    for num in range(2, int(math.sqrt(n))+1):
-        if num in ns:
-            i = 2
-            while num*i <= n:
-                if num*i in ns:
-                    del ns[num*i]
-                i += 1
-    return ns.keys()
+    while a % b != 0:
+        a, b = b, a % b
+    return b
 
 
-def get_prime_factors(n, primes):
-    factors = []
-    for p in primes:
-        if n % p == 0:
-            factors.append(p)
-    return factors
+def f1(x, n): return ((x*x) + 1)%n
+
+
+def f2(x, n): return ((x*x) + 2)%n
+
+
+def f3(x, n): return ((x*x) + 3)%n
+
+
+def rho(n, f):
+    x = 2
+    y = 2
+    d = 1
+    count = 0
+    while d == 1:
+        x = f(x, n)
+        y = f(f(y, n), n)
+        d = gcd(abs(x - y), n)
+        count += 1
+    if d == n:
+        return False
+    return d
+
+
+def get_factoring(n, s, f_dic):
+    if n in f_dic:
+        return
+    f_dic[n] = True
+
+    f = rho(n, f1)
+
+    if n == 4 or n == 8 or n == 16:
+        s.add(2)
+        return
+
+    if not f:
+        f_2 = rho(n, f2)
+        f_3 = rho(n, f3)
+        if f_2 == f_3 and f_2 == False and n!=4 and n !=8:
+            s.add(n)
+        else:
+            if f_2:
+                get_factoring(n//f_2, s, f_dic)
+                get_factoring(f_2, s, f_dic)
+            if f_3:
+                get_factoring(n//f_3, s, f_dic)
+                get_factoring(f_3, s, f_dic)
+    else:
+        if f:
+            get_factoring(n//f, s, f_dic)
+            get_factoring(f, s, f_dic)
+
 
 
 def num_gcd(n):
-    primes = get_primes_under(n)
-    factors = get_prime_factors(n, primes)
+    if n == 1:
+        return 1
+    factors = set()
+    f_dic = {}
+    get_factoring(n, factors, f_dic)
+    # print(factors)
     up, down = 1, 1
     for f in factors:
         up *= (f-1)
@@ -52,7 +89,7 @@ def num_gcd(n):
 
 
 if __name__ == '__main__':
-    #n = read_single_int()
-    for i in range(2, 20000):
-        print('{}: {}'.format(i, num_gcd(i)))
-
+    # n = read_single_int()
+    # print(num_gcd(n))
+    for i in range(1000000000000, 0, -1):
+        print('{}, {}'.format(i, num_gcd(i)))
