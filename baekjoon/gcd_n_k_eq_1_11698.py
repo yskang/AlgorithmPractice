@@ -88,8 +88,20 @@ def num_gcd(n):
     return n * up // down
 
 
+def sol(n):
+    r = n
+    for p in range(2, int(n**0.5)+1):
+        if n % p == 0:
+            while n % p == 0:
+                n = n // p
+            r = r - r//p
+    if n > 1:
+        r = r - r//n
+    return r
+
+
 if __name__ == '__main__':
     # n = read_single_int()
     # print(num_gcd(n))
     for i in range(1000000000000, 0, -1):
-        print('{}, {}'.format(i, num_gcd(i)))
+        print('{}, {}, {}'.format(i, num_gcd(i), sol(i)))
