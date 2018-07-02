@@ -1,6 +1,6 @@
 # Title: 감소하는 수
 # Link: https://www.acmicpc.net/problem/1038
-
+import itertools
 import sys
 
 sys.setrecursionlimit(10 ** 6)
@@ -53,6 +53,16 @@ def get_nth_number(N):
     return d_number
 
 
+def get_nth_decreasing_numbers(N):
+    decreasing_numbers = []
+    for n in range(1, 11):
+        decreasing_numbers += sorted(map(lambda l: int(''.join(l)), itertools.combinations('9876543210', n)))
+        if len(decreasing_numbers) > N:
+            return decreasing_numbers[N]
+    return -1
+
+
 if __name__ == '__main__':
     N = read_single_int()
-    print(get_nth_number(N))
+    # print(get_nth_number(N))
+    print(get_nth_decreasing_numbers(N))
