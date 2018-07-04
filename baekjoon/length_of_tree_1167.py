@@ -74,6 +74,26 @@ def Dijkstra(graph, start):
     return sorted(costs.items(), key=lambda item: item[1], reverse=True)[0]
 
 
+def get_distance(graph, start, d, visited, max_distance):
+    visited[start] = True
+    if len(graph.neighbors(start)) == 1 and visited[graph.neighbors(start)[0]]:
+        if d > max_distance[0]:
+            max_distance[0] = d
+            max_distance[1] = start
+        return
+    for to in graph.neighbors(start):
+        if not visited[to]:
+            get_distance(graph, to, d+graph.get_cost(start, to), visited, max_distance)
+
+
+def get_max_distance(graph, start):
+    max_distance = [0, 0]
+    d = 0
+    visited = [False for _ in range(V+1)]
+    get_distance(graph, start, d, visited, max_distance)
+    return max_distance[1], max_distance[0]
+
+
 if __name__ == '__main__':
     V = read_single_int()
     graph = Graph()
@@ -86,6 +106,8 @@ if __name__ == '__main__':
             edge_nodes.append(l[0])
         for i in range(0, len(nodes), 2):
             graph.add_edge(l[0], nodes[i], nodes[i+1])
-    (far_node, dist) = Dijkstra(graph, 1)
-    (_, max_dist) = Dijkstra(graph, far_node)
+    # (far_node, dist) = Dijkstra(graph, 1)
+    # (_, max_dist) = Dijkstra(graph, far_node)
+    far_node, dist = get_max_distance(graph, 1)
+    far_node, max_dist = get_max_distance(graph, far_node)
     print(max_dist)
