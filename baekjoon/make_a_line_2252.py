@@ -1,7 +1,8 @@
 # Title: 줄 세우기
 # Link: https://www.acmicpc.net/problem/2252
-import heapq
 import sys
+import queue
+import heapq
 
 sys.setrecursionlimit(10 ** 6)
 
@@ -16,18 +17,21 @@ def read_single_int():
 
 def get_line(students, indegrees, N):
     line = []
-    queue = []
+    qu = queue.Queue()
     for number in range(1, N+1):
         if indegrees[number] == 0:
-            heapq.heappush(queue, number)
+            # heapq.heappush(qu, number)
+            qu.put(number)
 
-    while len(queue) > 0:
-        zero_indegree = heapq.heappop(queue)
+    while qu.qsize() > 0:
+        # zero_indegree = heapq.heappop(qu)
+        zero_indegree = qu.get()
         line.append(zero_indegree)
         for number in students[zero_indegree]:
             indegrees[number] -= 1
             if indegrees[number] == 0:
-                heapq.heappush(queue, number)
+                # heapq.heappush(qu, number)
+                qu.put(number)
 
     return ' '.join(map(str, line))
 
