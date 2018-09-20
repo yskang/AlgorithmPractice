@@ -47,11 +47,86 @@ def solve(graph, N, M):
     return min(times[N])
 
 
+def check_reach(graph, N, M):
+    pq = []
+    costs = collections.defaultdict(lambda: INF)
+    prev = collections.defaultdict(lambda: 0)
+    costs[1] = 0
+    prev[1] = (0, 0)
+    heapq.heappush(pq, (0, 1))
+
+    while pq:
+        cost, node = heapq.heappop(pq)
+
+        if cost != costs[node]:
+            continue
+
+        for next_node, cost_next, time_next in graph.get_next(node):
+            new_cost = cost + cost_next
+            if new_cost < costs[next_node]:
+                costs[next_node] = new_cost
+                prev[next_node] = (node, time_next)
+                heapq.heappush(pq, (new_cost, next_node))
+
+    time_sum = 0
+    if costs[N] <= M:
+        n = N
+        while True:
+            (n, t) = prev[n]
+            time_sum += t
+            if n == 0:
+                break
+        return False, time_sum
+    return True, time_sum
+
+
+def dijkstra(graph, start, M, time_limit):
+    # minimum_time = [[INF] * (M+1) for _ in range(N+1)]
+    minimum_time = collections.defaultdict(lambda: collections.defaultdict(lambda: INF))
+    minimum_time[1][0] = 0
+    pq = []
+    heapq.heappush(pq, (0, 0, start)) #(time, cost, node)
+    min_time = INF
+
+    while pq:
+        time, cost, node = heapq.heappop(pq)
+
+        if min_time <= time:
+            continue
+
+        if minimum_time[node][cost] < time:
+            continue
+
+        for child, cost_c, time_c in graph.get_next(node):
+            cost_node_to_child = cost + cost_c
+            if cost_node_to_child > M:
+                continue
+            new_time = minimum_time[node][cost] + time_c
+
+            if new_time > time_limit:
+                continue
+
+            if min_time <= new_time:
+                continue
+
+            if child == N:
+                min_time = new_time
+                continue
+
+            if new_time < minimum_time[child][cost_node_to_child]:
+                minimum_time[child][cost_node_to_child] = new_time
+                heapq.heappush(pq, (new_time, cost_node_to_child, child))
+
+    return min_time
+
+
 def get_minimum_time_to_LA(graph, N, M):
-    min_time = solve(graph, N, M)
-    if min_time != INF:
-        return min_time
-    return 'Poor KCM'
+    # min_time = solve(graph, N, M)
+    is_poor_kcm, time = check_reach(graph, N, M)
+    if is_poor_kcm:
+        return 'Poor KCM'
+    # return solve(graph, N, M)
+    return dijkstra(graph, 1, M, time)
 
 
 if __name__ == '__main__':
