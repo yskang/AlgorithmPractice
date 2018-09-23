@@ -14,8 +14,63 @@ def read_single_int():
     return int(sys.stdin.readline().strip())
 
 
+def get_pi(pattern):
+    pi = [0]
+    last_index = 0
+
+    for index in range(1, len(pattern)):
+        if pattern[index] == pattern[last_index]:
+            pi.append(pi[-1] + 1)
+            last_index += 1
+        else:
+            found = False
+            while last_index > 0:
+                last_index -= 1
+                if pattern[last_index] == pattern[index]:
+                    offset = 0
+                    match = True
+                    while last_index-offset > 0:
+                        offset += 1
+                        if pattern[last_index-offset] != pattern[index-offset]:
+                            match = False
+                            break
+                    if match:
+                        found = True
+                        pi.append(last_index+1)
+                        last_index += 1
+                        break
+            if not found:
+                pi.append(0)
+                last_index = 0
+    return pi
+
+
+def find_pattern(text, pattern, pi):
+    finds = []
+    index_p, index_t = 0, 0
+    
+    while index_t < len(text):
+        if pattern[index_p] == text[index_t]:
+            index_t += 1
+            index_p += 1
+            if index_p == len(pattern):
+                finds.append(index_t - index_p + 1)
+                index_p = 0 if index_p == 0 else pi[index_p - 1]
+
+        else:
+            index_t += 1 if index_p == 0 else 0
+            index_p = 0 if index_p == 0 else pi[index_p - 1]
+            
+    return len(finds), finds
+
+
 def longest_substring(text: str):
-    return text
+    start = 0
+    max_len = 0
+    for start in range(0, len(text)):
+        pi = get_pi(text[start:])
+        max_len = max(max_len, max(pi))
+    return max_len
 
 
 if __name__ == '__main__':
