@@ -45,25 +45,6 @@ def get_pi(pattern):
     return pi
 
 
-def find_pattern(text, pattern, pi):
-    finds = []
-    index_p, index_t = 0, 0
-    
-    while index_t < len(text):
-        if pattern[index_p] == text[index_t]:
-            index_t += 1
-            index_p += 1
-            if index_p == len(pattern):
-                finds.append(index_t - index_p + 1)
-                index_p = 0 if index_p == 0 else pi[index_p - 1]
-
-        else:
-            index_t += 1 if index_p == 0 else 0
-            index_p = 0 if index_p == 0 else pi[index_p - 1]
-            
-    return len(finds), finds
-
-
 def longest_substring(text: str):
     start = 0
     max_len = 0
