@@ -3,29 +3,9 @@
 
 import sys
 
-
 sys.setrecursionlimit(10 ** 6)
 
-read_list_str = lambda: list(sys.stdin.readline().strip())
-
-
-
-def find_pattern(text: str, pattern: str):
-    finds = []
-    index_p, index_t = 0, 0
-    
-    while index_t < len(text):
-        if pattern[index_p] == text[index_t]:
-            index_t += 1
-            index_p += 1
-            if index_p == len(pattern):
-                finds.append(index_t - index_p + 1)
-                index_p = 0
-
-        else:
-            return []
-            
-    return finds
+read_single_str = lambda: sys.stdin.readline().strip()
 
 
 def find_n(ins: str, ans: list, len_ins: int):
@@ -38,8 +18,7 @@ def find_n(ins: str, ans: list, len_ins: int):
                 break
             else:
                 i += 1
-        finds = find_pattern(ins, ins[:length])
-        if len(finds) * length == len(ins):
+        if ins[:length]*(len(ins)//length) == ins:
             ans.append(len_ins // length)
             find_n(ins[:length], ans, len_ins)
             return
@@ -49,10 +28,10 @@ def find_n(ins: str, ans: list, len_ins: int):
 
 if __name__ == '__main__':
     while True:
-        ins = read_list_str()
-        if ins == ['.']:
+        in_str = read_single_str()
+        if in_str == '.':
             break
         else:
             ans = [1]
-            find_n(ins, ans, len(ins))
+            find_n(in_str, ans, len(in_str))
             print(max(ans))
