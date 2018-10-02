@@ -8,22 +8,25 @@ sys.setrecursionlimit(10 ** 6)
 read_single_str = lambda: sys.stdin.readline().strip()
 
 
-def find_n(ins: str, ans: list, len_ins: int):
-    length = len(ins)
-    i = 2
-    while length != 1:
-        while i <= len(ins):
-            if len(ins) % i == 0:
-                length = len(ins)//i
-                break
-            else:
-                i += 1
-        if ins[:length]*(len(ins)//length) == ins:
-            ans.append(len_ins // length)
-            find_n(ins[:length], ans, len_ins)
-            return
-        i += 1
-    return
+def get_p(str_in: str):
+    origin_len = len(str_in)
+    last_len = origin_len
+
+    num_part = 2
+    while len(str_in) >= num_part:
+        while len(str_in) % num_part != 0:
+            num_part += 1
+        part_len = len(str_in) // num_part
+
+        if str_in[:part_len] * num_part == str_in:
+            str_in = str_in[:part_len]
+            last_len = part_len
+            num_part = 2
+            continue
+        else:
+            num_part += 1
+
+    return origin_len//last_len
 
 
 if __name__ == '__main__':
@@ -32,6 +35,4 @@ if __name__ == '__main__':
         if in_str == '.':
             break
         else:
-            ans = [1]
-            find_n(in_str, ans, len(in_str))
-            print(max(ans))
+            print(get_p(in_str))
