@@ -20,6 +20,7 @@ def get_LIS_length(nums: list, length: int):
 
     return max(lis_list)
 
+# todo: use dp
 
 if __name__ == '__main__':
     l = read_single_int()
