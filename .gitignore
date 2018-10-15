@@ -4,3 +4,5 @@
 __pycache__
 .log
 venv
+.out
+a.out.dSYM
