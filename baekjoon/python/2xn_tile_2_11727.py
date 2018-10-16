@@ -15,7 +15,6 @@ def solution(n: int):
     ns = [i for i in range(n+1)]
     if n == 1:
         return 1
-        
     for i in range(3, n+1):
         ns[i] = ns[i-1]%DIV + (2*ns[i-2])%DIV
     return ns[n]%DIV
