@@ -10,36 +10,29 @@ sys.setrecursionlimit(10 ** 6)
 read_single_int = lambda: int(sys.stdin.readline().strip())
 
 
-def get_primes_under(n: int):
-    ns = [True for _ in range(n+1)]
-    ns[0], ns[1] = False, False
-    for i in range(2, int(math.sqrt(n))+1):
-        if ns[i]:
-            for j in range(i+i, n+1, i):
-                ns[j] = False
-    return ns
-
-
-def solution(n: int, primes: list):
+def solution(n: int):
     ans = []
-    i = 0
-    while n != 1:
+
+    p = 2
+    while p*p <= n:
         while True:
-            d, r = divmod(n, primes[i][0])
+            d, r = divmod(n, p)
             if r == 0:
-                ans.append(primes[i][0])
+                ans.append(p)
                 n = d
-                break
             else:
-                i += 1
+                break
+        p += 1
+
+    if n != 1:
+        ans.append(n)
 
     return '\n'.join(map(str, ans))
 
 
 def main():
     n = read_single_int()
-    primes = list(filter(lambda x: x[1] ,enumerate(get_primes_under(n))))
-    print(solution(n, primes))
+    print(solution(n))
 
 
 if __name__ == '__main__':
