@@ -12,9 +12,6 @@ def pre_order_2_post_order(pre_order: list, start: int, end: int):
     if start >= end:
         return
 
-    if start == 0 and end == 4:
-        print('here')
-
     root = pre_order[start]
     point = start+1
 
