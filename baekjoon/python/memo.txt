@@ -1,0 +1,1 @@
+HostName=yskangIOT.azure-devices.net;DeviceId=HomeLivingRoomLamp;SharedAccessKey=BSg77ZbIifKiR0FCzxhAPvn83j2YNSfuCCXRtjj4XQM=
