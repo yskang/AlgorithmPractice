@@ -14,13 +14,15 @@ def get_silver_in(x: int, y: int, m: int, n: int, silver_map: list, dp: list):
         return 0
     if dp[y][x] != -1:
         return dp[y][x]
-    if x > 0:
-        silver =  max(get_silver_in(x-1, y-1, m, n, silver_map, dp), 
+    if x == m-1 or x == 1:
+        silver = max(get_silver_in(x-1, y-1, m, n, silver_map, dp), 
                     get_silver_in(x-1, y+1, m, n, silver_map, dp), 
-                    get_silver_in(x-2, y, m, n, silver_map, dp) + silver_map[y][x-1]) + silver_map[y][x]
+                    get_silver_in(x-1, y, m, n, silver_map, dp), 
+                    get_silver_in(x-2, y, m, n, silver_map, dp) + silver_map[y][x-1] if 0 <= x-1 < m else 0) + silver_map[y][x]
     else:
         silver =  max(get_silver_in(x-1, y-1, m, n, silver_map, dp), 
-                    get_silver_in(x-1, y+1, m, n, silver_map, dp)) + silver_map[y][x]
+                    get_silver_in(x-1, y+1, m, n, silver_map, dp), 
+                    get_silver_in(x-2, y, m, n, silver_map, dp) + silver_map[y][x-1] if 0 <= x-1 < m else 0) + silver_map[y][x]
 
     dp[y][x] = silver
     return silver
@@ -33,8 +35,8 @@ def get_silver_edge(x: int, y: int, m: int, n: int, silver_map: list, dp: list):
     if dp[y][x] != -1:
         return dp[y][x]
 
-    silver = max(get_silver_edge(x-1, y-1, m, n, silver_map, dp) + silver_map[y-1][x-1] if 0 <= y-1 < n and 0 <= x-1 < m else 0,
-                get_silver_edge(x-1, y+1, m, n, silver_map, dp) + silver_map[y][x-1] if 0 <= y < n and 0 <= x-1 < m else 0)
+    silver = max((get_silver_edge(x-1, y-1, m, n, silver_map, dp) + silver_map[y-1][x-1]) if 0 <= y-1 < n and 0 <= x-1 < m else 0,
+                (get_silver_edge(x-1, y+1, m, n, silver_map, dp) + silver_map[y][x-1]) if 0 <= y < n and 0 <= x-1 < m else 0)
 
     dp[y][x] = silver
     return silver
