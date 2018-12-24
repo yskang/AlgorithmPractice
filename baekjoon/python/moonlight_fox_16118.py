@@ -26,57 +26,68 @@ class Graph:
 
 
 def dijkstra_fox(graph: Graph, s: int):
-    path = collections.defaultdict(lambda: None)
     distance = collections.defaultdict(lambda: INF)
     pq = []
 
     distance[s] = 0
-    heapq.heappush(pq, (s, 0))
+    heapq.heappush(pq, (0, s))
 
     while pq:
-        node, dist = heapq.heappop(pq)
-        if distance[node] != dist:
+        dist, node = heapq.heappop(pq)
+        if distance[node] < dist:
             continue
         for (child, d) in graph.childs[node]:
             d *= 2
             if dist+d < distance[child]:
                 distance[child] = dist+d
-                path[child] = node
-                heapq.heappush(pq, (child, dist+d))
+                heapq.heappush(pq, (dist+d, child))
 
-    print(distance)
-    print(path)
+    # print(distance)
+    return distance
 
+F_SLOW = True
+F_QUICK = False
 
-def dijkstra_wolf(graph: Graph, s: int):
-    distance = collections.defaultdict(lambda: (INF, INF))
+def dijkstra_wolf(graph: Graph, s: int, n: int):
+    distance = [[INF, INF] for _ in range(n+1)]
     pq = []
-    distance[s] = (0, 0)
-    heapq.heappush(pq, (s, 0))
+
+    distance[s] = [0, INF] #slow, quick
+    heapq.heappush(pq, [0, F_SLOW, s]) # distance, prev speed, node
 
     while pq:
-        node, (d1, d2) = heapq.heappop(pq)
-        # if distance[node] != dist:
-        #     continue
+        dist, prev, node = heapq.heappop(pq)
+
+        if prev == F_QUICK and distance[node][1] < dist:
+            continue
+        if prev == F_SLOW and distance[node][0] < dist:
+            continue
+
         for (child, d) in graph.childs[node]:
-            odd = d2 + d
-            even = d1 + 4*d
-            new_odd, new_even = d1, d2
-            if odd < distance[child][0]:
-                new_odd = odd                
-            if even < distance[child][1]:
-                new_even = even
-            distance[child] = (new_odd, new_even)
-            
+            if prev == F_QUICK:
+                new_dist = dist + 4*d
+            else:
+                new_dist = dist + d
 
-
-    print(distance)
-
+            if prev == F_QUICK and new_dist < distance[child][0]:
+                distance[child][0] = new_dist
+                heapq.heappush(pq, [new_dist, F_SLOW, child])
+            elif prev == F_SLOW and new_dist < distance[child][1]:
+                distance[child][1] = new_dist
+                heapq.heappush(pq, [new_dist, F_QUICK, child])
+    
+    # print(distance)
+    return distance
 
 
 def solution(n: int, m: int, graph: Graph):
-    dijkstra_fox(graph, 1)
-    dijkstra_wolf(graph, 1)
+    fox = dijkstra_fox(graph, 1)
+    wolf = dijkstra_wolf(graph, 1, n)
+    count = 0
+    for g in range(1, n+1):
+        if fox[g] < min(wolf[g]):
+            count += 1
+    return count
 
 
 def main():
