@@ -12,8 +12,10 @@ read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
 def solution(track_size: int, hare: int, tortoise: int):
-    if hare - tortoise == 1:
+    if hare == tortoise:
         return 0
+    if ((hare - tortoise) == 1) or (hare == 1 and tortoise == track_size):
+        return 1
     if hare > tortoise:
         return track_size - hare + tortoise
     else:
