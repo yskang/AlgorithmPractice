@@ -14,20 +14,17 @@ read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 dururuduru = ['r', 'r', 'd', 'r']
 
-def dfs(m: list, x: int, y: int, width: int, height: int, depth: int, ox: int, oy: int):
+def dfs(m: list, x: int, y: int, width: int, height: int, depth: int, ox: int, oy: int, cache: list):
+    if cache[y][x][depth] != -1:
+        return cache[y][x][depth]
     if depth == 4:
         return 1
     count = 0
     for dx, dy in directions:
         nx, ny = x+dx, y+dy
         if not(ox == nx and oy == ny) and 0 <= nx < width and 0 <= ny < height and m[ny][nx] == dururuduru[depth]:
-            count += dfs(m, nx, ny, width, height, depth+1, x, y)
-    return count
-
-
-def get_paths(m: list, x: int, y: int, width: int, height: int):
-    count = 0
-    count += dfs(m, x, y, width, height, 0, -1, -1)
+            count += dfs(m, nx, ny, width, height, depth+1, x, y, cache)
+    cache[y][x][depth] = count
     return count
 
 
@@ -50,9 +47,10 @@ def solution(r: int, c: int):
                 ds.append((x, y))
             s.rotate(-1)
 
+    cache = [[[-1,-1,-1,-1,-1] for _ in range(c)] for _ in range(r)]
     count = 0
     for x, y in ds:
-        count += dfs(m, x, y, c, r, 0, -1, -1)
+        count += dfs(m, x, y, c, r, 0, -1, -1, cache)
 
     return count
 
