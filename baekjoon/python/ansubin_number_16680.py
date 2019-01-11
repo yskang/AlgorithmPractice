@@ -12,7 +12,7 @@ read_single_int = lambda: int(sys.stdin.readline().strip())
 max_num = pow(10, 18)
 
 def solution(n):
-    v, d = divmod(max_num, n)
+    _, d = divmod(max_num, n)
     x = max_num-d
     a = 1
     while True:
