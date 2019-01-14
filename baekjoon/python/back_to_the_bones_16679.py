@@ -20,7 +20,6 @@ def solution(n: int, k: int, ns: list):
     ns = sorted(ns, key=lambda x: x[0], reverse=True)
 
     ans_map = {}
-    temp_total = total
     sum_poped = 0
     poped = []
 
@@ -28,27 +27,49 @@ def solution(n: int, k: int, ns: list):
         value, pos = ns.pop()
         poped.append(pos)
         sum_poped += value
-        temp_total -= value
-        temp_total += 6
+        poped_len = len(poped)
 
-        if temp_total >= k:
-            t = len(poped)
-            remains = total - sum_poped
+        if total - sum_poped + 6*poped_len >= k:
 
-            p = 1
-            m, mm = divmod(k - remains, t)
-            for _ in range(t-mm):
-                p *= (7-m)
-            for _ in range(mm):
-                p *= (7-(m+1))
-
-            a = p*pow(6, n-t)
+            a = calc_probablity(poped_len, k - (total-sum_poped)) * pow(6, n-poped_len)
             b = [1 if i in poped else 0 for i in range(n)]
             ans_map[a] = b
-            print(a, b)
+
     max_p = max(ans_map.keys())
 
     return max_p, ans_map[max_p]
+
+
+def count_make(n: int, k: int, cache: list):
+    # if n < 0 or k < 0:
+    #     return 0
+    if cache[k][n] != -1:
+        return cache[k][n]
+
+    if n == 1:
+        if 1 <= k <= 6:
+            cache[k][n] = 1
+            return 1
+        else:
+            cache[k][n] = 0
+            return 0
+
+    s = 0
+    for i in range(1, 7):
+        s += count_make(n-1, k-i, cache)
+
+    cache[k][n] = s    
+    return s
+
+
+
+def calc_probablity(n: int, k: int):
+    cache = [[-1 for _ in range(n+1)] for _ in range(k*6+1)]
+    s = 0
+    for i in range(k, 6*n+1):
+        t = count_make(n, i, cache)
+        s += t
+    return s
 
 
 def main():
@@ -59,7 +80,6 @@ def main():
         p, dices = solution(n, k, ns)
         print(p)
         print(' '.join(map(str, dices)))
-
 
 if __name__ == '__main__':
     main()
