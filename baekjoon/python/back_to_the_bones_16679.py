@@ -68,7 +68,7 @@ def calc_probablity(n: int, k: int, cache: list):
 
 
 def main():
-                                  t = read_single_int()
+    t = read_single_int()
     inputs = []
     max_n, max_k = 0, 0
     for _ in range(t):
