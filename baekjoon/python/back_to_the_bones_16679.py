@@ -2,6 +2,7 @@
 # Link: https://www.acmicpc.net/problem/16679
 
 import sys
+import copy
 
 
 sys.setrecursionlimit(10 ** 6)
@@ -11,7 +12,7 @@ read_single_int = lambda: int(sys.stdin.readline().strip())
 read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
-def solution(n: int, k: int, ns: list):
+def solution(n: int, k: int, ns: list, cache: list):
     total = sum(ns)
     if total >= k:
         return pow(6, n), [0 for _ in range(n)]
@@ -30,19 +31,15 @@ def solution(n: int, k: int, ns: list):
         poped_len = len(poped)
 
         if total - sum_poped + 6*poped_len >= k:
-
-            a = calc_probablity(poped_len, k - (total-sum_poped)) * pow(6, n-poped_len)
-            b = [1 if i in poped else 0 for i in range(n)]
-            ans_map[a] = b
+            a = calc_probablity(poped_len, k - (total-sum_poped) , cache) * pow(6, n-poped_len)
+            ans_map[a] = copy.deepcopy(poped)
 
     max_p = max(ans_map.keys())
 
-    return max_p, ans_map[max_p]
+    return max_p, [1 if i in ans_map[max_p] else 0 for i in range(n)]
 
 
 def count_make(n: int, k: int, cache: list):
-    # if n < 0 or k < 0:
-    #     return 0
     if cache[k][n] != -1:
         return cache[k][n]
 
@@ -62,9 +59,7 @@ def count_make(n: int, k: int, cache: list):
     return s
 
 
-
-def calc_probablity(n: int, k: int):
-    cache = [[-1 for _ in range(n+1)] for _ in range(k*6+1)]
+def calc_probablity(n: int, k: int, cache: list):
     s = 0
     for i in range(k, 6*n+1):
         t = count_make(n, i, cache)
@@ -73,11 +68,18 @@ def calc_probablity(n: int, k: int):
 
 
 def main():
-    t = read_single_int()
+                                  t = read_single_int()
+    inputs = []
+    max_n, max_k = 0, 0
     for _ in range(t):
         n, k = read_list_int()
         ns = read_list_int()
-        p, dices = solution(n, k, ns)
+        inputs.append([n, k, ns])
+        max_n = max(max_n, n)
+        max_k = max(max_k, k)
+    for n, k, ns in inputs:
+        cache = [[-1 for _ in range(max_n+1)] for _ in range(max_k*6+1)]
+        p, dices = solution(n, k, ns, cache)
         print(p)
         print(' '.join(map(str, dices)))
 
