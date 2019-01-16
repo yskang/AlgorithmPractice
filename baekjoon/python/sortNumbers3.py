@@ -1,15 +1,22 @@
-# Sort Numbers - 3
-# https://www.acmicpc.net/problem/10989
+# Title: 수 정렬하기 3
+# Link: https://www.acmicpc.net/problem/10989
 
 import sys
- 
-rl = lambda:sys.stdin.readline()
- 
-nums = [(x, 0) for x in range(10001)]
-numOfNums = int(rl())
- 
-for i in range(1, numOfNums + 1):
-    index = int(rl())
-    nums[index] = (index, nums[index][1] + 1)
- 
-print('\n'.join(['\n'.join([str(index) for x in range(value)]) for (index, value) in nums if value != 0]))
+
+
+read_single_int = lambda: int(sys.stdin.readline().strip())
+
+
+def main():
+    sorted_ns = [0 for _ in range(10001)]
+    n = read_single_int()
+    for _ in range(n):
+        sorted_ns[read_single_int()] += 1
+
+    for i, n in enumerate(sorted_ns):
+        if n > 0:
+            print((str(i) + '\n') * n, end='')
+
+
+if __name__ == '__main__':
+    main()
