@@ -13,22 +13,22 @@ read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 INF = 9999999999999
 
 
-def get_count(k: int, coins: list, cash: list):
+def get_count(k: int, coins: list, cache: list):
     if k == 0:
         return 0
-    if cash[k] != -1:
-        return cash[k]
+    if cache[k] != -1:
+        return cache[k]
     ret = INF
     for i in range(len(coins)):
         if k - coins[i] >= 0:
-            ret = min(ret, 1 + get_count(k-coins[i], coins, cash))
-    cash[k] = ret
+            ret = min(ret, 1 + get_count(k-coins[i], coins, cache))
+    cache[k] = ret
     return ret
 
 
 def solution(k: int, coins: set):
-    cach = [-1 for _ in range(k+1)]
-    ans = get_count(k, list(coins), cach)
+    cache = [-1 for _ in range(k+1)]
+    ans = get_count(k, list(coins), cache)
     return -1 if ans == INF else ans
 
 
