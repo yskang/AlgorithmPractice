@@ -7,3 +7,4 @@ venv
 *.out
 a.out
 a.out.dSYM/
+/venv
