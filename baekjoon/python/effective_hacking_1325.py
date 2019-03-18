@@ -2,6 +2,7 @@
 # Link: https://www.acmicpc.net/problem/1325
 
 import sys
+import copy
 from collections import defaultdict
 
 sys.setrecursionlimit(10 ** 6)
@@ -38,26 +39,28 @@ def dfs_r(n: int, visited: list, scc: list):
 
 
 def maximum_node(N: int):
-    candis = [True for _ in range(N+1)]
     map_table = [[] for _ in range(N+1)]
     visited = [False for _ in range(N+1)]
+    candis = [True for _ in range(N+1)]
+    t_visited = copy.deepcopy(visited)
 
+    t_visited[0] = True
     for node in range(1, N+1):
-        dfs(node, visited)
+        dfs(node, t_visited)
+        if all(t_visited):
+            break
 
-    visited = [False for _ in range(N+1)]
+    t_visited = copy.deepcopy(visited)
     for node in reversed(stack):
         temp = []
-        dfs_r(node, visited, temp)
+        dfs_r(node, t_visited, temp)
         sorted_temp = sorted(temp)
 
         if temp:
-            # print(temp, end= ', ')
             for t in temp:
                 map_table[t] = sorted_temp
             for t in sorted_temp[1:]:
                 candis[t] = False
-    # print()
 
     for a, b in inputs:
         a = map_table[a][0]
@@ -66,23 +69,14 @@ def maximum_node(N: int):
             mod_graph[b].add(a)
             candis[a] = False
 
-    graph = []
-    r_graph = []
-    # inputs = []
-
-    # print(mod_graph)
-    # print(map_table)
-    # print(candis)
-
     child_nums = defaultdict(lambda: [])
     for node, trusted in enumerate(candis[1:], 1):
         if trusted:
-            visited = [False for _ in range(N+1)]
+            t_visited = copy.deepcopy(visited)
             count = [0]
-            get_num_child(node, map_table, visited, count)
+            get_num_child(node, map_table, t_visited, count)
             child_nums[count[0]].append(node)
 
-    # print(child_nums)
     max_nodes = set(child_nums[sorted(child_nums.keys(), reverse=True)[0]])
     results = set()
     for node in max_nodes:
@@ -111,6 +105,7 @@ if __name__ == '__main__':
     mod_graph = [set() for _ in range(N+1)]
     stack = []
     inputs = []
+
     for _ in range(M):
         a, b = read_list_int()
         graph[b].add(a)

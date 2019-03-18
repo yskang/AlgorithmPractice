@@ -118,8 +118,6 @@ def maximum_node(N: int):
             mod_graph[b].add(a)
             candis[a] = False
 
-    graph = []
-    r_graph = []
     # inputs = []
 
     # print(mod_graph)
