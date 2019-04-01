@@ -21,8 +21,9 @@ def bfs(g: defaultdict, level_of: list):
         level = level_of[node]
 
         for child in g[node].keys():
-            level_of[child] = level+1
-            queue.append(child)
+            if level_of[child] == -1 and g[node][child] > 0:
+                level_of[child] = level+1
+                queue.append(child)
 
 
 def dfs(g: defaultdict, level_of: list, node: int, visited: defaultdict, paths: list, last_node: int, tot: list):
@@ -44,7 +45,7 @@ def dfs(g: defaultdict, level_of: list, node: int, visited: defaultdict, paths: 
                 min_capa = g[s][node]
             s = node
         tot[0] += min_capa
-        print('cal for {}, min is: {}'.format(paths, min_capa))
+        # print('cal for {}, min is: {}'.format(paths, min_capa))
         s = 0
         for node in paths[1:]:
             g[s][node] -= min_capa
@@ -63,21 +64,23 @@ def log_info(g: defaultdict, N: int, M: int, level: list):
 
 
 def solution(N: int, M: int, g: defaultdict):
-    level_of = [0 for _ in range(M+N+2)]
     # print(N, M)
-
-    # 1. make level graph
-    bfs(g, level_of)
-    log_info(g, N, M, level_of)
-    
-    # 2. do flow the current
-    visited = defaultdict(lambda: False)
-    paths = []
     s = [0]
-    dfs(g, level_of, 0, visited, paths, N+M+1, s)
-    log_info(g, N, M, level_of)
-    print(s[0])
-
+    while True:
+        # 1. make level graph
+        level_of = [-1 for _ in range(M+N+2)]
+        level_of[0] = 0
+        bfs(g, level_of)
+        # log_info(g, N, M, level_of)
+        if level_of[M+N+1] == -1:
+            break
+        
+        # 2. do flow the current
+        visited = defaultdict(lambda: False)
+        paths = []
+        dfs(g, level_of, 0, visited, paths, N+M+1, s)
+        # log_info(g, N, M, level_of)
+    return s[0]
 
 def main():
     # g[a][b] = capacitance : capacitance of edge from a to b
@@ -96,8 +99,8 @@ def main():
 
     for i in range(N):
         for b in read_list_int()[1:]:
-            g[i+N+1][b] = 1
-            g[b][i+N+1] = 0
+            g[i+M+1][b] = 1
+            g[b][i+M+1] = 0
 
     print(solution(N, M, g))
 
