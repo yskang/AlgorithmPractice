@@ -8,7 +8,7 @@ from collections import deque
 sys.setrecursionlimit(10 ** 6)
 
 
-read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
+def read_list_int(): return list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
 def bfs(g: defaultdict, level_of: list):
@@ -35,7 +35,7 @@ def dfs(g: defaultdict, level_of: list, node: int, visited: defaultdict, paths: 
     for child in g[node].keys():
         if level_of[child] - level_of[node] == 1 and g[node][child] > 0:
             dfs(g, level_of, child, visited, paths, last_node, tot)
-    
+
     if node == last_node:
         visited[node] = False
         min_capa = pow(10, 10)
@@ -60,7 +60,7 @@ def log_info(g: defaultdict, N: int, M: int, level: list):
     for cow in range(M+1, M+N+1):
         print('{}: {}'.format(cow, list(g[cow].keys())))
     print('levels:')
-    print(list(map(lambda i: '{}: {}'.format(i[0], i[1]) ,enumerate(level))))
+    print(list(map(lambda i: '{}: {}'.format(i[0], i[1]), enumerate(level))))
 
 
 def solution(N: int, M: int, g: defaultdict):
@@ -74,7 +74,7 @@ def solution(N: int, M: int, g: defaultdict):
         # log_info(g, N, M, level_of)
         if level_of[M+N+1] == -1:
             break
-        
+
         # 2. do flow the current
         visited = defaultdict(lambda: False)
         paths = []
@@ -82,25 +82,35 @@ def solution(N: int, M: int, g: defaultdict):
         # log_info(g, N, M, level_of)
     return s[0]
 
+
+def make_graph(num_from: int, num_to: int):
+    g = defaultdict(lambda: defaultdict(lambda: 0))
+    for i in range(num_to+1, num_from+num_to+1):
+        g[0][i] = 1
+        g[i][0] = 0
+
+    for i in range(num_to):
+        g[i+1][num_from+num_to+1] = 1
+        g[num_from+num_to+1][i+1] = 0
+
+    return g
+
+
+def add_connections(g: defaultdict, node_from: int, node_to: int):
+    g[node_from][node_to] = 1
+    g[node_to][node_from] = 0
+
+
 def main():
     # g[a][b] = capacitance : capacitance of edge from a to b
     # g[a] = dictionary of childs
     # level_of = [leve]
-
     N, M = read_list_int()
-    g = defaultdict(lambda: defaultdict(lambda: 0))
-    for i in range(M+1, N+M+1):
-        g[0][i] = 1
-        g[i][0] = 0
-
-    for i in range(M):
-        g[i+1][N+M+1] = 1
-        g[N+M+1][i+1] = 0
+    g = make_graph(N, M)
 
     for i in range(N):
         for b in read_list_int()[1:]:
-            g[i+M+1][b] = 1
-            g[b][i+M+1] = 0
+            add_connections(g, i+M+1, b)
 
     print(solution(N, M, g))
 
