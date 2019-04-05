@@ -22,7 +22,7 @@ def find(x: int, parent: defaultdict):
         parent[x] = p
         return p
 
-def union(x: int, y: tuple, parent: defaultdict):
+def union(x: int, y: int, parent: defaultdict):
     x = find(x, parent)
     y = find(y, parent)
     if x != y:
@@ -30,21 +30,47 @@ def union(x: int, y: tuple, parent: defaultdict):
 
 
 def solution_union_find(rows: int, columns: int, world_map: list):
-    parent = defaultdict(lambda: None)
-    for y in range(rows):
-        for x in range(columns):
-            parent[x+y*CONST] = x+y*CONST
+    # parent = defaultdict(lambda: None)
+    parent = [i for i in range(rows * columns)]
 
     for y in range(rows):
         for x in range(columns):
             value = world_map[y][x]
-            union(x+y*CONST, x+offset[value][0] + (y+offset[value][1]) * CONST, parent)
+            union(x+y*columns, x+offset[value][0] + (y+offset[value][1]) * columns, parent)
 
-    ps = set()
+    # ps = set()
+    # for key in parent:
+    #     ps.add(find(key, parent))
+    # return len(ps)
+    count = 0
+    for key in range(len(parent)):
+        if key == parent[key]:
+            count += 1
+    return count
+
+
+def solution_union_find_str(rows: int, columns: int, world_map: list):
+    parent = defaultdict(lambda: None)
+    for y in range(rows):
+        for x in range(columns):
+            k = '{},{}'.format(x,y)
+            parent[k] = k
+
+    for y in range(rows):
+        for x in range(columns):
+            value = world_map[y][x]
+            union('{},{}'.format(x, y), '{},{}'.format(x+offset[value][0], (y+offset[value][1])), parent)
+
+    # ps = set()
+    # for key in parent:
+    #     ps.add(find(key, parent))
+    # return len(ps)
+
+    count = 0
     for key in parent:
-        ps.add(find(key, parent))
-    return len(ps)
-
+        if parent[key] == key:
+            count += 1
+    return count
 
 
 def dfs(t: tuple, world_map: list, visited: defaultdict, count: int):
