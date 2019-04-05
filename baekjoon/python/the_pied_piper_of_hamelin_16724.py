@@ -12,7 +12,9 @@ read_single_str = lambda: sys.stdin.readline().strip()
 
 offset = {'U': (0, -1), 'D': (0, 1), 'L': (-1, 0), 'R': (1, 0)}
 
-def find(x: tuple, parent: defaultdict):
+CONST = 10000
+
+def find(x: int, parent: defaultdict):
     if x == parent[x]:
         return x
     else:
@@ -20,7 +22,7 @@ def find(x: tuple, parent: defaultdict):
         parent[x] = p
         return p
 
-def union(x: tuple, y: tuple, parent: defaultdict):
+def union(x: int, y: tuple, parent: defaultdict):
     x = find(x, parent)
     y = find(y, parent)
     if x != y:
@@ -31,17 +33,17 @@ def solution_union_find(rows: int, columns: int, world_map: list):
     parent = defaultdict(lambda: None)
     for y in range(rows):
         for x in range(columns):
-            parent[(x, y)] = (x, y)
+            parent[x+y*CONST] = x+y*CONST
 
     for y in range(rows):
         for x in range(columns):
             value = world_map[y][x]
-            union((x, y), (x+offset[value][0], y+offset[value][1]), parent)
+            union(x+y*CONST, x+offset[value][0] + (y+offset[value][1]) * CONST, parent)
 
-    ps = []
+    ps = set()
     for key in parent:
-        ps.append(find(key, parent))
-    return len(set(ps))
+        ps.add(find(key, parent))
+    return len(ps)
 
 
 
@@ -72,7 +74,7 @@ def main():
     world_map = []
     for _ in range(rows):
         world_map.append(list(read_single_str()))
-    print(solution_dfs(rows, columns, world_map))
+    print(solution_union_find(rows, columns, world_map))
 
 
 if __name__ == '__main__':
