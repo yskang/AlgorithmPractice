@@ -15,7 +15,7 @@ def solution(a: int, n: int, k: int):
     window_size = a+1
     a_list = [1] * (a+1) 
     temp = [1] * (a+1)
-    for m in range(n-1):
+    for _ in range(n-1):
         temp = [0 for i in range(window_size)]
         temp[0] = a_list[0]
 
