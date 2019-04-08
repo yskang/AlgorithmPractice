@@ -15,7 +15,6 @@ read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 INF = pow(10, 10)
 NIL = -1
 
-
 def bfs(us: list, pair_u: defaultdict, pair_v: defaultdict, dist: defaultdict, adj: list):
     queue = deque()
     for u in us:
@@ -53,21 +52,25 @@ def hopcroft_karp(us: list, adj: list):
     pair_u = defaultdict(lambda: NIL)
     pair_v = defaultdict(lambda: NIL)
     matching = 0
-    matched = []
     while bfs(us, pair_u, pair_v, dist, adj):
         for u in us:
             if pair_u[u] == NIL:
                 if dfs(u, adj, dist, pair_v, pair_u):
                     matching += 1
-                    matched.append(u)
-    return matching, matched
+    return matching
+
 
 
 def solution(times: list, adj: list, num_parts: int):
-    for i in range(100):
-        count, matches = hopcroft_karp(times[:i+1], adj[:i+1])
+    for i in range(101):
+        temp_adj = defaultdict(lambda: [])
+        for t in range(i+1):
+            temp_adj[t] = adj[t]
+        for p in range(201, 301):
+            temp_adj[p] = list(filter(lambda t: t<=i, adj[p]))
+        count = hopcroft_karp(times[:i+1], temp_adj)
         if count == num_parts:
-            return max(matches)+1
+            return i+1
     return -1
 
 
@@ -76,20 +79,21 @@ def main():
     for _ in range(t):
         n, m = read_list_int()
         times = [i for i in range(0, 101)]
-        adj = [set() for _ in range(101)]
+        adj = [set() for _ in range(301)]
         for _ in range(m):
             seed = read_list_int()
             t1 = seed[0]
             t2 = seed[1] 
             a = seed[2]
             qs = seed[3:]
-            for time in range(t1, t2+1):
+            for time in range(t1, t2):
                 for q in qs:
-                    adj[time].add(q+100)
+                    adj[time].add(q+200)
+                    # adj[q+200].add(time)
         for i, child in enumerate(adj):
             adj[i] = sorted(list(child))
+        
         print(solution(times, adj, n))
-
 
 if __name__ == '__main__':
     main()
