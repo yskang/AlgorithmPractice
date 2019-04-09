@@ -84,7 +84,6 @@ def main():
             seed = read_list_int()
             t1 = seed[0]
             t2 = seed[1] 
-            a = seed[2]
             qs = seed[3:]
             for time in range(t1, t2):
                 for q in qs:
