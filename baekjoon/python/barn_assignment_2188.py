@@ -1,6 +1,10 @@
 # Title: 축사 배정
 # Link: https://www.acmicpc.net/problem/2188
 
+'''
+Dinic Algorithm
+'''
+
 import sys
 from collections import defaultdict
 from collections import deque
@@ -49,7 +53,7 @@ def dfs(g: defaultdict, level_of: list, node: int, visited: defaultdict, paths: 
         s = 0
         for node in paths[1:]:
             g[s][node] -= min_capa
-            g[node][s] = min_capa
+            g[node][s] += min_capa
             s = node
 
     paths.pop()
