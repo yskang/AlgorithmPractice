@@ -10,7 +10,6 @@ sys.setrecursionlimit(10 ** 6)
 read_single_int = lambda: int(sys.stdin.readline().strip())
 read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
-
 class Point:
     def __init__(self, x: int, y: int):
         self.x = x
@@ -88,6 +87,9 @@ def print_dots(dots: list, title: str):
 
 
 def convex_hull(dots: list):
+    if len(dots) == 2:
+        return dots
+
     min_dot, dots = get_lowest_dot(dots)
     dots = deque([min_dot] + sort_dots(dots, min_dot) + [min_dot])
 

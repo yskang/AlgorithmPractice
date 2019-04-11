@@ -1,14 +1,16 @@
-# Title: 볼록 껍질
-# Link: https://www.acmicpc.net/problem/1708
+# Title: 로버트 후드
+# Link: https://www.acmicpc.net/problem/9240
 
 import sys
+import math
 from collections import deque
 
 sys.setrecursionlimit(10 ** 6)
 
 
-read_single_int = lambda: int(sys.stdin.readline().strip())
 read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
+read_single_int = lambda: int(sys.stdin.readline().strip())
+
 
 class Point:
     def __init__(self, x: int, y: int):
@@ -84,12 +86,11 @@ def print_dots(dots: list, title: str):
     print(title)
     for dot in dots:
         print('{} '.format(dot.__str__()), end=' ')    
-
+    print('\n--------')
 
 def convex_hull(dots: list):
     if len(dots) == 2:
         return dots
-
     min_dot, dots = get_lowest_dot(dots)
     dots = deque([min_dot] + sort_dots(dots, min_dot) + [min_dot])
 
@@ -116,17 +117,26 @@ def convex_hull(dots: list):
     return list(stack)[:-1]
 
 
-def solution(n: int, dots: list):
-    return len(convex_hull(dots))    
+def distance_square(a: Point, b: Point):
+    return (a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)
 
+
+def solution(arrows: list):
+    outers = convex_hull(arrows)
+    dists = []
+    for i in range(len(outers)):
+        for j in range(len(outers)):
+            dists.append(distance_square(outers[i], outers[j]))
+    return math.sqrt(max(dists))
+    
 
 def main():
     n = read_single_int()
-    dots = []
+    arrows = []
     for _ in range(n):
         x, y = read_list_int()
-        dots.append(Point(x, y))
-    print(solution(n, dots))
+        arrows.append(Point(x, y))
+    print(solution(arrows))
 
 
 if __name__ == '__main__':
