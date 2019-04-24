@@ -31,3 +31,32 @@ def ccw(a, b, c):
 
 
 print(sort_dots([1,12,3,14,15,6,7], 0))
+
+#%%
+from dateutil import parser
+import datetime
+d = parser.parse('2019-04-16-14:01:45.2454')
+# d = datetime.datetime(2018, 8, 30, 1, 26, 55, 731039)
+print(d.strftime('%Y-%m-%d %H:%M:%S.%f'))
+
+
+#%%
+from dateutil import parser
+import datetime
+d1 = parser.parse('2019-04-16-14:01:45.2454')
+d2 = parser.parse('2019-04-16-14:01:46.2455')
+
+td =  d1 -d2
+
+print(td.total_seconds())
+
+#%%
+import datetime
+a = '2019-04-16-14-01-45-245433'.split('-')
+d = datetime.datetime(*map(int, a))
+print(d.strftime('%Y-%m-%d %H:%M:%S.%f'))
+
+#%%
+print('hello world')
+
+#%%
