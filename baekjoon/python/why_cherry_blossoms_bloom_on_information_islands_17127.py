@@ -25,14 +25,29 @@ def get_rest_sum_of_list(ns: list, depth: int):
     return rests
 
 
-def solution(n: int, ns: list):
+def solution_recursive(n: int, ns: list):
     return max(get_rest_sum_of_list(ns, 0))
+
+
+def calc(ns: list, a: int, b: int, c: int, d: int):
+    return reduce(mul, ns[:a]) + reduce(mul, ns[a:a+b]) + reduce(mul, ns[a+b:a+b+c]) + reduce(mul, ns[a+b+c:])
+
+
+def solution_loop(n: int, ns: list):
+    max_p = 0
+    for a in range(1, n):
+        for b in range(1, n):
+            for c in range(1, n):
+                d = n - a - b - c
+                if d >= 1:
+                    max_p = max(calc(ns, a, b, c, d), max_p)
+    return max_p
 
 
 def main():
     n = read_single_int()
     ns = read_list_int()
-    print(solution(n, ns))
+    print(solution_loop(n, ns))
 
 
 if __name__ == '__main__':
