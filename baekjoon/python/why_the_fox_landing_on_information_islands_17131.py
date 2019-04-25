@@ -47,22 +47,45 @@ class Segment_Tree:
             self.update(index, diff, node*2+1, (start+end)//2+1, end)
 
 
-def solution(n: int, stars: defaultdict):
-    segment = Segment_Tree([0 for _ in range(400001)])
+class Fenwick:
+    def __init__(self, array):
+        self.array = array
+        self.tree = [0 for _ in range(len(self.array)+1)]
+        for i, a in enumerate(array):
+            self.update(i, a)
+    
+    def update(self, i: int, diff: int):
+        i += 1
+        while i < len(self.tree):
+            self.tree[i] += diff
+            i += (i & -i)
+    
+    def _sum(self, i: int):
+        ans = 0
+        while i > 0:
+            ans += self.tree[i]
+            i -= (i & -i)
+        return ans
+    
+    def sum(self, start: int, end: int):
+        return self._sum(end+1) - self._sum(start)
+
+
+def solution(n: int, stars: defaultdict, Tree):
+    tree = Tree([0 for _ in range(400001)])
     ys = stars.keys()
     ys = sorted(ys, reverse=True)
     faces = 0
 
     for y in ys:
         for x in stars[y]:
-            left = segment.sum(0, x-1)
-            right = segment.sum(x+1, 400000)
+            left = tree.sum(0, x-1)
+            right = tree.sum(x+1, 400000)
             faces = (faces + ((left%MOD) * (right%MOD)))%MOD
         for x in stars[y]:
-            segment.update(x, 1)
+            tree.update(x, 1)
 
     return faces
-        
 
 
 def main():
@@ -73,7 +96,7 @@ def main():
         x += 200000
         y += 200000
         starts[y].append(x)
-    print(solution(n, starts))
+    print(solution(n, starts, Fenwick))
 
 
 if __name__ == '__main__':
