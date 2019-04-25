@@ -48,6 +48,11 @@ class Segment_Tree:
             start index of the part [left, left+1, left+2 .. right-2, right-1, right]
         right : int
             end index of the part [left, left+1, left+2 .. right-2, right-1, right]
+        
+        Returns
+        -------
+        int
+            a sum of the part of the array. sum([left, left+1, left+2 .. right-2, right-1, right])
         '''
         if end == -1:
             end = self.last_index
