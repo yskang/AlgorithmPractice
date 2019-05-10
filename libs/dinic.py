@@ -7,10 +7,9 @@ sys.setrecursionlimit(10 ** 6)
 
 read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
-
 class Dinic:
-    def __init__(self, g: defaultdict, source: int, sink: int):
-        self.g = g
+    def __init__(self, source: int, sink: int):
+        self.g = defaultdict(lambda: defaultdict(lambda: 0))
         self.source = source
         self.sink = sink
         self.total_flow = 0
@@ -55,6 +54,9 @@ class Dinic:
 
         paths.pop()
 
+    def get_graph(self):
+        return self.g
+
     def get_maximum_flow(self):
         while True:
             level_of = [-1 for _ in range(len(self.g)+5)]
@@ -68,15 +70,14 @@ class Dinic:
         return self.total_flow
 
 
-
-def solution(g: defaultdict, source: int, sink: int):
-    dinic = Dinic(g, source, sink)
+def solution(dinic: Dinic):
     return dinic.get_maximum_flow()
 
 
 def main():
     n, p = read_list_int()
-    g = defaultdict(lambda: defaultdict(lambda: 0))
+    dinic = Dinic(1, 2)
+    g = dinic.get_graph()
     for _ in range(p):
         a, b = read_list_int()
         if a != 1 and a != 2:
@@ -101,7 +102,7 @@ def main():
             g[b+n][a] = 1
             g[a][b+n] = 0
 
-    print(solution(g, 1, 2))
+    print(solution(dinic))
 
 
 if __name__ == '__main__':
