@@ -1,7 +1,5 @@
 import random
-
-from etc.decorator import my_timer
-
+import datetime
 
 def merge_sort_stephen(nums):
     half = int(len(nums) / 2)
@@ -54,12 +52,14 @@ def random_gen_list(count):
     return nums
 
 
-@my_timer
 def sort(nums, merge_function):
-    return merge_function(nums)
-
+    start_time = datetime.datetime.now()
+    res = merge_function(nums)
+    end_time = datetime.datetime.now()
+    diff_time = end_time - start_time
+    print(diff_time)
 
 if __name__ == "__main__":
-    nums = random_gen_list(10000)
+    nums = random_gen_list(1000000)
     sort(nums, merge_sort_stephen)
     sort(nums, merge_sort_rosetta)
