@@ -47,14 +47,14 @@ def merge(left, right):
 
 def random_gen_list(count):
     nums = []
-    for i in range(count):
+    for _ in range(count):
         nums.append(random.randrange(-10000, 10000))
     return nums
 
 
 def sort(nums, merge_function):
     start_time = datetime.datetime.now()
-    res = merge_function(nums)
+    _ = merge_function(nums)
     end_time = datetime.datetime.now()
     diff_time = end_time - start_time
     print(diff_time)
