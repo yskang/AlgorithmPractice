@@ -1,14 +1,12 @@
-# Title: 영과 일의 학회방
-# Link: https://www.acmicpc.net/problem/16726
-
 import sys
 from collections import defaultdict
 from collections import deque
 
 sys.setrecursionlimit(10 ** 6)
 
+
 read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
-read_single_str = lambda: sys.stdin.readline().strip()
+
 
 INF = pow(10, 10)
 NIL = -1
@@ -62,39 +60,20 @@ class HopcroftKarp:
         return matching
 
 
-def solution(rows: int, columns: int, room: list):
-    offsets = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-    evens = []
-    odds = []
-    adj = [[] for _ in range(rows*columns)]
-    total = 0
-    for r in range(rows):
-        for c in range(columns):
-            if room[r][c] != 'X':
-                total += 1
-                number = c + columns*r
-                if (r+c) % 2 == 0:
-                    evens.append(number)
-                else:
-                    odds.append(number)
-                
-                for off_x, off_y in offsets:
-                    xx, yy = c + off_x, r + off_y
-                    if 0 <= xx < columns and 0 <= yy < rows and room[yy][xx] != 'X':
-                        adj[number].append(xx + columns*yy)
-
-    hopcroft_karp = HopcroftKarp(evens, adj)
-    max_match = hopcroft_karp.match()
-    return total - max_match
+def solution(ns: list, adj: defaultdict):
+    hopcroft_karp = HopcroftKarp(ns, adj)
+    return hopcroft_karp.match()
 
 
 def main():
     n, m = read_list_int()
-    room = []
-    for _ in range(n):
-        room.append(list(read_single_str()))
+    ns = [i+m+1 for i in range(n)]
+    adj = defaultdict(lambda: [])
+    
+    for i in range(n):
+        adj[i+1+m] = read_list_int()[1:]
 
-    print(solution(n, m, room))
+    print(solution(ns, adj))
 
 
 if __name__ == '__main__':

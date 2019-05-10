@@ -15,56 +15,61 @@ read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 INF = pow(10, 10)
 NIL = -1
 
-def bfs(us: list, pair_u: defaultdict, pair_v: defaultdict, dist: defaultdict, adj: list):
-    queue = deque()
-    for u in us:
-        if pair_u[u] == NIL:
-            dist[u] = 0
-            queue.append(u)
-        else:
-            dist[u] = INF
-    dist[NIL] = INF
-    while queue:
-        u = queue.popleft()
-        if dist[u] < dist[NIL]:
-            for v in adj[u]:
-                if dist[pair_v[v]] == INF:
-                    dist[pair_v[v]] = dist[u] + 1
-                    queue.append(pair_v[v])
-    return dist[NIL] != INF
 
+class HopcroftKarp:
+    def __init__(self, us: list, adj: list):
+        self.us = us
+        self.adj = adj
 
-def dfs(u: int, adj: list, dist: defaultdict, pair_v: defaultdict, pair_u: defaultdict):
-    if u != NIL:
-        for v in adj[u]:
-            if dist[pair_v[v]] == dist[u]+1:
-                if dfs(pair_v[v], adj, dist, pair_v, pair_u):
-                    pair_v[v] = u
-                    pair_u[u] = v
-                    return True
-        dist[u] = INF
-        return False
-    return True
-
-
-def hopcroft_karp(us: list, adj: list):
-    dist = defaultdict(lambda: NIL)
-    pair_u = defaultdict(lambda: NIL)
-    pair_v = defaultdict(lambda: NIL)
-    matching = 0
-    while bfs(us, pair_u, pair_v, dist, adj):
-        for u in us:
+    def bfs(self, pair_u: defaultdict, pair_v: defaultdict, dist: defaultdict):
+        queue = deque()
+        for u in self.us:
             if pair_u[u] == NIL:
-                if dfs(u, adj, dist, pair_v, pair_u):
-                    matching += 1
-    return matching
+                dist[u] = 0
+                queue.append(u)
+            else:
+                dist[u] = INF
+        dist[NIL] = INF
+        while queue:
+            u = queue.popleft()
+            if dist[u] < dist[NIL]:
+                for v in self.adj[u]:
+                    if dist[pair_v[v]] == INF:
+                        dist[pair_v[v]] = dist[u] + 1
+                        queue.append(pair_v[v])
+        return dist[NIL] != INF
+
+    def dfs(self, u: int, dist: defaultdict, pair_v: defaultdict, pair_u: defaultdict):
+        if u != NIL:
+            for v in self.adj[u]:
+                if dist[pair_v[v]] == dist[u]+1:
+                    if self.dfs(pair_v[v], dist, pair_v, pair_u):
+                        pair_v[v] = u
+                        pair_u[u] = v
+                        return True
+            dist[u] = INF
+            return False
+        return True
+
+    def match(self):
+        dist = defaultdict(lambda: NIL)
+        pair_u = defaultdict(lambda: NIL)
+        pair_v = defaultdict(lambda: NIL)
+        matching = 0
+        while self.bfs(pair_u, pair_v, dist):
+            for u in self.us:
+                if pair_u[u] == NIL:
+                    if self.dfs(u, dist, pair_v, pair_u):
+                        matching += 1
+        return matching
 
 
 def solution(n: int, m: int, adj: list):
     # us: students
     # vs: books
     us = [i for i in range(n+1, n+1+m+1)]
-    return hopcroft_karp(us, adj)
+    hopcroft_karp = HopcroftKarp(us, adj)
+    return hopcroft_karp.match()
 
 
 def main():
