@@ -1,5 +1,4 @@
 # Title: 볼록 껍질
-# Link: https://www.acmicpc.net/problem/1708
 
 import sys
 from collections import deque
