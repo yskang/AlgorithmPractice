@@ -16,16 +16,22 @@ class Point:
         self.y = y
     
     def __str__(self):
-        return '[{}, {}]'.format(self.x, self.y)
+        return '{} {}'.format(self.x, self.y)
 
     def draw(self, plt):
         plt.scatter(self.x, self.y, 10)
+    
+    def __eq__(self, other):
+        if self.x == other.x and self.y == other.y:
+            return True
+        return False
+
 
 class ConvelHull:
     def __init__(self, dots: list):
         self.dots = dots
         self.lowest_dot = None
-
+        self.highest_dot = None
 
     def ccw(self, a: Point, b: Point, c: Point):
         """Counter Clock Wise.
@@ -39,10 +45,11 @@ class ConvelHull:
         """
         return (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y)
 
-
-    def get_lowest_dot(self):
+    def get_low_and_high_dot(self):
         min_y = 999999999
+        max_y = -99999999999
         min_y_dot = None
+        max_y_dot = None
         min_y_idx = -1
         for i, dot in enumerate(self.dots):
             if dot.y < min_y:
@@ -52,9 +59,16 @@ class ConvelHull:
             elif dot.y == min_y:
                 if dot.x < min_y_dot.x:
                     min_y_dot = dot
+                    min_y_idx = i
+            if dot.y > max_y:
+                max_y = dot.y
+                max_y_dot = dot
+            elif dot.y == max_y:
+                if dot.x < max_y_dot.x:
+                    max_y_dot = dot
         self.lowest_dot = min_y_dot
+        self.highest_dot = max_y_dot
         self.dots = self.dots[:min_y_idx]+self.dots[min_y_idx+1:]
-
 
     def sort_dots(self, dots: list):
         if len(dots) <= 1:
@@ -90,12 +104,11 @@ class ConvelHull:
         for dot in self.dots:
             print('{} '.format(dot.__str__()), end=' ')    
 
-
     def get_hull(self):
         if len(self.dots) == 2:
             return self.dots
 
-        self.get_lowest_dot()
+        self.get_low_and_high_dot()
         self.dots = deque([self.lowest_dot] + self.sort_dots(self.dots) + [self.lowest_dot])
 
         stack = deque()
@@ -117,6 +130,9 @@ class ConvelHull:
                     stack.append(third)
                 else:
                     self.dots.appendleft(third)
+
+        if len(stack) == 2:
+            return [stack[0], self.highest_dot]
 
         return list(stack)[:-1]
 
