@@ -31,6 +31,7 @@ class ConvelHull:
         self.dots = dots
         self.lowest_dot = None
         self.highest_dot = None
+        self.convel_hull = None
 
     def ccw(self, a: Point, b: Point, c: Point):
         """Counter Clock Wise.
@@ -131,9 +132,21 @@ class ConvelHull:
                     self.dots.appendleft(third)
 
         if len(stack) == 2:
+            self.convel_hull = [stack[0], self.highest_dot]
             return [stack[0], self.highest_dot]
 
+        self.convel_hull = list(stack)[:-1]
         return list(stack)[:-1]
+
+    def get_area(self):
+        first, second = 0, 0
+        self.convel_hull.append(self.convel_hull[0])
+        prev_dot = self.convel_hull[0]
+        for dot in self.convel_hull[1:]:
+            first += (prev_dot.x * dot.y)
+            second += (prev_dot.y * dot.x)
+            prev_dot = dot
+        return 0.5 * abs(first - second)
 
 
 def solution(n: int, dots: list):

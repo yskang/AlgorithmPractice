@@ -1,15 +1,14 @@
-# Title: 로버트 후드
-# Link: https://www.acmicpc.net/problem/9240
+# Title: Cows
+# Link: https://www.acmicpc.net/problem/6850
 
 import sys
-import math
 from collections import deque
 
 sys.setrecursionlimit(10 ** 6)
 
 
-read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 read_single_int = lambda: int(sys.stdin.readline().strip())
+read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
 class Point:
@@ -152,28 +151,19 @@ class ConvelHull:
         return 0.5 * abs(first - second)
 
 
-def distance_square(a: Point, b: Point):
-    return (a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)
+def solution(n: int, dots: list):
+    convex_hull = ConvelHull(dots)
+    convex_hull.get_hull()
+    area = convex_hull.get_area()
+    return int(area // 50)
 
-
-def solution(arrows: list):
-    hull = ConvelHull(arrows)
-    outers = hull.get_hull()
-
-    dists = []
-    for i in range(len(outers)):
-        for j in range(len(outers)):
-            dists.append(distance_square(outers[i], outers[j]))
-    return math.sqrt(max(dists))
-    
 
 def main():
+    dots = []
     n = read_single_int()
-    arrows = []
     for _ in range(n):
-        x, y = read_list_int()
-        arrows.append(Point(x, y))
-    print(solution(arrows))
+        dots.append(Point(*read_list_int()))
+    print(solution(n, dots))
 
 
 if __name__ == '__main__':
