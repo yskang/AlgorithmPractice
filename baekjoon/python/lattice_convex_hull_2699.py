@@ -1,4 +1,5 @@
-# Title: 볼록 껍질
+# Title: 격자점 컨벡스헐
+# Link: https://www.acmicpc.net/problem/2699
 
 import sys
 from collections import deque
@@ -8,6 +9,7 @@ sys.setrecursionlimit(10 ** 6)
 
 read_single_int = lambda: int(sys.stdin.readline().strip())
 read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
+
 
 class Point:
     def __init__(self, x: int, y: int):
@@ -136,18 +138,31 @@ class ConvelHull:
         return list(stack)[:-1]
 
 
-def solution(n: int, dots: list):
-    hull = ConvelHull(dots)
-    return len(hull.get_hull())
+def solution(dots: list):
+    points = []
+    for i in range(0, len(dots), 2):
+        points.append(Point(dots[i], dots[i+1]))
+
+    convex_hull = ConvelHull(points)
+    ans = []
+    hull = convex_hull.get_hull()
+    ans.append(len(hull))
+
+    hull = deque(hull)
+    while hull[-1] != convex_hull.highest_dot:
+        hull.rotate()
+    ans += reversed(hull)
+    return '\n'.join(map(str, ans))
 
 
 def main():
-    n = read_single_int()
-    dots = []
-    for _ in range(n):
-        x, y = read_list_int()
-        dots.append(Point(x, y))
-    print(solution(n, dots))
+    p = read_single_int()
+    for _ in range(p):
+        n = read_single_int()
+        dots = []
+        for _ in range(((n-1)//5)+1):
+            dots += read_list_int()
+        print(solution(dots))
 
 
 if __name__ == '__main__':

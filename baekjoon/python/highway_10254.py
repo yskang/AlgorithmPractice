@@ -127,7 +127,7 @@ def solution(cities: list):
     for i in range(len(outers)):
         for j in range(len(outers)):
             dists.append((distance_square(outers[i], outers[j]), i, j))
-    md, ma, mb = max(dists, key=lambda d: d[0])
+    _, ma, mb = max(dists, key=lambda d: d[0])
     return '{} {} {} {}'.format(outers[ma].x, outers[ma].y, outers[mb].x, outers[mb].y)
 
 
