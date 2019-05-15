@@ -1,4 +1,5 @@
-# Title: 볼록 껍질
+# Title: 감옥 건설
+# Link: https://www.acmicpc.net/problem/2254
 
 import sys
 from collections import deque
@@ -6,7 +7,6 @@ from collections import deque
 sys.setrecursionlimit(10 ** 6)
 
 
-read_single_int = lambda: int(sys.stdin.readline().strip())
 read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
@@ -169,18 +169,36 @@ class ConvelHull:
         return 0.5 * abs(first - second)
 
 
-def solution(n: int, dots: list):
-    hull = ConvelHull(dots)
-    return len(hull.get_hull())
+def solution(n: list, px: int, py: int, dots: list):
+    count = 0
+    prison = Point(px, py)
+    dots.append(prison)
+
+    while True:
+        convex_hull = ConvelHull(dots)
+        hulls = convex_hull.get_hull()
+        on_the_lines = convex_hull.on_the_lines
+
+        if len(hulls) <= 2:
+            return count
+
+        for dot in hulls:
+            dots.remove(dot)
+            if dot == prison:
+                return count
+        for dot in on_the_lines:
+            dots.remove(dot)
+            if dot == prison:
+                return count
+        count += 1
 
 
 def main():
-    n = read_single_int()
+    n, px, py = read_list_int()
     dots = []
     for _ in range(n):
-        x, y = read_list_int()
-        dots.append(Point(x, y))
-    print(solution(n, dots))
+        dots.append(Point(*read_list_int()))
+    print(solution(n, px, py, dots))
 
 
 if __name__ == '__main__':
