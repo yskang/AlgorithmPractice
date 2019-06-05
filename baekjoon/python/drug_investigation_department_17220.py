@@ -10,41 +10,46 @@ read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 read_list_words = lambda: sys.stdin.readline().strip().split(' ')
 
 
-def dfs(node: int, childs_of: list, visited: list):
+def dfs(node: int, childs_of: list, visited: list, knowns: list):
     if visited[node]:
         return
     visited[node] = True
 
-    for child in childs_of[node]:
-        dfs(child, childs_of, visited)
+    if node not in knowns:
+        for child in childs_of[node]:
+            dfs(child, childs_of, visited, knowns)
 
 
-def solution(n: int, m: int, childs_of: list, knowns: list, supplies: list):
+def solution(n: int, m: int, childs_of: list, knowns: list, sources: list):
     visited = [False for _ in range(n)]
-    for node in knowns[1:]:
-        node = ord(node) - ord('A')
-        dfs(node, childs_of, visited)
+
+    for node, is_supply in enumerate(sources):
+        if is_supply:
+            dfs(node, childs_of, visited, knowns)
+
+    for node in knowns:
+            visited[node] = False
 
     count = 0
-    for is_supply, visit in list(zip(supplies, visited)):
-        if not is_supply and not visit:
+    for is_visit, is_source in list(zip(visited, sources)):
+        if is_visit and not is_source:
             count += 1
-
     return count
 
 
 def main():
     n, m = read_list_int()
     childs_of = [[] for _ in range(n)]
-    supplies = [True for _ in range(n)]
+    sources = [True for _ in range(n)]
     for _ in range(m):
         a, b = read_list_words()
         a = ord(a) - ord('A')
         b = ord(b) - ord('A')
         childs_of[a].append(b)
-        supplies[b] = False
+        sources[b] = False
     knowns = read_list_words()
-    print(solution(n, m, childs_of, knowns, supplies))
+    knowns = list(map(lambda x: ord(x)-ord('A'), knowns[1:]))
+    print(solution(n, m, childs_of, knowns, sources))
 
 
 if __name__ == '__main__':
