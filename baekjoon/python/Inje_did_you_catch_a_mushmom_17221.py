@@ -2,7 +2,7 @@
 # Link: https://www.acmicpc.net/problem/17221
 
 import sys
-from collections import deque
+from collections import deque, defaultdict
 from math import floor
 
 
@@ -12,46 +12,58 @@ sys.setrecursionlimit(10 ** 6)
 read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
+def attack(ph_inje: int, attack_inje: int, ph_mush: int, attack_mush: int):
+    ph_mush -= attack_inje
+    ph_inje -= attack_mush
+    return ph_inje, attack_inje, ph_mush, attack_mush
+
+
+def counterattack(ph_inje: int, attack_inje: int, ph_mush: int, attack_mush: int):
+    ph_mush -= attack_mush
+    ph_inje += floor(ph_inje * 0.1)
+    return ph_inje, attack_inje, ph_mush, attack_mush
+
+
+def buff(ph_inje: int, attack_inje: int, ph_mush: int, attack_mush: int):
+    attack_inje += floor(attack_inje * 0.2)
+    ph_inje -= (3 * attack_mush)
+    return ph_inje, attack_inje, ph_mush, attack_mush
+
+
 def solution(ph_inje: int, attack_inje: int, ph_mush: int, attack_mush: int):
+    cache = defaultdict(lambda: False)
     turn = 0
     queue = deque()
     queue.append((ph_inje, attack_inje, ph_mush, attack_mush, turn))
-
+    cache[(ph_inje, attack_inje, ph_mush, attack_mush)] = True
     while queue:
-        inje_ph, inje_attack, mush_ph, mush_attack, turn = queue.popleft()
-        inje_ph_t, inje_attack_t, mush_ph_t, mush_attack_t = inje_ph, inje_attack, mush_ph, mush_attack
+        ph_i, at_i, ph_m, at_m, t = queue.popleft()
+        ph_i_b, at_i_b, ph_m_b, at_m_b = ph_i, at_i, ph_m, at_m
 
-        # attack
-        mush_ph -= inje_attack
-        inje_ph -= mush_attack
-
-        if mush_ph <= 0:
-            return turn+1
+        ph_i, at_i, ph_m, at_m = attack(ph_i, at_i, ph_m, at_m)
+        if ph_m <= 0:
+            return t+1
+        if ph_i > 0 and not cache[(ph_i, at_i, ph_m, at_m)]:
+            cache[(ph_i, at_i, ph_m, at_m)] = True
+            queue.append((ph_i, at_i, ph_m, at_m, t+1))
         
-        if inje_ph > 0:
-            queue.append((inje_ph, inje_attack, mush_ph, mush_attack, turn+1))
+        ph_i, at_i, ph_m, at_m = ph_i_b, at_i_b, ph_m_b, at_m_b
+        ph_i, at_i, ph_m, at_m = counterattack(ph_i, at_i, ph_m, at_m)
+        if ph_m <= 0:
+            return t+1
+        if ph_i > 0 and not cache[(ph_i, at_i, ph_m, at_m)]:
+            cache[(ph_i, at_i, ph_m, at_m)] = True
+            queue.append((ph_i, at_i, ph_m, at_m, t+1))
 
-        # revenge
-        inje_ph, inje_attack, mush_ph, mush_attack = inje_ph_t, inje_attack_t, mush_ph_t, mush_attack_t
-        inje_ph += floor(inje_ph * 0.1)
-        mush_ph -= mush_attack
-
-        if mush_ph <= 0:
-            return turn+1
-        
-        if inje_ph > 0:
-            queue.append((inje_ph, inje_attack, mush_ph, mush_attack, turn+1))
-
-        # buff
-        inje_ph, inje_attack, mush_ph, mush_attack = inje_ph_t, inje_attack_t, mush_ph_t, mush_attack_t
-        inje_attack += floor(inje_attack * 0.2)
-        inje_ph -= (mush_attack * 3)
-
-        if mush_ph <= 0:
-            return turn+1
-        
-        if inje_ph > 0:        
-            queue.append((inje_ph, inje_attack, mush_ph, mush_attack, turn+1))
+        ph_i, at_i, ph_m, at_m = ph_i_b, at_i_b, ph_m_b, at_m_b
+        if at_i >= 5:
+            ph_i, at_i, ph_m, at_m = buff(ph_i, at_i, ph_m, at_m)
+            if ph_m <= 0:
+                return t+1
+            if ph_i > 0 and not cache[(ph_i, at_i, ph_m, at_m)]:
+                cache[(ph_i, at_i, ph_m, at_m)] = True
+                queue.append((ph_i, at_i, ph_m, at_m, t+1))
+        print('Turn: {}, inje ph: {}, mushmom ph: {}'.format(t, ph_i_b, ph_m_b))
 
 
 def main():
