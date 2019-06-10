@@ -6,7 +6,10 @@ import random
 
 sys.setrecursionlimit(10 ** 6)
 
-read_list_int = lambda: list(map(int, sys.stdin.readline().replace('\r', '').replace('\n', '').strip().split(' ')))
+XRAW = __import__('sys').stdin.read().split()
+XIN = iter(XRAW)
+read_one_number = lambda: int(next(XIN))
+
 
 def solution(n: int, m: int, transmit: list, want: list):
     events = [[(i, 0)] for i in range(n)]
@@ -27,14 +30,16 @@ def solution(n: int, m: int, transmit: list, want: list):
 
 
 def main():
-    n, m = read_list_int()
+    n = read_one_number()
+    m = read_one_number()
     transmit = []
     for _ in range(m):
-        transmit.append(read_list_int())
-    want = read_list_int()
+        send = read_one_number()
+        receive = read_one_number()
+        transmit.append([send, receive])
+    want = (read_one_number(), read_one_number(), read_one_number(), read_one_number())
     print(solution(n, m, transmit, want))
 
 
 if __name__ == '__main__':
     main()
-    # test()
