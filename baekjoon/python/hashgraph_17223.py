@@ -3,38 +3,52 @@
 
 import sys
 import random
+import operator
+from collections import defaultdict
 
 sys.setrecursionlimit(10 ** 6)
 
-read_list_int = lambda: list(map(int, sys.stdin.readline().replace('\r', '').replace('\n', '').strip().split(' ')))
+XRAW = sys.stdin.read().split()
+XIN = iter(XRAW)
+read_one_number = lambda: int(next(XIN))
 
-def solution(n: int, m: int, transmit: list, want: list):
-    events = [[(i, 0)] for i in range(n)]
-    for send, receive in transmit:
-        events[receive].append((send, len(events[send])-1))
 
-    prev_user, prev_event, target_user, target_event = want
+def dfs(node: int, g: defaultdict, visit: list):
+    if visit[node]:
+        return
+    visit[node] = True
 
-    while True:
-        next_user, next_event = events[prev_user][prev_event]
-        if (next_user, next_event) == (target_user, target_event):
-            return 1
-        if (next_user, next_event) == (prev_user, prev_event):
-            return 0
-        prev_user, prev_event = next_user, next_event
+    for n in g[node]:
+        dfs(n, g, visit)
 
-    return 0
+
+def solution(n: int, m: int, g: defaultdict, want: list, last: int, users: list):
+    visit = [False for _ in range(last+1)]
+    user, event, target_user, target_event = want
+    dfs(users[user][event], g, visit)
+    return 1 if visit[users[target_user][target_event]] else 0
 
 
 def main():
-    n, m = read_list_int()
-    transmit = []
+    g = defaultdict(lambda: [])
+    n = read_one_number()
+    m = read_one_number()
+
+    users = [[] for _ in range(n)]
+    for i in range(n):
+        users[i].append(i)
+    last = n-1
     for _ in range(m):
-        transmit.append(read_list_int())
-    want = read_list_int()
-    print(solution(n, m, transmit, want))
+        sender = read_one_number()
+        receiver = read_one_number()
+        last += 1
+        users[receiver].append(last)
+        g[last].append(users[receiver][-2])
+        g[last].append(users[sender][-1])
+
+    want = (read_one_number(), read_one_number(), read_one_number(), read_one_number())
+    print(solution(n, m, g, want, last, users))
 
 
 if __name__ == '__main__':
     main()
-    # test()
