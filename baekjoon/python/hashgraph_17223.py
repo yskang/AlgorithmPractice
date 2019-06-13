@@ -8,16 +8,9 @@ from collections import defaultdict
 
 sys.setrecursionlimit(10 ** 6)
 
-<<<<<<< HEAD
 XRAW = sys.stdin.read().split()
 XIN = iter(XRAW)
 read_one_number = lambda: int(next(XIN))
-=======
-XRAW = __import__('sys').stdin.read().split()
-XIN = iter(XRAW)
-read_one_number = lambda: int(next(XIN))
-
->>>>>>> 1a98d51dfbff78c92f2d6f98533885e010f8252e
 
 
 def dfs(node: int, g: defaultdict, visit: list):
@@ -37,7 +30,6 @@ def solution(n: int, m: int, g: defaultdict, want: list, last: int, users: list)
 
 
 def main():
-<<<<<<< HEAD
     g = defaultdict(lambda: [])
     n = read_one_number()
     m = read_one_number()
@@ -56,17 +48,6 @@ def main():
 
     want = (read_one_number(), read_one_number(), read_one_number(), read_one_number())
     print(solution(n, m, g, want, last, users))
-=======
-    n = read_one_number()
-    m = read_one_number()
-    transmit = []
-    for _ in range(m):
-        send = read_one_number()
-        receive = read_one_number()
-        transmit.append([send, receive])
-    want = (read_one_number(), read_one_number(), read_one_number(), read_one_number())
-    print(solution(n, m, transmit, want))
->>>>>>> 1a98d51dfbff78c92f2d6f98533885e010f8252e
 
 
 if __name__ == '__main__':
