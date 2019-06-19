@@ -13,67 +13,61 @@ read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
 def solution(init_data: SimpleNamespace):
-    min_turn = 99999999999
+    min_turn = 100001
 
-    if init_data.inje.attack < 5:
-        # counter attack and attack. no buff
-        ph_inje = init_data.inje.ph
+    # cache_attack = [init_data.inje.attack]
+
+    # if init_data.inje.attack >= 5:
+    #     while True:
+    #         if cache_attack[-1] >= init_data.mush_mom.ph:
+    #             break
+    #         cache_attack.append(floor(cache_attack[-1]*1.2))
+
+    _ph_inje = init_data.inje.ph
+    _ph_mush = init_data.mush_mom.ph
+    for c in range(100001):
+        if c >= min_turn:
+            break
         ph_mush = init_data.mush_mom.ph
         attack_inje = init_data.inje.attack
         attack_mush = init_data.mush_mom.attack
 
-        c = 0
-        while True:
-            a = ceil(ph_mush/attack_inje)
-            if ph_inje >= a*attack_mush and  a+c < min_turn:
-                min_turn = a+c
+        ph_inje = _ph_inje
+        ph_mush = _ph_mush
 
-            if ph_mush <= 0:
-                break
+        if ph_mush <= 0:
+            if c < min_turn:
+                min_turn = c
+            continue
+        if _ph_inje < attack_mush * floor( ph_mush / attack_inje ):
+            pass
+        else:
+            if attack_inje > 5:
+                for b in range(min_turn-c):
+                    # attack_inje = cache_attack[min(b, len(cache_attack)-1)]
+                    if b+c >= min_turn:
+                        break
 
-            if ph_inje > 999999999:
-                break
+                    if ph_inje < 0:
+                        break
 
-            c += 1
-            ph_inje = floor(ph_inje*1.1)
-            ph_mush -= attack_mush
+                    a = ceil(ph_mush/attack_inje)
 
-    else:
-        counterattack_limit = ceil(init_data.mush_mom.ph / init_data.mush_mom.attack)
-        for c in range(0, counterattack_limit+1):
-            # counter attack, increase ph of inje, decrease ph of mush_mom
-            # there is no change to dead of inje
+                    if a+b+c < min_turn:
+                        if ph_inje - (a-1)*attack_mush > 0:
+                            min_turn = a+b+c
+                    ph_inje -= (3*attack_mush)
+                    attack_inje = floor(attack_inje*1.2) #cache_attack[b]
 
-            ph_inje = init_data.inje.ph
-            ph_mush = init_data.mush_mom.ph
-            attack_inje = init_data.inje.attack
-            attack_mush = init_data.mush_mom.attack
-
-            for _ in range(c):
-                ph_inje = floor(ph_inje*1.1)
-                ph_mush -= attack_mush
-                if ph_mush <= 0 and c < min_turn:
-                    min_turn = c
-                    break
-           
-            if ph_mush <= 0:
-                # kill mushmom by counterattack only
-                continue
-
-            b = 0
-            # Buff, decrease ph of inje as 3 times of attack of mush, increase 1.2 times of attack of inje.
-            while True:
+            else:
                 a = ceil(ph_mush/attack_inje)
-                if ph_inje >= a*attack_mush and a+b+c < min_turn:
-                    min_turn = a+b+c
-                if attack_inje >= ph_mush:
-                    break
-                if ph_inje <= 0:
-                    break
+                if a+c < min_turn:
+                    if ph_inje - (a-1)*attack_mush > 0:
+                        min_turn = a+c
 
-                b += 1
-                ph_inje -= (3*attack_mush)
-                attack_inje = floor(attack_inje*1.2)
+        if _ph_inje*1.1 != float('inf'):
+            _ph_inje = floor(_ph_inje*1.1)
+        _ph_mush -= attack_mush
 
     return min_turn
 
