@@ -12,8 +12,6 @@ sys.setrecursionlimit(10 ** 6)
 read_single_int = lambda: int(sys.stdin.readline().strip())
 read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
-__min_cost = 99999999999999999999
-
 def dp(i: int, lands: list, cache: list):
     if i < 0:
         return 0
@@ -24,6 +22,7 @@ def dp(i: int, lands: list, cache: list):
         cost = dp(j-1, lands, cache) + lands[j][1] * lands[i][0]
         if cost < min_cost:
             min_cost = cost
+
     cache[i] = min_cost
     return min_cost
 
@@ -51,7 +50,6 @@ def solution_nn(n: int, lands: list):
     return min_cost
 
 
-
 def get_cross(poly_a: tuple, poly_b: tuple):
     return -1 * (poly_a[1] - poly_b[1]) / (poly_a[0] - poly_b[0])
 
@@ -74,14 +72,14 @@ def solution(n: int, lands: list, ylim=550):
         if not new_lands:
             new_lands.append(land)
 
-    xs = [i for i in range(-10, new_lands[-1][0]+10)]
+    xs = [i for i in range(-10, new_lands[-1][0]*2)]
 
     fig = plt.figure()
     plt.ion()
     plt.show()
     ax = fig.add_subplot(1, 1, 1)
     ax.set_xlim([-10, xs[-1]])
-    ax.set_ylim([-10, ylim])
+    ax.set_ylim([-10, ylim*2])
     ax.axhline(y=0, color='gray', linestyle='--')
     ax.axvline(x=0, color='gray', linestyle='--')
     plt.draw()
