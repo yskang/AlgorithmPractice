@@ -1,15 +1,17 @@
-# Title: 격자점 컨벡스헐
-# Link: https://www.acmicpc.net/problem/2699
+# Title: Convex Hull
+# Link: https://www.acmicpc.net/problem/4181
 
 import sys
-from collections import deque
+from collections import deque, defaultdict
 from math import atan2
+
 
 sys.setrecursionlimit(10 ** 6)
 
 
 read_single_int = lambda: int(sys.stdin.readline().strip())
-read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
+read_list_words = lambda: sys.stdin.readline().strip().split()
+
 
 class Point:
     def __init__(self, x: int, y: int):
@@ -64,9 +66,9 @@ class ConvelHull:
     def get_low_and_high_dot(self):
         self.lowest_dot = min(self.dots)
         self.highest_dot = max(self.dots)
-        # left_x = min(self.dots, key=lambda d: d.x).x
-        # left_x_dots = list(filter(lambda d: d.x==left_x, self.dots))
-        # self.leftest_dot = min(left_x_dots, key=lambda d:d.y)
+        left_x = min(self.dots, key=lambda d: d.x).x
+        left_x_dots = list(filter(lambda d: d.x==left_x, self.dots))
+        self.leftest_dot = min(left_x_dots, key=lambda d:d.y)
 
     def print_dots(self, title: str):
         print(title)
@@ -139,8 +141,13 @@ class ConvelHull:
             return [stack[0], self.highest_dot]
 
         stack.pop()
+
+        while True:
+            if stack[0] == self.leftest_dot:
+                return stack
+            stack.rotate()
+
         self.convel_hull = stack
-        return self.convel_hull
 
     def get_area(self):
         first, second = 0, 0
@@ -154,34 +161,23 @@ class ConvelHull:
 
 
 def solution(dots: list):
-    points = []
-    for i in range(0, len(dots), 2):
-        points.append(Point(dots[i], dots[i+1]))
-
-    convex_hull = ConvelHull(points)
-    ans = []
-    hull = convex_hull.get_hull()
-
-    top_dots = filter(lambda dot: dot.y == convex_hull.highest_dot.y, hull)
-    highest_dot = min(top_dots, key=lambda dot: dot.x)
-
-    ans.append(len(hull))
-
-    hull = deque(hull)
-    while hull[-1] != highest_dot:
-        hull.rotate()
-    ans += reversed(hull)
-    return '\n'.join(map(str, ans))
+    ch = ConvelHull(dots)
+    dots = ch.get_hull(only_edge=False)
+    ans = [str(len(dots))]
+    for dot in dots:
+        ans.append('{} {}'.format(dot.x, dot.y))
+    return '\n'.join(ans)
 
 
 def main():
-    p = read_single_int()
-    for _ in range(p):
-        n = read_single_int()
-        dots = []
-        for _ in range(((n-1)//5)+1):
-            dots += read_list_int()
-        print(solution(dots))
+    n = read_single_int()
+    dots = []
+    for _ in range(n):
+        x, y, c = read_list_words()
+        if c == 'Y':
+            dots.append(Point(int(x), int(y)))
+
+    print(solution(dots))
 
 
 if __name__ == '__main__':

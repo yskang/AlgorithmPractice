@@ -3,6 +3,7 @@
 
 import sys
 from collections import deque
+from math import atan2
 
 
 sys.setrecursionlimit(10 ** 6)
@@ -15,114 +16,156 @@ class Point:
     def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
+        self.angle = 0
+        self.dist_sq = 0
     
     def __str__(self):
-        return '[{}, {}]'.format(self.x, self.y)
+        return '{} {}'.format(self.x, self.y)
 
     def draw(self, plt):
         plt.scatter(self.x, self.y, 10)
+    
+    def __eq__(self, other):
+        if self.x == other.x and self.y == other.y:
+            return True
+        return False
+    
+    def __lt__(self, other):
+        if self.y < other.y:
+            return True
+        elif self.y > other.y:
+            return False
+        else:
+            if self.x < other.x:
+                return True
+            return False
+    
+    def set_angle(self, base):
+        self.angle = atan2(self.y-base.y, self.x-base.x)
+
+    def set_dist_sq(self, base):
+        self.dist_sq = (self.y-base.y)**2 + (self.x-base.x)**2
+    
+    def get_dist_sq(self, other):
+        return (self.x-other.x)**2 + (self.y-other.y)**2
 
 
+class ConvelHull:
+    def __init__(self, dots: list):
+        self.dots = dots
+        self.lowest_dot = None
+        self.highest_dot = None
+        self.convel_hull = None
+        self.on_the_lines = []
+        self.leftest_dot = None
 
-def ccw(a: Point, b: Point, c: Point):
-    """Counter Clock Wise.
-    input 2 points a, b, c.
-    return 1 for counter clock wise, -1 for clock wise, 0 for on a line.
-    move all points to a posiotion on zero.
-    rotate b and c to b on x axis
-    if y coordinate of c is over the 0 then counter clock wise.
-    elif y coordinate of c is under the 0 then clock wise.
-    else y coordinate of c equal to zero, then on the line.
-    """
-    return (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y)
+    def ccw(self, a: Point, b: Point, c: Point):
+        return (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y)
 
+    def get_low_and_high_dot(self):
+        self.lowest_dot = min(self.dots)
+        self.highest_dot = max(self.dots)
+        # left_x = min(self.dots, key=lambda d: d.x).x
+        # left_x_dots = list(filter(lambda d: d.x==left_x, self.dots))
+        # self.leftest_dot = min(left_x_dots, key=lambda d:d.y)
 
-def get_lowest_dot(dots: list):
-    min_y = 999999999
-    min_y_dot = None
-    min_y_idx = -1
-    for i, dot in enumerate(dots):
-        if dot.y < min_y:
-            min_y = dot.y
-            min_y_dot = dot
-            min_y_idx = i
-        elif dot.y == min_y:
-            if dot.x < min_y_dot.x:
-                min_y_dot = dot
-    return min_y_dot, dots[:min_y_idx]+dots[min_y_idx+1:]
+    def print_dots(self, title: str):
+        print(title)
+        for dot in self.dots:
+            print('{} '.format(dot.__str__()), end=' ')
+    
+    def sort_dots(self):
+        for dot in self.dots:
+            dot.set_angle(self.lowest_dot)
+            dot.set_dist_sq(self.lowest_dot)
 
+        self.dots = sorted(self.dots, key= lambda d: d.dist_sq)
+        self.dots = sorted(self.dots, key= lambda d: d.angle)
 
-def sort_dots(dots: list, min_dot: Point):
-    if len(dots) <= 1:
-        return dots
-    else:
-        h = len(dots) // 2
-        a = sort_dots(list(dots)[:h], min_dot)
-        b = sort_dots(list(dots)[h:], min_dot)
-        temp = []
-        ia, ib = 0, 0
-        while ia < len(a) and ib < len(b):
-            if ccw(min_dot, a[ia], b[ib]) > 0:
-                temp.append(a[ia])
-                ia += 1
-            elif ccw(min_dot, a[ia], b[ib]) == 0:
-                if a[ia].x < b[ib].x:
-                    temp.append(a[ia])
-                    ia += 1
-                else:
-                    temp.append(b[ib])
-                    ib += 1
+        last_same_angles = []
+        prev_angle = self.dots[-1].angle
+        for dot in reversed(self.dots):
+            if dot.angle == prev_angle:
+                last_same_angles.append(dot)
             else:
-                temp.append(b[ib])
-                ib += 1
-        if ia == len(a):
-            temp += b[ib:]
-        else:
-            temp += a[ia:]
-        return temp
-
-def print_dots(dots: list, title: str):
-    print(title)
-    for dot in dots:
-        print('{} '.format(dot.__str__()), end=' ')    
+                break
+        self.dots = self.dots[:-len(last_same_angles)] + last_same_angles
 
 
-def convex_hull(dots: list):
-    if len(dots) == 2:
-        return dots
+    def get_hull(self, only_edge=True):
+        if len(self.dots) == 2:
+            return self.dots
 
-    min_dot, dots = get_lowest_dot(dots)
-    dots = deque([min_dot] + sort_dots(dots, min_dot) + [min_dot])
+        self.get_low_and_high_dot()
+        self.sort_dots()
 
-    stack = deque()
-    stack.append(dots.popleft())
-    stack.append(dots.popleft())
+        self.dots += [self.lowest_dot]
+        self.dots = deque(self.dots)
 
-    while dots:
-        second = stack.pop()
-        first = stack.pop()
-        third = dots.popleft()
+        stack = deque()
+        stack.append(self.dots.popleft())
+        stack.append(self.dots.popleft())
 
-        if ccw(first, second, third) > 0:
-            stack.append(first)
-            stack.append(second)
-            stack.append(third)
-        else:
-            stack.append(first)
-            if len(stack) == 1:
+        while self.dots:
+            second = stack.pop()
+            first = stack.pop()
+            third = self.dots.popleft()
+
+            is_ccw = self.ccw(first, second, third)
+
+            if is_ccw > 0:
+                stack.append(first)
+                stack.append(second)
                 stack.append(third)
+            elif not only_edge and is_ccw == 0:
+                stack.append(first)
+
+                ds = first.get_dist_sq(second)
+                dt = first.get_dist_sq(third)
+
+                if ds <= dt:
+                    stack.append(second)
+                    stack.append(third)
+                else:
+                    stack.append(third)
+                    stack.append(second)
             else:
-                dots.appendleft(third)
+                stack.append(first)
+                if len(stack) == 1:
+                    stack.append(third)
+                else:
+                    self.dots.appendleft(third)
 
-    return list(stack)[:-1]
+        if len(stack) == 2:
+            return [stack[0], self.highest_dot]
 
+        stack.pop()
+
+        # while True:
+        #     if stack[0] == self.leftest_dot:
+        #         return stack
+        #     stack.rotate()
+
+        self.convel_hull = list(stack)
+        return self.convel_hull
+
+    def get_area(self):
+        first, second = 0, 0
+        self.convel_hull.append(self.convel_hull[0])
+        prev_dot = self.convel_hull[0]
+        for dot in self.convel_hull[1:]:
+            first += (prev_dot.x * dot.y)
+            second += (prev_dot.y * dot.x)
+            prev_dot = dot
+        return 0.5 * abs(first - second)
 
 def distance_square(a: Point, b: Point):
     return (a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)
 
 
 def solution(cities: list):
-    outers = convex_hull(cities)
+    ch = ConvelHull(cities)
+    outers = ch.get_hull()
     dists = []
     for i in range(len(outers)):
         for j in range(len(outers)):
