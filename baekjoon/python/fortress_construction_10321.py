@@ -1,11 +1,10 @@
-# Title: 점 분리
-# Link: https://www.acmicpc.net/problem/3878
+# Title: 요새 건설
+# Link: https://www.acmicpc.net/problem/10321
 
 import sys
 from collections import deque
 from math import atan2
-from copy import copy
-from types import SimpleNamespace
+from itertools import permutations
 
 
 sys.setrecursionlimit(10 ** 6)
@@ -53,7 +52,7 @@ class Point:
         return (self.x-other.x)**2 + (self.y-other.y)**2
 
 
-class ConvelHull:
+class ConvexHull:
     def __init__(self, dots: list):
         self.dots = dots
         self.lowest_dot = None
@@ -156,81 +155,41 @@ class ConvelHull:
         return 0.5 * abs(first - second)
 
 
-def ccw(a: Point, b: Point, c: Point):
-    return (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y)
+def get_area(dots: list):
+    first, second = 0, 0
+    dots.append(dots[0])
+    prev_dot = dots[0]
+    for dot in dots[1:]:
+        first += (prev_dot.x * dot.y)
+        second += (prev_dot.y * dot.x)
+        prev_dot = dot
+    return 0.5 * abs(first - second)
 
 
-def is_dot_in_polygon(dot: Point, hull: deque):
-    if len(hull) == 2:
-        if ccw(hull[0], hull[1], dot) == 0 and hull[0].y < dot.y < hull[1].y:
-            return True
-        return False
+def solution(candidates: list):
+    ch = ConvexHull(candidates)
+    areas = []
+    hulls = ch.get_hull()
+    if len(hulls) == 3:
+        for hull in permutations(hulls, 3):
+            areas.append(get_area(list(hull)))
+    else:
+        for hull in permutations(hulls, 4):
+            areas.append(get_area(list(hull)))
+    ans = max(areas)
+    if ans == int(ans):
+        return int(ans)
+    return ans
 
-    for _ in range(len(hull)):
-        if ccw(hull[0], hull[1], dot) <= 0:
-            return False
-        hull.rotate()
-    return True
-
-
-def is_intersect(a: Point, b: Point, c: Point, d: Point):
-    ab = ccw(a, b, c) * ccw(a, b, d)
-    cd = ccw(c, d, a) * ccw(c, d, b)
-    if ab == 0 and cd == 0:
-        if a.x == b.x:
-            if a.y > b.y:
-                a, b = b, a
-            if c.y > d.y:
-                c, d = d, c
-            return c.y <= b.y and cd <= 0
-        else:
-            if a.x > b.x:
-                a, b = b, a
-            if c.x > d.x:
-                c, d = d, c
-            return c.x <= b.x and cd <= 0
-
-    return ab <= 0 and cd <= 0
-
-
-def solution(n: int, m: int, ns: list, ms: list):
-    if n == 1 and m == 1:
-        return 'YES'
-
-    ch_n = ConvelHull(ns)
-    n_hull = deque(ch_n.get_hull())
-    ch_m = ConvelHull(ms)
-    m_hull = deque(ch_m.get_hull())
-
-    for n in n_hull:
-        if is_dot_in_polygon(n, m_hull):
-            return 'NO'
-    
-    for m in m_hull:
-        if is_dot_in_polygon(m, n_hull):
-            return 'NO'
-
-    for _ in range(len(n_hull)):
-        a, b = n_hull[0], n_hull[1]
-        for _ in range(len(m_hull)):
-            c, d = m_hull[0], m_hull[1]
-            if is_intersect(a, b, c, d):
-                return 'NO'
-            m_hull.rotate()
-        n_hull.rotate()
-
-    return 'YES'
 
 def main():
     t = read_single_int()
     for _ in range(t):
-        n, m = read_list_int()
-        ns, ms = [], []
+        n = read_single_int()
+        candidates = []
         for _ in range(n):
-            ns.append(Point(*read_list_int()))
-        for _ in range(m):
-            ms.append(Point(*read_list_int()))
-        print(solution(n, m, ns, ms))
+            candidates.append(Point(*read_list_int()))
+        print(solution(candidates))
 
 
 if __name__ == '__main__':
