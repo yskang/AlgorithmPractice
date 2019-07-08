@@ -35,21 +35,6 @@ def do_modok(ns: list, ms: list):
     return a, b            
 
 
-def get_candis(ns: list, ms: list):
-    a, b = [], []
-    filtered = list(filter(lambda x: x.available , ns))
-    if filtered:
-        attacks = sorted(list(set(map(lambda x: x.attack, filtered))), reverse=True)
-        lifes = sorted(list(set(map(lambda x: x.life, filtered))), reverse=True)
-        a = list(map(lambda x: x[1] ,filter(lambda x: x[0].attack in attacks[:5] or x[0].life in lifes[:5], zip(ns, [i for i in range(len(ns))]))))
-
-    if ms:
-        lifes = sorted(list(set(map(lambda x: x.life, ms))), reverse=True)
-        b = list(map(lambda x: x[1] ,filter(lambda x: x[0].life in lifes[:5], zip(ms, [i for i in range(len(ms))]))))
-
-    return a, b
-
-
 def solution(n: int, m: int, ns: list, ms: list):
     if m == 0:
         return 0
@@ -64,22 +49,20 @@ def solution(n: int, m: int, ns: list, ms: list):
         if not mms:
             return commands
 
-        n_candis, m_candis = get_candis(nns, mms)
-
-        for card in n_candis:
-            for target in m_candis:
-                if nns[card].available:
+        for card in nns:
+            for target in mms:
+                if card.available:
                     ccommands = deepcopy(commands)
                     nnns = deepcopy(nns)
                     mmms = deepcopy(mms)
 
-                    a = nnns[card].index
-                    t = mmms[target].index
+                    a = card.index
+                    t = target.index
 
-                    nnns[card].life -= mmms[target].attack
-                    mmms[target].life -= nnns[card].attack
+                    card.life -= target.attack
+                    target.life -= card.attack
 
-                    nnns[card].available = False
+                    card.available = False
 
                     nnns = list(filter(lambda c: c.life > 0, nnns))
                     mmms = list(filter(lambda c: c.life > 0, mmms))
@@ -108,7 +91,7 @@ def main():
     ms = []
     for i in range(n):
         a, p = read_list_int()
-        ns.append(SimpleNamespace(attack= a, life= p, index= i+1, available= True))
+        ns.append(SimpleNamespace(attack= a, life= p, index= i+1))
     for i in range(m):
         a, p = read_list_int()
         ms.append(SimpleNamespace(attack= a, life= p, index= i+1))
