@@ -208,13 +208,11 @@ def get_maximum_distance(points: list):
     right_points.rotate(-r_index)
 
     m_dist = 0
-    m_points = [None, None]
 
     for _ in range(len(points)):
         dist = distance_square(left_points[0], right_points[0])
         if dist > m_dist:
             m_dist = dist
-            m_points = [left_points[0], right_points[0]]
 
         v1 = Vector2(origin=left_points[0], target=left_points[1])
         v2 = Vector2(origin=right_points[0], target=right_points[1])
