@@ -16,7 +16,9 @@ read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
 def solution(n: int, meetings: list):
     count = 1
-    meetings = sorted(sorted(meetings, key=lambda m: m[0]), key=lambda m: m[1])
+    # meetings = sorted(sorted(meetings, key=lambda m: m[0]), key=lambda m: m[1])
+    meetings = sorted(meetings, key= lambda m: (m[1], m[0]))
+
     prev_meeting = meetings[0]
     for meeting in meetings[1:]:
         if meeting[0] >= prev_meeting[1]:
@@ -30,7 +32,7 @@ def main():
     n = read_single_int()
     meetings = []
     for _ in range(n):
-        meetings.append(read_list_int())
+        meetings.append(tuple(read_list_int()))
     print(solution(n, meetings))
 
 
