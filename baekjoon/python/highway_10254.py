@@ -50,6 +50,29 @@ class Point:
         return (self.x-other.x)**2 + (self.y-other.y)**2
 
 
+class Vector2:
+    def __init__(self, origin=None, target=None):
+        self.x = target.x
+        self.y = target.y
+        if origin:
+            self.x -= origin.x
+            self.y -= origin.y
+
+    def __add__(self, other):
+        self.x += other.x
+        self.y += other.y
+
+    def __sub__(self, other):
+        self.x -= other.x
+        self.y -= other.y
+
+    def reverse(self):
+        self.x = -self.x
+        self.y = -self.y
+    
+    def cross_direction(self, other):
+        return self.x*other.y - self.y * other.x
+
 class ConvelHull:
     def __init__(self, dots: list):
         self.dots = dots
@@ -163,15 +186,51 @@ def distance_square(a: Point, b: Point):
     return (a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)
 
 
+def get_maximum_distance(points: list):
+    left_points = deque(points)
+    right_points = deque(points)
+    
+    left, right = Point(99999999999, 0), Point(-9999999999999, 0)
+    l_index, r_index = -1, -1
+    
+    for i, point in enumerate(points):
+        if point.x < left.x:
+            left = point
+            l_index = i
+        if point.x > right.x:
+            right = point
+            r_index = i
+    
+    # print('left: {}. right: {}'.format(left, right))
+    left_points.rotate(-l_index)
+    right_points.rotate(-r_index)
+
+    m_dist = 0
+    m_points = [None, None]
+
+    for _ in range(len(points)):
+        dist = distance_square(left_points[0], right_points[0])
+        if dist > m_dist:
+            m_dist = dist
+            m_points = [left_points[0], right_points[0]]
+
+        v1 = Vector2(origin=left_points[0], target=left_points[1])
+        v2 = Vector2(origin=right_points[0], target=right_points[1])
+        v2.reverse()
+        if v1.cross_direction(v2) < 0:
+            right_points.rotate(-1)
+        else:
+            left_points.rotate(-1)
+
+    return m_points
+
+
 def solution(cities: list):
     ch = ConvelHull(cities)
     outers = ch.get_hull()
-    dists = []
-    for i in range(len(outers)):
-        for j in range(len(outers)):
-            dists.append((distance_square(outers[i], outers[j]), i, j))
-    _, ma, mb = max(dists, key=lambda d: d[0])
-    return '{} {} {} {}'.format(outers[ma].x, outers[ma].y, outers[mb].x, outers[mb].y)
+
+    max_points = get_maximum_distance(outers)
+    return('{} {}'.format(*max_points))
 
 
 def main():
