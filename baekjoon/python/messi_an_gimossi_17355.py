@@ -2,7 +2,8 @@
 # Link: https://www.acmicpc.net/problem/17355
 
 import sys
-
+from collections import defaultdict
+from math import sqrt
 
 sys.setrecursionlimit(10 ** 6)
 
@@ -12,24 +13,58 @@ read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 MOD = 1000000007
 
 
-def gcd(a: int, b: int):
-    while b != 0:
-        r = a % b
-        a = b
-        b = r
-    return a
+def prime_factorization(n: int, primes: defaultdict, cache: list):
+    num = n
+    i = 2
+    factors = []
+    while i * i <= n:
+        if n % i:
+            i += 1
+        else:
+            n //= i
+            primes[i] += 1
+            factors.append(i)
+    if n > 1:
+        primes[n] += 1
+        factors.append(n)
+    cache[num] = factors
 
 
 def solution(ps: list):
-    pu = 1
-    pd = 1
-    for a, b in ps:
-        pu = (((b-a)) * pu)
-        pd = ((b) * pd)
-    
-    d = gcd(pu, pd)
+    ups = defaultdict(lambda: 0)
+    downs = defaultdict(lambda: 0)
+    cache = defaultdict(lambda: [])
 
-    return '{} {}'.format((pu//d)%MOD, (pd//d)%MOD)
+    for a, b in ps:
+        if cache[b-a]:
+            for prime in cache[b-a]:
+                ups[prime] += 1
+        else:
+            prime_factorization(b-a, ups, cache)
+        
+        if cache[b]:
+            for prime in cache[b]:
+                downs[prime] += 1
+        else:
+            prime_factorization(b, downs, cache)
+
+    for prime in downs:
+        if ups[prime] >= downs[prime]:
+            ups[prime] -= downs[prime]
+            downs[prime] = 0
+        else:
+            downs[prime] -= ups[prime]
+            ups[prime] = 0
+
+    up, down = 1, 1
+    for prime in ups:
+        for _ in range(ups[prime]):
+            up = (up * (prime % MOD)) % MOD
+    for prime in downs:
+        for _ in range(downs[prime]):
+            down = (down * (prime % MOD)) % MOD
+
+    return '{} {}'.format(up, down)
 
 
 def main():
