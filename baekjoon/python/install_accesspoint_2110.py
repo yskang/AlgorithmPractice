@@ -11,27 +11,25 @@ read_single_int = lambda: int(sys.stdin.readline().strip())
 
 def solution(n: int, ns: list, c: int):
     ns = sorted(ns)
+    left, right = 1, ns[-1]-ns[0]
     ans = -1
-    start, end = ns[0], ns[-1]
-    while True:
-        if end - start < 2:
-            return ans
 
-        d = start + (end - start)//2
+    while left <= right:
+        mid = (left+right)//2
         installed = 1
-        prev = ns[0]
-
-        for x in ns[1:]:
-            if prev + d <= x:
-                prev = x
+        last = ns[0]
+        for house in ns[1:]:
+            if house-last >= mid:
                 installed += 1
-
-        if installed < c:
-            end = d
-        elif installed >= c:
-            start = d
-            ans = d
-
+                last = house
+        
+        if installed >= c:
+            left = mid+1
+            ans = mid
+        else:
+            right = mid-1
+    
+    return ans
 
 
 def main():
