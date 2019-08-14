@@ -1,3 +1,5 @@
+from types import SimpleNamespace
+
 class Segment_Tree:
     '''
     A Class used to get partial sum of an array and update data
@@ -25,7 +27,7 @@ class Segment_Tree:
             the array that you want to make tree
         '''
         self.array = array
-        self.tree = [0 for _ in range(len(self.array) * 4)]
+        self.tree = [SimpleNamespace(value=0, lazy=0) for _ in range(len(self.array) * 4)]
         self.init(self.tree, 0, len(self.array)-1, 1)
         self.last_index = len(array)-1
 
@@ -34,11 +36,11 @@ class Segment_Tree:
         Don't Call This Method Directly
         '''        
         if start == end:
-            tree[node] = self.array[start]
-            return tree[node]
+            tree[node].value = self.array[start]
+            return tree[node].value
         mid = (start + end) // 2
-        tree[node] = self.init(tree, start, mid, node * 2) + self.init(tree, mid + 1, end, node * 2 + 1)
-        return tree[node]
+        tree[node].value = self.init(tree, start, mid, node * 2) + self.init(tree, mid + 1, end, node * 2 + 1)
+        return tree[node].value
 
     def sum(self, left, right, node=1, start=0, end=-1):
         '''
@@ -59,8 +61,25 @@ class Segment_Tree:
         if left > end or right < start:
             return 0
         if left <= start and end <= right:
-            return self.tree[node]
+            return self.tree[node].value
         return self.sum(left, right, node*2, start, (start+end)//2) + self.sum(left, right, node*2+1, (start+end)//2+1, end)
+
+    def lazy_sum(self, left, right, node=1, start=0, end=-1):
+        if end == -1:
+            end = self.last_index
+
+        if self.tree[node].lazy != 0:
+            self.tree[node].value += (end-start+1)*self.tree[node].lazy
+            if start != end:
+                self.tree[node*2].lazy += self.tree[node].lazy
+                self.tree[node*2+1].lazy += self.tree[node].lazy
+            self.tree[node].lazy = 0
+
+        if right < start or end < left:
+            return 0
+        if left <= start and end <= right:
+            return self.tree[node].value
+        return self.lazy_sum(left, right, node*2, start, (start+end)//2) + self.lazy_sum(left, right, node*2+1, (start+end)//2+1, end)
 
     def update(self, index, diff, node=1, start=0, end=-1):
         '''
@@ -76,10 +95,37 @@ class Segment_Tree:
             end = self.last_index
         if not(start <= index <= end):
             return
-        self.tree[node] += diff
+        self.tree[node].value += diff
         if start != end:
             self.update(index, diff, node*2, start, (start+end)//2)
             self.update(index, diff, node*2+1, (start+end)//2+1, end)
+
+    def update_range(self, diff, left, right, node=1, start=0, end=-1):
+        if end == -1:
+            end = self.last_index
+        
+        if self.tree[node].lazy != 0:
+            self.tree[node].value += (end-start+1)*self.tree[node].lazy
+            if start != end:
+                self.tree[node*2].lazy += self.tree[node].lazy
+                self.tree[node*2+1].lazy += self.tree[node].lazy
+            self.tree[node].lazy = 0
+
+        if right < start or end < left:
+            return
+        
+        if left <= start and end <= right:
+            self.tree[node].value += (end-start+1)*diff
+            if start != end:
+                self.tree[node*2].lazy += diff
+                self.tree[node*2+1].lazy += diff
+            return
+        
+        self.update_range(diff, left, right, node*2, start, (start+end)//2)
+        self.update_range(diff, left, right, node*2+1, (start+end)//2+1, end)
+
+        self.tree[node].value = self.tree[node*2].value + self.tree[node*2+1].value
+
 
 
 # init segment tree of an array from index start to end.
@@ -134,3 +180,9 @@ if __name__ == '__main__':
     print(segment.sum(3, 9))
     segment.update(3, 1)
     print(segment.sum(3, 9))
+
+    a = [1,2,3,4,5,6,7,8,9,10]
+    segment = Segment_Tree(a)
+    print(segment.lazy_sum(0, 9))
+    segment.update_range(10, 0, 4)
+    print(segment.lazy_sum(0, 9))
