@@ -118,6 +118,7 @@ def main():
     ns = read_list_int()
     ops = read_list_int()
     print(solution(n, ns, ops))
+    # print(solution_dfs(n, ns, ops))
 
 
 if __name__ == '__main__':
