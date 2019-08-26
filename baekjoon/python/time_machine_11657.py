@@ -1,55 +1,43 @@
 # Title: 타임머신
 # Link: https://www.acmicpc.net/problem/11657
-import collections
 import sys
+from types import SimpleNamespace
 
 sys.setrecursionlimit(10 ** 6)
 
 INF = 999999999999999
 
-
-def read_list_int():
-    return list(map(int, sys.stdin.readline().strip().split(' ')))
-
-
-def read_single_int():
-    return int(sys.stdin.readline().strip())
+read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
+read_single_int = lambda: int(sys.stdin.readline().strip())
 
 
-class Graph:
-    def __init__(self):
-        self.routes = []
-
-    def add_route(self, start, end, time):
-        self.routes.append((start, end, time))
-
-    def get_route(self):
-        return self.routes
-
-
-def get_fastest_times(graph, N):
-    times = [INF for _ in range(N+1)]
+def solution(n: int, m: int, nodes: list):
+    times = [INF for _ in range(n+1)]
     times[1] = 0
+    starts = [1]
+    for k in range(n+1):
+        updated = []
+        for start in starts:
+            for child, time in nodes[start]:
+                if times[child] > time+times[start]:
+                    times[child] = time+times[start]
+                    updated.append(child)
+        if k == n and updated != []:
+            print(-1)
+            return
+        starts, updated = updated, start
+    for t in times[2:]:
+        print(-1) if t == INF else print(t)
 
-    for _ in range(N-1):
-        for (start, end, time) in graph.get_route():
-            if times[start] + time < times[end]:
-                times[end] = times[start] + time
 
-    for (start, end, time) in graph.get_route():
-        if times[start] + time < times[end]:
-            return '-1'
-
-    def make_str(n):
-        return str(-1) if n == INF else str(n)
-
-    return '\n'.join(map(make_str, times[2:]))
+def main():
+    n, m = read_list_int()
+    nodes = [[] for _ in range(n+1)]
+    for _ in range(m):
+        a, b, c = read_list_int()
+        nodes[a].append((b, c))
+    solution(n, m, nodes)
 
 
 if __name__ == '__main__':
-    N, M = read_list_int()
-    graph = Graph()
-    for _ in range(M):
-        a, b, c = read_list_int()
-        graph.add_route(a, b, c)
-    print(get_fastest_times(graph, N))
+    main()
