@@ -2,6 +2,7 @@
 # Link: https://www.acmicpc.net/problem/11657
 import sys
 from types import SimpleNamespace
+from collections import defaultdict, deque
 
 sys.setrecursionlimit(10 ** 6)
 
@@ -30,13 +31,50 @@ def solution(n: int, m: int, nodes: list):
         print(-1) if t == INF else print(t)
 
 
+def shortest_path_faster_algorithm(s: int, nodes: list, n: int):
+    dists = [INF for _ in range(n+1)]
+    dists[s] = 0
+    
+    visites = defaultdict(lambda: False)
+    cycles = defaultdict(lambda: 0)
+    
+    queue = deque()
+    queue.append(s)
+    visites[s] = True
+
+    while queue:
+        node = queue.popleft()
+        visites[node] = False
+        for child, w in nodes[node]:
+            if dists[node] + w < dists[child]:
+                dists[child] = dists[node] + w
+                if not visites[child]:
+                    cycles[child] += 1
+                    if cycles[child] == n:
+                        return -1
+                    visites[child] = True
+                    queue.append(child)
+    return dists
+
+
+def solution_spfa(n: int, m: int, nodes: list):
+    dists = shortest_path_faster_algorithm(1, nodes, n)
+
+    if dists == -1:
+        print(-1)
+    else:
+        dists = list(map(lambda x: -1 if x == INF else x, dists))
+        print(*dists[2:])
+
+
 def main():
     n, m = read_list_int()
     nodes = [[] for _ in range(n+1)]
     for _ in range(m):
         a, b, c = read_list_int()
         nodes[a].append((b, c))
-    solution(n, m, nodes)
+    solution_spfa(
+        n, m, nodes)
 
 
 if __name__ == '__main__':
