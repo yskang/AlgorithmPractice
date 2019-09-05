@@ -10,25 +10,25 @@ sys.setrecursionlimit(10 ** 6)
 read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
-def get_count(curr: int, mask: int, dp: list, n: int, m: int):
-    if curr > n*m:
+def get_count(idx: int, status: int, dp: list, n: int, m: int):
+    if idx == n*m:
+        return 1 if status == 0 else 0
+    if idx > n*m:
         return 0
-    if curr == n*m:
-        return 1 if mask == 0 else 0
-    if dp[curr][mask] != -1:
-        return dp[curr][mask]
-
-    if mask & 1:
-        dp[curr][mask] = get_count(curr+1, mask>>1, dp, n, m)
+    if dp[idx][status] != -1:
+        return dp[idx][status]
+    
+    if status & 1:
+        dp[idx][status] = get_count(idx+1, status >> 1, dp, n, m)
     else:
-        dp[curr][mask] = get_count(curr+1, (mask>>1)|(1<<(m-1)), dp, n, m)
-        if curr % m != (m-1) and (mask & 1<<1) == 0:
-            dp[curr][mask] += get_count(curr+2, (mask>>2), dp, n, m)
-    return dp[curr][mask]
+        dp[idx][status] = get_count(idx+1, (status>>1) | (1<<(m-1)), dp, n, m)
+        if (idx+1) % m != 0 and status & 2 == 0:
+            dp[idx][status] += get_count(idx+2, status>>2, dp, n, m)
+    return dp[idx][status]
 
 
 def solution(n: int, m: int):
-    dp = [[-1 for i in range(1<<14)] for j in range(n*m)]
+    dp = [[-1 for _ in range(1<<m)] for _ in range(n*m)]
     return get_count(0, 0, dp, n, m) % 9901
 
 
