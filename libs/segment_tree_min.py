@@ -116,7 +116,7 @@ def find_min(array, tree, node, start, end, left, right):
 
 
 if __name__ == '__main__':
-    a = [3, -1, 6, 7, 2, 9, 4, 5, 2, 8, 1, 5]
+    a = [3, -1, 6, 7, 2, -2, 4, 5, 2, 8, 1, 5]
 
     segment = Segment_Min_Tree(a)
     print(segment.min(0, 11))
