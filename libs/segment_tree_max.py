@@ -7,7 +7,7 @@ class MaxSegment:
         for i in range(n-1, 0, -1):
             self.tree[i] = max(self.tree[2*i], self.tree[2*i+1])
     
-    def update(self, pos: int, value: int):
+    def update(self, pos: int, value: int): # value is not a diff
         pos += self.n
         self.tree[pos] = value
         while pos > 1:
