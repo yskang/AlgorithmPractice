@@ -101,13 +101,10 @@ def solution(a: int, b: int):
         t.rotate(2)
         childs.append(int(''.join(t)))
 
-        is_reached = False
-
         for op, child in enumerate(childs):
             if visited[child] == None:
                 visited[child] = (parent, ops[op])
                 if child == b:
-                    is_reached = True
                     
                     ans = [visited[b]]
                     while True:
