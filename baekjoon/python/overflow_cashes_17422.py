@@ -29,37 +29,75 @@ def get(n: int, ns: list, q: int, cache: list, cache2: list):
     return ans
 
 
+def set_max_tree(tree: list, p: int, n: int):
+    if p*2 > n:
+        return
+    tree[p] = max(tree[p*2], tree[p*2+1], tree[p])
+
+
+def update_seg_max(tree: list, p: int, v: int, n: int):
+    tree[p] = v
+    k = p
+    while True:
+        set_max_tree(tree, k, n)
+        k //= 2
+        if k < 1:
+            break
+
+
+def init_seg_max(tree: list, values: list, p: int, n: int):
+    if p > n:
+        return -1
+    left = init_seg_max(tree, values, p*2, n)
+    right = init_seg_max(tree, values, p*2+1, n)
+
+    if left == right == -1:
+        tree[p] = values[p]
+    else:
+        tree[p] = max(left, right, values[p])
+    return tree[p]
+
+
 def solution(n: int, ns: list, q: int, qs: list):
     max_val = -1
-    cache = [-1 for _ in range(n+1)]
-    cache2 = [-1 for _ in range(n+1)]
-    to_find = False
+    tree_1 = [-1 for _ in range(n+1)]
+    tree_2 = [-1 for _ in range(n+1)]
+    tree_3 = [-1 for _ in range(n+1)]
+
+    for i in range(1, n+1):
+        max_val = max(max_val, get(n, ns, i, tree_1, tree_2))
+
+    init_seg_max(tree_3, tree_2, 1, n)
+
+    print(tree_3[1])
+
     for num, val in qs:
         ns[num] = val
 
         k = num
         while True:
-            if cache2[k] == max_val:
-                to_find = True
-            cache[k] = -1
-            cache2[k] = -1
+            tree_1[k] = -1
+            get_max(n, ns, k, tree_1)
             if k == 1:
                 break
             k //= 2
 
-        if to_find:
-            to_find = False
-            max_val = 0
-            for i in range(1, n+1):
-                max_val = max(max_val, get(n, ns, i, cache, cache2))
-        print(max_val)
+        k = num
+        while True:
+            tree_2[k] = -1
+            v = get(n, ns, k, tree_1, tree_2)
+            update_seg_max(tree_3, k, v, n)
+            if k == 1:
+                break
+            k //= 2
+        print(tree_3[1])
 
 
 def main():
     n = read_single_int()
     ns = [0] + read_list_int()
     q = read_single_int()
-    qs = [[1, ns[1]]]
+    qs = []
     for _ in range(q):
         qs.append(read_list_int())
     solution(n, ns, q, qs)
