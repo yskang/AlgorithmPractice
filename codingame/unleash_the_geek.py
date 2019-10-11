@@ -1,7 +1,10 @@
 import sys
 import math
-from collections import deque
+from collections import deque, defaultdict
+from random import randint
 
+
+radar_positions = [(5, 4), (5, 10), (10, 8), (15, 4), (15, 10)]
 
 # Deliver more amadeusium to hq (left side of the map) than your opponent. 
 # Use radars to find amadeusium but beware of traps!
@@ -32,6 +35,25 @@ MISSION_DIG_HOLE = 202
 MISSION_MINING = 203
 MISSION_MOVE = 204
 
+state_text = {
+    STATE_IDLE: 'IDLE STATE',
+    STATE_INSTALL_RADAR: 'INSTALL RADAR',
+    STATE_INSTALL_TRAP: 'INSTALL TRAP',
+    STATE_DIG_HOLE: 'DIG HOLE',
+    STATE_MINING: 'MINING',
+    STATE_MOVING: 'MOVING',
+    STATE_REQUEST_RADAR: 'REQUEST RADAR',
+    STATE_REQUEST_TRAP: 'REQUEST TRAP'
+}
+
+mission_text = {
+    NONE: 'No Mission',
+    MISSION_INSTALL_RADAR: 'Mission install radar',
+    MISSION_INSTALL_TRAP: 'Mission install trap',
+    MISSION_DIG_HOLE: 'Mission dig hole',
+    MISSION_MINING: 'Missoin mining',
+    MISSION_MOVE: 'Mission move'
+}
 
 class Pos:
     def __init__(self, x, y):
@@ -61,6 +83,11 @@ class Robot(Entity):
     def is_dead(self):
         return self.x == -1 and self.y == -1
 
+    def update(self, x, y, item):
+        self.x = x
+        self.y = y
+        self.item = item
+
     def radar_install(self, x, y):
         self.mission = MISSION_INSTALL_RADAR
         self.mission_data = (x, y)
@@ -78,10 +105,12 @@ class Robot(Entity):
         self.mission_data = (x, y)
 
     def moving(self, x, y):
-        self.missoin = MISSION_MOVE
+        self.mission = MISSION_MOVE
         self.mission_data = (x, y)
 
     def do(self, game):
+        print(f'DO GAME: id:{self.id}, state:{state_text[self.state]}, mission:{mission_text[self.mission]}, item:{self.item}', file=sys.stderr)
+        print(f'MISSION DATA: {self.mission_data}', file=sys.stderr)
         if self.mission == NONE:
             self.state = STATE_IDLE
             self.wait(f'wait.. {self.id}')
@@ -89,55 +118,82 @@ class Robot(Entity):
             if self.state == STATE_IDLE and self.item == NONE:
                 self.state = STATE_REQUEST_RADAR
                 self.request(RADAR, f'give me RADAR!!! {self.id}')
+            elif self.state == STATE_REQUEST_RADAR and self.item == NONE:
+                self.request(RADAR, f'give me RADAR!!! waiting.. {self.id}')
             elif self.state == STATE_REQUEST_RADAR and self.item == RADAR:
                 self.state = STATE_INSTALL_RADAR
                 self.dig(self.mission_data[0], self.mission_data[1], f'install radar to {self.mission_data[0]}{self.mission_data[1]}')
-            elif self.state == STATE_INSTALL_RADAR:
-                for radar in game.radars:
-                    if radar.x == self.mission_data[0] and radar.y == self.mission_data[1]:
-                        self.state = STATE_IDLE
-                        self.mission = NONE
-                        self.wait(f'wait... {self.id}')
-                        break
-                else:
-                    self.dig(self.mission_data[0], self.mission_data[1], f'install radar to..')
+            elif self.state == STATE_INSTALL_RADAR and self.item == RADAR:
+                self.dig(self.mission_data[0], self.mission_data[1], f'install radar to {self.mission_data[0]}{self.mission_data[1]}')                
+            elif self.state == STATE_INSTALL_RADAR and self.item == NONE:
+                self.state = STATE_IDLE
+                self.mission = NONE
+                self.wait(f'wait... {self.id}')
+            elif self.state == STATE_INSTALL_RADAR and self.item == AMADEUSIUM:
+                self.mission = MISSION_MINING
+                self.state = STATE_MOVING
+                self.move(0, self.y, 'go home..')
+
         elif self.mission == MISSION_INSTALL_TRAP:
             if self.state == STATE_IDLE and self.item == NONE:
                 self.state = STATE_REQUEST_TRAP
                 self.request(TRAP, f'give me Trap!!! {self.id}')
+            elif self.state == STATE_REQUEST_TRAP and self.item == NONE:
+                self.request(TRAP, f'give me Trap!!! waiting.. {self.id}')
             elif self.state == STATE_REQUEST_TRAP and self.item == TRAP:
                 self.state = STATE_INSTALL_TRAP
                 self.dig(self.mission_data[0], self.mission_data[1], f'install trap to {self.mission_data[0]}{self.mission_data[1]}')
-            elif self.state == STATE_INSTALL_TRAP:
-                for trap in game.traps:
-                    if trap.x == self.mission_data[0] and trap.y == self.mission_data[1]:
-                        self.state = STATE_IDLE
-                        self.mission = NONE
-                        self.wait(f'wait... {self.id}')
-                        break
-                else:
-                    self.dig(self.mission_data[0], self.mission_data[1], f'install trap to..')
+            elif self.state == STATE_INSTALL_TRAP and self.item == TRAP:
+                self.dig(self.mission_data[0], self.mission_data[1], f'install trap to {self.mission_data[0]}{self.mission_data[1]}')                
+            elif self.state == STATE_INSTALL_TRAP and self.item == NONE:
+                self.state = STATE_IDLE
+                self.mission = NONE
+                self.wait(f'wait... {self.id}')
+            elif self.state == STATE_INSTALL_TRAP and self.item == AMADEUSIUM:
+                self.mission = MISSION_MINING
+                self.state = STATE_MOVING
+                self.move(0, self.y, 'go home..')
+
         elif self.mission == MISSION_DIG_HOLE:
-            if game.grid.get_cell(self.mission_data[0], self.mission_data[1]).hole == 0:
+            if game.grid.get_cell(int(self.mission_data[0]), int(self.mission_data[1])).hole == 0:
                 self.state = STATE_DIG_HOLE
                 self.dig(self.mission_data[0], self.mission_data[1], f'{self.id}')
+            elif self.item == 4:
+                self.mission = MISSION_MINING
+                self.state = STATE_MOVING
+                self.move(0, self.y, f'wow lucky!! {self.id}')
             else:
                 self.state = STATE_IDLE
                 self.wait(f'{self.id}')
                 self.mission = NONE
+
         elif self.mission == MISSION_MINING:
             if self.item != AMADEUSIUM and self.state == STATE_IDLE:
                 self.state = STATE_MINING
                 self.dig(self.mission_data[0], self.mission_data[1], f'{self.id}')
+            elif self.state == STATE_MINING and self.item == NONE:
+                print(f'here!!! ama left {game.grid.get_cell(int(self.mission_data[0]), int(self.mission_data[1])).amadeusium}', file=sys.stderr)
+                if game.grid.get_cell(int(self.mission_data[0]), int(self.mission_data[1])).amadeusium == '0' or game.grid.get_cell(int(self.mission_data[0]), int(self.mission_data[1])).amadeusium == '?':
+                    print('AAAAAA', file=sys.stderr)
+                    self.state = STATE_IDLE
+                    self.mission = NONE
+                    self.wait('no amadeusium!!')
+                else:
+                    print('BBB', file=sys.stderr)
+                    self.state = STATE_MINING
+                    self.dig(self.mission_data[0], self.mission_data[1], f'{self.id}')
             elif self.item == AMADEUSIUM and self.state == STATE_MINING:
                 self.state = STATE_MOVING
-                self.move(0, self.y)
+                self.move(0, self.y, 'gogogo')
+            elif self.item == AMADEUSIUM and self.state == STATE_MOVING:
+                self.move(0, self.y, 'keep going')
             elif self.item == NONE and self.state == STATE_MINING:
                 self.dig(self.mission_data[0], self.mission_data[1], f'{self.id}')
             elif self.item == NONE and self.state == STATE_MOVING:
                 self.mission = NONE
                 self.state = STATE_IDLE
                 self.wait(f'{self.id}')
+
         elif self.mission == MISSION_MOVE:
             self.state = STATE_MOVING
             if self.mission_data[0] == self.x and self.mission_data[1] == self.y:
@@ -206,29 +262,50 @@ class Game:
         self.trap_cooldown = 0
         self.radars = []
         self.traps = []
-        self.my_robots = []
+        self.my_robots = defaultdict(lambda: None)
         self.enemy_robots = []
 
     def reset(self):
         self.radars = []
         self.traps = []
-        self.my_robots = []
         self.enemy_robots = []
 
 
+def get_amadeusiums(game):
+    amadeusiums = []
+    for x in range(1, 29):
+        for y in range(0, 14):
+            if game.grid.get_cell(x, y).amadeusium != '?' and int(game.grid.get_cell(x, y).amadeusium) > 0:
+                amadeusiums.append((x, y))
+    return amadeusiums
+
+
 def analysis(game: Game, missions: deque):
-    pass
+    if game.radar_cooldown <= 1 and radar_positions:
+        x, y = radar_positions.pop(0)
+        missions.append(f'install radar on {x} {y}')
+
+    amadeusiums = get_amadeusiums(game)
+
+    if len(missions) < 5 and len(amadeusiums) == 0:
+        for _ in range(5-len(missions)):
+            x, y = randint(1, 5), randint(0, 14)
+            missions.append(f'dig on {x} {y}')
+    
+    for x, y in amadeusiums:
+        missions.append(f'mining on {x} {y}')
+
 
 
 def find_best_robot(game: Game, mission: str):
-    for robot in game.my_robots:
-        if robot.mission == NONE:
-            return robot.id
+    for id in game.my_robots:
+        if game.my_robots[id].mission == NONE:
+            return id
 
 
 def is_robot(game: Game):
-    for robot in game.my_robots:
-        if robot.mission == NONE:
+    for id in game.my_robots:
+        if game.my_robots[id].mission == NONE:
             return True
     return False
 
@@ -244,22 +321,26 @@ def set_mission(game, id, mission):
         game.my_robots[id].mining(commands[2], commands[3])
     elif commands[0] == 'move':
         game.my_robots[id].moving(commands[2], commands[3])
+    elif commands[0] == 'dig':
+        game.my_robots[id].digging(commands[2], commands[3])
     elif commands[0] == 'wait':
-        game.my_robots[id].wait()
+        pass
 
 
-    game.my_robots[id]
+def log_robots(game):
+    print('- log robots -', file=sys.stderr)
+    for id in game.my_robots:
+        print(f'robot id:{id} mission:{mission_text[game.my_robots[id].mission]} state:{state_text[game.my_robots[id].state]}', file=sys.stderr)
 
 
 game = Game()
 missions = deque()
 
-missions.append('install radar on 5 5')
-missions.append('install trap on 6 6')
-missions.append('mining at 5 6')
-missions.append('move to 10 20')
-missions.append('wait')
-
+# missions.append('install radar on 5 4')
+# missions.append('install radar on 5 10')
+# missions.append('install radar on 15 4')
+# missions.append('install radar on 15 10')
+# missions.append('install trap on 10 8')
 
 # game loop
 while True:
@@ -279,7 +360,7 @@ while True:
     entity_count, game.radar_cooldown, game.trap_cooldown = [int(i) for i in input().split()]
 
     game.reset()
-
+    ids = []
     for i in range(entity_count):
         # id: unique id of the entity
         # type: 0 for your robot, 1 for other robot, 2 for radar, 3 for trap
@@ -288,7 +369,11 @@ while True:
         id, type, x, y, item = [int(j) for j in input().split()]
 
         if type == ROBOT_ALLY:
-            game.my_robots.append(Robot(x, y, type, id, item))
+            ids.append(id)
+            if game.my_robots[id]:
+                game.my_robots[id].update(x, y, item)
+            else:
+                game.my_robots[id] = Robot(x, y, type, id, item)
         elif type == ROBOT_ENEMY:
             game.enemy_robots.append(Robot(x, y, type, id, item))
         elif type == TRAP:
@@ -305,5 +390,7 @@ while True:
         print(f'best robot for this mission is: {id}', file=sys.stderr)
         set_mission(game, id, mission)
 
-    for robot in game.my_robots:
-        robot.do(game)
+
+    log_robots(game)
+    for id in ids:
+        game.my_robots[id].do(game)
