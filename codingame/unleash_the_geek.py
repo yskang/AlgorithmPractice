@@ -4,8 +4,6 @@ from collections import deque, defaultdict
 from random import randint
 
 
-radar_positions = [(5, 4), (5, 10), (10, 8), (15, 4), (15, 10)]
-
 # Deliver more amadeusium to hq (left side of the map) than your opponent. 
 # Use radars to find amadeusium but beware of traps!
 
@@ -126,9 +124,17 @@ class Robot(Entity):
             elif self.state == STATE_INSTALL_RADAR and self.item == RADAR:
                 self.dig(self.mission_data[0], self.mission_data[1], f'install radar to {self.mission_data[0]}{self.mission_data[1]}')                
             elif self.state == STATE_INSTALL_RADAR and self.item == NONE:
-                self.state = STATE_IDLE
-                self.mission = NONE
-                self.wait(f'wait... {self.id}')
+                self.mission = MISSION_MINING
+                self.state = STATE_MINING
+                if missions:
+                    mission = missions.popleft().split()
+                    self.mission_data = (mission[2], mission[3])
+                    self.dig(mission[2], mission[3], 'go to mining')
+                else:
+                    x, y = (randint(-3, 3), randint(-3, 3))
+                    self.mission_data = (self.x + x, self.y + y)
+                    self.dig(self.x+x, self.y+y, 'go to mining')
+
             elif self.state == STATE_INSTALL_RADAR and self.item == AMADEUSIUM:
                 self.mission = MISSION_MINING
                 self.state = STATE_MOVING
@@ -172,14 +178,20 @@ class Robot(Entity):
                 self.state = STATE_MINING
                 self.dig(self.mission_data[0], self.mission_data[1], f'{self.id}')
             elif self.state == STATE_MINING and self.item == NONE:
-                print(f'here!!! ama left {game.grid.get_cell(int(self.mission_data[0]), int(self.mission_data[1])).amadeusium}', file=sys.stderr)
-                if game.grid.get_cell(int(self.mission_data[0]), int(self.mission_data[1])).amadeusium == '0' or game.grid.get_cell(int(self.mission_data[0]), int(self.mission_data[1])).amadeusium == '?':
-                    print('AAAAAA', file=sys.stderr)
-                    self.state = STATE_IDLE
-                    self.mission = NONE
-                    self.wait('no amadeusium!!')
+                if game.grid.get_cell(int(self.mission_data[0]), int(self.mission_data[1])).amadeusium in ['0', '?']:
+                    print(f'get another mission', file=sys.stderr)
+                    while missions:
+                        mission = missions.popleft().split()
+                        if mission[0] == 'mining':
+                            x, y = mission[2], mission[3]
+                            if game.grid.get_cell(int(x), int(y)).amadeusium not in ['0', '?']:
+                                self.mission_data = (x, y)
+                                break
+                    else:
+                        pass
+                    self.dig(self.mission_data[0], self.mission_data[1], 'random mining..')
+
                 else:
-                    print('BBB', file=sys.stderr)
                     self.state = STATE_MINING
                     self.dig(self.mission_data[0], self.mission_data[1], f'{self.id}')
             elif self.item == AMADEUSIUM and self.state == STATE_MINING:
@@ -255,6 +267,7 @@ class Grid:
 
 class Game:
     def __init__(self):
+        self.radar_positions = deque([(5, 4), (5, 10), (10, 8), (15, 4), (15, 10), (25, 4), (25, 10), (20, 8)])
         self.grid = Grid()
         self.my_score = 0
         self.enemy_score = 0
@@ -280,10 +293,24 @@ def get_amadeusiums(game):
     return amadeusiums
 
 
-def analysis(game: Game, missions: deque):
-    if game.radar_cooldown <= 1 and radar_positions:
-        x, y = radar_positions.pop(0)
-        missions.append(f'install radar on {x} {y}')
+def analysis(game: Game, missions: deque, radar_missions: deque):
+    if game.radar_cooldown < 1:
+        if game.radars == []:
+            x, y = game.radar_positions[0]
+            radar_missions.append(f'install radar on {x} {y}')
+            game.radar_positions.rotate(-1)
+        elif game.radars != []:
+            while True:
+                x, y = game.radar_positions[0]
+                for radar in game.radars:
+                    if x == radar.x and y == radar.y:
+                        break
+                else:
+                    radar_missions.append(f'install radar on {x} {y}')
+                    game.radar_positions.rotate(-1)
+                    break
+                game.radar_positions.rotate(-1)
+
 
     amadeusiums = get_amadeusiums(game)
 
@@ -335,6 +362,7 @@ def log_robots(game):
 
 game = Game()
 missions = deque()
+radar_missions = deque()
 
 # missions.append('install radar on 5 4')
 # missions.append('install radar on 5 10')
@@ -381,15 +409,27 @@ while True:
         elif type == RADAR:
             game.radars.append(Entity(x, y, type, id))
 
-    analysis(game, missions)
+    analysis(game, missions, radar_missions)
+    is_radar_mission = False
+
+    count_radar_robot = 0
+    for id in game.my_robots:
+        if game.my_robots[id].mission == MISSION_INSTALL_RADAR:
+            count_radar_robot += 1
+
+    amadeusiums = get_amadeusiums(game)
 
     while is_robot(game) and missions:
-        mission = missions.popleft()
+        if not is_radar_mission and game.radar_cooldown == 0 and len(radar_missions) > 0 and count_radar_robot == 0 and (len(game.radars) < 2 or len(amadeusiums) < 5):
+            mission = radar_missions.popleft()
+            is_radar_mission = True
+            print('append rada mission', file=sys.stderr)
+        else:
+            mission = missions.popleft()
         print(f'patched mission is: {mission}', file=sys.stderr)
         id = find_best_robot(game, mission)
         print(f'best robot for this mission is: {id}', file=sys.stderr)
         set_mission(game, id, mission)
-
 
     log_robots(game)
     for id in ids:
