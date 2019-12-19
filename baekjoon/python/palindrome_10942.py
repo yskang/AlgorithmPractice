@@ -12,22 +12,11 @@ read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
 def solution(n: int, nums: list, m: int, questions: list):
-    dp = [[0 for _ in range(n)] for _ in range(n)]
-    for d in range(n):
+    dp = [[1 for _ in range(n)] for _ in range(n)]
+    for d in range(1, n):
         for s in range(n-d):
-            if d == 0:
-                dp[s][s+d] = 1
-            elif d == 1:
-                if nums[s] == nums[s+d]:
-                    dp[s][s+d] = 1
-                else:
-                    dp[s][s+d] = 0
-            else:
-                if dp[s+1][s+d-1] == 1 and nums[s] == nums[s+d]:
-                    dp[s][s+d] = 1
-                else:
-                    dp[s][s+d] = 0
-
+            if dp[s+1][s+d-1] == 0 or nums[s] != nums[s+d]:
+                dp[s][s+d] = 0
     for s, e in questions:
         print( dp[s-1][e-1])
 
