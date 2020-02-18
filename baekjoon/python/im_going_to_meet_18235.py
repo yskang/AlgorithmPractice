@@ -15,29 +15,26 @@ def bfs(n: int, b: int):
     queue = deque()
     queue.append((b, 0))
 
-    positions = set()
-
-    yield
+    pos = [0 for _ in range(n+1)]
 
     t = 0
     while queue:
         ori, time = queue.popleft()
-        positions.discard((ori, time))
 
         if t != time:
             t += 1
-            positions.add((ori, time))
-            yield positions
-            positions.discard((ori, time))
+            pos[ori] = time
+            yield pos
 
-        p = ori - pow(2, time)
+        offset = pow(2, time)
+        p = ori - offset
         if 0 < p:
             queue.append((p, time+1))
-            positions.add((p, time+1))
-        p = ori + pow(2, time)
+            pos[p] = time+1
+        p = ori + offset
         if p <= n:
             queue.append((p, time+1))
-            positions.add((p, time+1))
+            pos[p] = time+1
 
     yield -1
 
@@ -47,29 +44,29 @@ def solution(n: int, a: int, b: int):
     queue.append((a, 0))
 
     bfs_co = bfs(n, b)
-    next(bfs_co)
+    ori_b = next(bfs_co)
 
     t = 0
     while queue:
         ori, time = queue.popleft()
 
-        if t != time:
+        if time != t:
             t += 1
             ori_b = next(bfs_co)
             if ori_b == -1:
                 return -1
-            if ((ori, time)) in ori_b:
-                return time
-            for ori_a in queue:
-                if ori_a in ori_b:
-                    return time
 
-        p = ori - pow(2, time)
+        offset = pow(2, time)
+        p = ori - offset
         if p > 0:
             queue.append((p, time+1))
-        p = ori + pow(2, time)
+            if ori_b[p] == time+1:
+                return time+1
+        p = ori + offset
         if p <= n:
             queue.append((p, time+1))
+            if ori_b[p] == time+1:
+                return time+1
 
     return -1
 
