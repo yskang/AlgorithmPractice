@@ -46,6 +46,7 @@ def solution(n: int, m: int, q: int, a_list: list, updates: list, queries: list)
     for query in queries:
         if query[0] == 1:
             bit.update_range(query[1], query[2], query[3])
+            print(f'update: {query[1]}, {query[2]}, {query[3]}')
         else:
             ql, qr = query[1], query[2]
             res = prefix_xors[qr] ^ prefix_xors[ql-1]
@@ -56,6 +57,7 @@ def solution(n: int, m: int, q: int, a_list: list, updates: list, queries: list)
                 if (min(r, qr) - max(l, ql) + 1) % 2:
                     res ^= bit._query(i+1) ^ x
             ans.append(str(res))
+            print(f'res: {res}')
     return '\n'.join(ans)
 
 
