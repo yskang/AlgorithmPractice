@@ -12,6 +12,8 @@ class Solution:
         prev_num = None
 
         for i, num in enumerate(nums):
+            if num > 0:
+                break
             if prev_num != num:
                 prev_num = num
                 left, right = i+1, len(nums)-1
