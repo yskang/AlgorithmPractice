@@ -5,7 +5,7 @@ from itertools import combinations
 from collections import defaultdict
 
 class Solution:
-    def threeSum(self, nums: list) -> list:
+    def three_sum(self, nums: list) -> list:
         ans = set()
         ans_dict = set()
 
@@ -48,7 +48,7 @@ class Solution:
 def main():
     solution = Solution()
     nums = [-1, 0, 1, 2, -1, -4]
-    print(solution.threeSum(nums))
+    print(solution.three_sum(nums))
 
 
 if __name__ == '__main__':
