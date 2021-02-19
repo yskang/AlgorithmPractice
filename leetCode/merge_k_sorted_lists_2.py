@@ -1,5 +1,6 @@
 # Title: Merge k Sorted Lists
 # Link: https://leetcode.com/problems/merge-k-sorted-lists/
+from typing import List
 
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -8,7 +9,7 @@ class ListNode:
 
 
 class Problem:
-    def merge_k_lists(self, lists: list) -> ListNode:
+    def merge_k_lists(self, lists: List) -> ListNode:
         if not lists:
             return None
         elif len(lists) == 1:
