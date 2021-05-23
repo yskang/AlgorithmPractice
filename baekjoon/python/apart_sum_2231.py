@@ -15,7 +15,7 @@ def read_single_int():
 
 
 def get_sum(n):
-    for creator in range(1, n):
+    for creator in range(max(1, n-54), n):
         s = creator
         for c in str(creator):
             s += int(c)
