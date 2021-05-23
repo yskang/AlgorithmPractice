@@ -1,0 +1,2656 @@
+Standard Error Stream:
+input:37
+01
+93
+Game Summary:
+Round 0/23
+YSKang has collected 2 sun points
+Bossoot has collected 2 sun points
+Standard Error Stream:
+input:0 3 1 2 3 4 5 6
+input:1 3 7 8 2 0 6 18
+input:2 3 8 9 10 3 0 1
+input:3 3 2 10 11 12 4 0
+input:4 3 0 3 12 13 14 5
+input:5 3 6 0 4 14 15 16
+input:6 3 18 1 0 5 16 17
+input:7 2 19 20 8 1 18 36
+input:8 2 20 21 9 2 1 7
+input:9 2 21 22 23 10 2 8
+input:10 2 9 23 24 11 3 2
+input:11 0 10 24 25 26 12 3
+input:12 2 3 11 26 27 13 4
+input:13 2 4 12 27 28 29 14
+input:14 2 5 4 13 29 30 15
+input:15 2 16 5 14 30 31 32
+input:16 2 17 6 5 15 32 33
+input:17 0 35 18 6 16 33 34
+input:18 2 36 7 1 6 17 35
+input:19 1 -1 -1 20 7 36 -1
+input:20 1 -1 -1 21 8 7 19
+input:21 1 -1 -1 22 9 8 20
+input:22 1 -1 -1 -1 23 9 21
+input:23 1 22 -1 -1 24 10 9
+input:24 1 23 -1 -1 25 11 10
+input:25 1 24 -1 -1 -1 26 11
+input:26 1 11 25 -1 -1 27 12
+input:27 1 12 26 -1 -1 28 13
+input:28 1 13 27 -1 -1 -1 29
+input:29 1 14 13 28 -1 -1 30
+input:30 1 15 14 29 -1 -1 31
+input:31 1 32 15 30 -1 -1 -1
+input:32 1 33 16 15 31 -1 -1
+input:33 1 34 17 16 32 -1 -1
+input:34 1 -1 35 17 33 -1 -1
+input:35 1 -1 36 18 17 34 -1
+input:36 1 -1 19 7 18 35 -1
+input:0
+input:20
+input:2 0
+input:2 0 0
+input:4
+input:19 1 1 0
+input:25 1 0 0
+input:28 1 0 0
+input:34 1 1 0
+input:6
+input:WAIT
+input:SEED 19 7
+input:SEED 34 35
+input:SEED 19 20
+input:SEED 34 33
+input:SEED 19 36
+prev action is None
+Standard Output Stream:
+SEED 19 7
+02
+93
+Standard Output Stream:
+WAIT
+Game Summary:
+Round 0/23
+YSKang is planting a seed on cell 7 from cell 19
+Bossoot is waiting
+Standard Error Stream:
+input:0
+input:20
+input:2 0
+input:2 0 1
+input:5
+input:7 0 1 1
+input:19 1 1 1
+input:25 1 0 0
+input:28 1 0 0
+input:34 1 1 0
+input:3
+input:WAIT
+input:SEED 34 35
+input:SEED 34 33
+prev action is SEED 19 7
+Standard Output Stream:
+SEED 34 35
+03
+93
+Game Summary:
+Round 0/23
+YSKang is planting a seed on cell 35 from cell 34
+Standard Error Stream:
+input:0
+input:20
+input:1 0
+input:2 0 1
+input:6
+input:7 0 1 1
+input:19 1 1 1
+input:25 1 0 0
+input:28 1 0 0
+input:34 1 1 1
+input:35 0 1 1
+input:1
+input:WAIT
+prev action is SEED 34 35
+Standard Output Stream:
+WAIT
+04
+93
+Game Summary:
+Round 0/23
+YSKang is waiting
+Game Summary:
+Round 0 ends
+The sun is now pointing towards direction 1
+Round 1 starts
+Game Summary:
+Round 1/23
+YSKang has collected 2 sun points
+Bossoot has collected 2 sun points
+Standard Error Stream:
+input:1
+input:20
+input:3 0
+input:4 0 0
+input:6
+input:7 0 1 0
+input:19 1 1 0
+input:25 1 0 0
+input:28 1 0 0
+input:34 1 1 0
+input:35 0 1 0
+input:8
+input:WAIT
+input:GROW 35
+input:GROW 34
+input:GROW 19
+input:GROW 7
+input:SEED 34 33
+input:SEED 19 20
+input:SEED 19 36
+prev action is WAIT
+Standard Output Stream:
+GROW 35
+07
+93
+Standard Output Stream:
+GROW 25
+Game Summary:
+Round 1/23
+YSKang is growing a tree on cell 35
+Bossoot is growing a tree on cell 25
+Standard Error Stream:
+input:1
+input:20
+input:0 0
+input:1 0 0
+input:6
+input:7 0 1 0
+input:19 1 1 0
+input:25 2 0 1
+input:28 1 0 0
+input:34 1 1 0
+input:35 1 1 1
+input:1
+input:WAIT
+prev action is GROW 35
+Standard Output Stream:
+WAIT
+08
+93
+Standard Output Stream:
+WAIT
+Game Summary:
+Round 1/23
+YSKang is waiting
+Bossoot is waiting
+Game Summary:
+Round 1 ends
+The sun is now pointing towards direction 2
+Round 2 starts
+Game Summary:
+Round 2/23
+YSKang has collected 3 sun points
+Bossoot has collected 3 sun points
+Standard Error Stream:
+input:2
+input:20
+input:3 0
+input:4 0 0
+input:6
+input:7 0 1 0
+input:19 1 1 0
+input:25 2 0 0
+input:28 1 0 0
+input:34 1 1 0
+input:35 1 1 0
+input:9
+input:WAIT
+input:GROW 19
+input:GROW 34
+input:GROW 35
+input:SEED 35 36
+input:SEED 34 33
+input:SEED 19 36
+input:SEED 19 20
+input:SEED 35 18
+prev action is WAIT
+Standard Output Stream:
+GROW 19
+11
+93
+Standard Output Stream:
+GROW 28
+Game Summary:
+Round 2/23
+YSKang is growing a tree on cell 19
+Bossoot is growing a tree on cell 28
+Standard Error Stream:
+input:2
+input:20
+input:0 0
+input:0 0 0
+input:6
+input:7 0 1 0
+input:19 2 1 1
+input:25 2 0 0
+input:28 2 0 1
+input:34 1 1 0
+input:35 1 1 0
+input:1
+input:WAIT
+prev action is GROW 19
+Standard Output Stream:
+WAIT
+12
+93
+Standard Output Stream:
+SEED 25 3
+Game Summary:
+Round 2/23
+YSKang is waiting
+Bossoot is planting a seed on cell 3 from cell 25
+Standard Output Stream:
+WAIT
+13
+93
+Game Summary:
+Round 2/23
+Bossoot is waiting
+Game Summary:
+Round 2 ends
+The sun is now pointing towards direction 3
+Round 3 starts
+Game Summary:
+Round 3/23
+YSKang has collected 4 sun points
+Bossoot has collected 4 sun points
+Standard Error Stream:
+input:3
+input:20
+input:4 0
+input:4 0 0
+input:7
+input:3 0 0 0
+input:7 0 1 0
+input:19 2 1 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 1 1 0
+input:35 1 1 0
+input:13
+input:WAIT
+input:GROW 34
+input:GROW 7
+input:GROW 35
+input:SEED 19 20
+input:SEED 19 18
+input:SEED 19 21
+input:SEED 19 8
+input:SEED 35 18
+input:SEED 19 36
+input:SEED 34 33
+input:SEED 35 36
+input:SEED 19 1
+prev action is WAIT
+Standard Output Stream:
+GROW 34
+16
+93
+Standard Output Stream:
+GROW 3
+Game Summary:
+Round 3/23
+YSKang is growing a tree on cell 34
+Bossoot is growing a tree on cell 3
+Standard Error Stream:
+input:3
+input:20
+input:0 0
+input:3 0 0
+input:7
+input:3 1 0 1
+input:7 0 1 0
+input:19 2 1 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 1
+input:35 1 1 0
+input:1
+input:WAIT
+prev action is GROW 34
+Standard Output Stream:
+WAIT
+17
+93
+Standard Output Stream:
+SEED 28 14
+Game Summary:
+Round 3/23
+YSKang is waiting
+Bossoot is planting a seed on cell 14 from cell 28
+Standard Output Stream:
+SEED 25 23
+18
+93
+Game Summary:
+Round 3/23
+Bossoot is planting a seed on cell 23 from cell 25
+Standard Output Stream:
+WAIT
+19
+93
+Game Summary:
+Round 3/23
+Bossoot is waiting
+Game Summary:
+Round 3 ends
+The sun is now pointing towards direction 4
+Round 4 starts
+Game Summary:
+Round 4/23
+YSKang has collected 4 sun points
+Bossoot has collected 5 sun points
+Standard Error Stream:
+input:4
+input:20
+input:4 0
+input:7 0 0
+input:9
+input:3 1 0 0
+input:7 0 1 0
+input:14 0 0 0
+input:19 2 1 0
+input:23 0 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 0
+input:35 1 1 0
+input:16
+input:WAIT
+input:GROW 7
+input:SEED 35 36
+input:SEED 19 18
+input:SEED 19 21
+input:SEED 34 6
+input:SEED 34 36
+input:SEED 34 16
+input:SEED 19 20
+input:SEED 34 32
+input:SEED 19 36
+input:SEED 35 18
+input:SEED 34 18
+input:SEED 19 1
+input:SEED 34 33
+input:SEED 19 8
+prev action is WAIT
+Standard Output Stream:
+GROW 7
+22
+93
+Standard Output Stream:
+GROW 3
+Game Summary:
+Round 4/23
+YSKang is growing a tree on cell 7
+Bossoot is growing a tree on cell 3
+Standard Error Stream:
+input:4
+input:20
+input:2 0
+input:2 0 0
+input:9
+input:3 2 0 1
+input:7 1 1 1
+input:14 0 0 0
+input:19 2 1 0
+input:23 0 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 0
+input:35 1 1 0
+input:15
+input:WAIT
+input:SEED 19 36
+input:SEED 19 8
+input:SEED 34 16
+input:SEED 19 21
+input:SEED 19 20
+input:SEED 35 18
+input:SEED 34 18
+input:SEED 34 33
+input:SEED 34 36
+input:SEED 34 32
+input:SEED 34 6
+input:SEED 19 18
+input:SEED 35 36
+input:SEED 19 1
+prev action is GROW 7
+Standard Output Stream:
+SEED 19 36
+23
+93
+Standard Output Stream:
+GROW 14
+Game Summary:
+Round 4/23
+YSKang is planting a seed on cell 36 from cell 19
+Bossoot is growing a tree on cell 14
+Standard Error Stream:
+input:4
+input:20
+input:2 0
+input:1 0 0
+input:10
+input:3 2 0 1
+input:7 1 1 1
+input:14 1 0 1
+input:19 2 1 1
+input:23 0 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 1
+input:7
+input:WAIT
+input:SEED 34 18
+input:SEED 34 32
+input:SEED 34 16
+input:SEED 34 33
+input:SEED 34 6
+input:SEED 35 18
+prev action is SEED 19 36
+Standard Output Stream:
+SEED 34 18
+24
+93
+Standard Output Stream:
+WAIT
+Game Summary:
+Round 4/23
+YSKang is planting a seed on cell 18 from cell 34
+Bossoot is waiting
+Standard Error Stream:
+input:4
+input:20
+input:1 0
+input:1 0 1
+input:11
+input:3 2 0 1
+input:7 1 1 1
+input:14 1 0 1
+input:18 0 1 1
+input:19 2 1 1
+input:23 0 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 1
+input:35 1 1 0
+input:36 0 1 1
+input:1
+input:WAIT
+prev action is SEED 34 18
+Standard Output Stream:
+WAIT
+25
+93
+Game Summary:
+Round 4/23
+YSKang is waiting
+Game Summary:
+Round 4 ends
+The sun is now pointing towards direction 5
+Round 5 starts
+Game Summary:
+Round 5/23
+YSKang has collected 6 sun points
+Bossoot has collected 5 sun points
+Standard Error Stream:
+input:5
+input:20
+input:7 0
+input:6 0 0
+input:11
+input:3 2 0 0
+input:7 1 1 0
+input:14 1 0 0
+input:18 0 1 0
+input:19 2 1 0
+input:23 0 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:18
+input:WAIT
+input:GROW 19
+input:GROW 35
+input:GROW 18
+input:GROW 36
+input:GROW 34
+input:GROW 7
+input:SEED 34 6
+input:SEED 7 8
+input:SEED 34 32
+input:SEED 7 20
+input:SEED 19 21
+input:SEED 19 1
+input:SEED 34 33
+input:SEED 19 8
+input:SEED 7 1
+input:SEED 34 16
+input:SEED 19 20
+prev action is WAIT
+Standard Output Stream:
+GROW 19
+28
+93
+Standard Output Stream:
+GROW 14
+Game Summary:
+Round 5/23
+YSKang is growing a tree on cell 19
+Bossoot is growing a tree on cell 14
+Standard Error Stream:
+input:5
+input:20
+input:0 0
+input:0 0 0
+input:11
+input:3 2 0 0
+input:7 1 1 0
+input:14 2 0 1
+input:18 0 1 0
+input:19 3 1 1
+input:23 0 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:1
+input:WAIT
+prev action is GROW 19
+Standard Output Stream:
+WAIT
+29
+93
+Standard Output Stream:
+WAIT
+Game Summary:
+Round 5/23
+YSKang is waiting
+Bossoot is waiting
+Game Summary:
+Round 5 ends
+The sun is now pointing towards direction 0
+Round 6 starts
+Game Summary:
+Round 6/23
+YSKang has collected 7 sun points
+Bossoot has collected 8 sun points
+Standard Error Stream:
+input:6
+input:20
+input:7 0
+input:8 0 0
+input:11
+input:3 2 0 0
+input:7 1 1 0
+input:14 2 0 0
+input:18 0 1 0
+input:19 3 1 0
+input:23 0 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:22
+input:WAIT
+input:COMPLETE 19
+input:GROW 36
+input:GROW 18
+input:GROW 7
+input:GROW 35
+input:SEED 19 2
+input:SEED 19 8
+input:SEED 19 21
+input:SEED 7 1
+input:SEED 19 0
+input:SEED 34 6
+input:SEED 34 33
+input:SEED 7 20
+input:SEED 19 20
+input:SEED 34 32
+input:SEED 19 6
+input:SEED 34 16
+input:SEED 19 22
+input:SEED 19 9
+input:SEED 19 1
+input:SEED 7 8
+prev action is WAIT
+Standard Output Stream:
+COMPLETE 19
+32
+93
+Standard Output Stream:
+GROW 3
+Game Summary:
+Round 6/23
+Bossoot is growing a tree on cell 3
+YSKang is ending their tree life on cell 19, scoring 20 points
+Standard Error Stream:
+input:6
+input:19
+input:3 20
+input:1 0 0
+input:10
+input:3 3 0 1
+input:7 1 1 0
+input:14 2 0 0
+input:18 0 1 0
+input:23 0 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:11
+input:WAIT
+input:GROW 18
+input:GROW 36
+input:SEED 7 19
+input:SEED 7 8
+input:SEED 34 6
+input:SEED 7 20
+input:SEED 7 1
+input:SEED 34 32
+input:SEED 34 33
+input:SEED 34 16
+prev action is COMPLETE 19
+Standard Output Stream:
+GROW 18
+33
+93
+Standard Output Stream:
+GROW 23
+Game Summary:
+Round 6/23
+YSKang is growing a tree on cell 18
+Bossoot is growing a tree on cell 23
+Standard Error Stream:
+input:6
+input:19
+input:0 20
+input:0 0 0
+input:10
+input:3 3 0 1
+input:7 1 1 0
+input:14 2 0 0
+input:18 1 1 1
+input:23 1 0 1
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:1
+input:WAIT
+prev action is GROW 18
+Standard Output Stream:
+WAIT
+34
+93
+Standard Output Stream:
+SEED 14 6
+Game Summary:
+Round 6/23
+YSKang is waiting
+Bossoot is planting a seed on cell 6 from cell 14
+Standard Output Stream:
+WAIT
+35
+93
+Game Summary:
+Round 6/23
+Bossoot is waiting
+Game Summary:
+Round 6 ends
+The sun is now pointing towards direction 1
+Round 7 starts
+Game Summary:
+Round 7/23
+YSKang has collected 3 sun points
+Bossoot has collected 9 sun points
+Standard Error Stream:
+input:7
+input:19
+input:3 20
+input:9 0 0
+input:11
+input:3 3 0 0
+input:6 0 0 0
+input:7 1 1 0
+input:14 2 0 0
+input:18 1 1 0
+input:23 1 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:9
+input:WAIT
+input:SEED 7 8
+input:SEED 7 19
+input:SEED 34 32
+input:SEED 7 20
+input:SEED 34 33
+input:SEED 7 1
+input:SEED 34 16
+input:SEED 18 1
+prev action is WAIT
+Standard Output Stream:
+SEED 7 8
+38
+93
+Standard Output Stream:
+GROW 6
+Game Summary:
+Round 7/23
+YSKang is planting a seed on cell 8 from cell 7
+Bossoot is growing a tree on cell 6
+Standard Error Stream:
+input:7
+input:19
+input:2 20
+input:7 0 0
+input:12
+input:3 3 0 0
+input:6 1 0 1
+input:7 1 1 1
+input:8 0 1 1
+input:14 2 0 0
+input:18 1 1 0
+input:23 1 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:5
+input:WAIT
+input:SEED 34 32
+input:SEED 18 1
+input:SEED 34 33
+input:SEED 34 16
+prev action is SEED 7 8
+Standard Output Stream:
+SEED 34 32
+39
+93
+Standard Output Stream:
+GROW 23
+Game Summary:
+Round 7/23
+YSKang is planting a seed on cell 32 from cell 34
+Bossoot is growing a tree on cell 23
+Standard Error Stream:
+input:7
+input:19
+input:0 20
+input:1 0 0
+input:13
+input:3 3 0 0
+input:6 1 0 1
+input:7 1 1 1
+input:8 0 1 1
+input:14 2 0 0
+input:18 1 1 0
+input:23 2 0 1
+input:25 2 0 0
+input:28 2 0 0
+input:32 0 1 1
+input:34 2 1 1
+input:35 1 1 0
+input:36 0 1 0
+input:1
+input:WAIT
+prev action is SEED 34 32
+Standard Output Stream:
+WAIT
+40
+93
+Standard Output Stream:
+SEED 3 20
+Game Summary:
+Round 7/23
+YSKang is waiting
+Bossoot is planting a seed on cell 20 from cell 3
+Standard Output Stream:
+SEED 14 31
+41
+93
+Game Summary:
+Round 7/23
+Bossoot is planting a seed on cell 31 from cell 14
+Standard Output Stream:
+WAIT
+42
+93
+Game Summary:
+Round 7/23
+Bossoot is waiting
+Game Summary:
+Round 7 ends
+The sun is now pointing towards direction 2
+Round 8 starts
+Game Summary:
+Round 8/23
+YSKang has collected 4 sun points
+Bossoot has collected 9 sun points
+Standard Error Stream:
+input:8
+input:19
+input:4 20
+input:9 0 0
+input:15
+input:3 3 0 0
+input:6 1 0 0
+input:7 1 1 0
+input:8 0 1 0
+input:14 2 0 0
+input:18 1 1 0
+input:20 0 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 0 0 0
+input:32 0 1 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:12
+input:WAIT
+input:GROW 7
+input:GROW 8
+input:GROW 32
+input:GROW 35
+input:GROW 18
+input:GROW 36
+input:SEED 18 1
+input:SEED 7 1
+input:SEED 34 16
+input:SEED 7 19
+input:SEED 34 33
+prev action is WAIT
+Standard Output Stream:
+GROW 7
+45
+93
+Standard Output Stream:
+GROW 6
+Game Summary:
+Round 8/23
+YSKang is growing a tree on cell 7
+Bossoot is growing a tree on cell 6
+Standard Error Stream:
+input:8
+input:19
+input:0 20
+input:2 0 0
+input:15
+input:3 3 0 0
+input:6 2 0 1
+input:7 2 1 1
+input:8 0 1 0
+input:14 2 0 0
+input:18 1 1 0
+input:20 0 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 0 0 0
+input:32 0 1 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:1
+input:WAIT
+prev action is GROW 7
+Standard Output Stream:
+WAIT
+46
+93
+Standard Output Stream:
+GROW 20
+Game Summary:
+Round 8/23
+YSKang is waiting
+Bossoot is growing a tree on cell 20
+Standard Output Stream:
+WAIT
+47
+93
+Game Summary:
+Round 8/23
+Bossoot is waiting
+Game Summary:
+Round 8 ends
+The sun is now pointing towards direction 3
+Round 9 starts
+Game Summary:
+Round 9/23
+YSKang has collected 6 sun points
+Bossoot has collected 10 sun points
+Standard Error Stream:
+input:9
+input:19
+input:6 20
+input:11 0 0
+input:15
+input:3 3 0 0
+input:6 2 0 0
+input:7 2 1 0
+input:8 0 1 0
+input:14 2 0 0
+input:18 1 1 0
+input:20 1 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 0 0 0
+input:32 0 1 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:15
+input:WAIT
+input:GROW 18
+input:GROW 8
+input:GROW 32
+input:GROW 36
+input:GROW 35
+input:SEED 7 2
+input:SEED 34 33
+input:SEED 34 16
+input:SEED 7 9
+input:SEED 7 19
+input:SEED 7 1
+input:SEED 18 1
+input:SEED 7 0
+input:SEED 7 21
+prev action is WAIT
+Standard Output Stream:
+GROW 18
+50
+93
+Standard Output Stream:
+GROW 6
+Game Summary:
+Round 9/23
+YSKang is growing a tree on cell 18
+Bossoot is growing a tree on cell 6
+Standard Error Stream:
+input:9
+input:19
+input:1 20
+input:3 0 0
+input:15
+input:3 3 0 0
+input:6 3 0 1
+input:7 2 1 0
+input:8 0 1 0
+input:14 2 0 0
+input:18 2 1 1
+input:20 1 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 0 0 0
+input:32 0 1 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:1
+input:WAIT
+prev action is GROW 18
+Standard Output Stream:
+WAIT
+51
+93
+Standard Output Stream:
+GROW 31
+Game Summary:
+Round 9/23
+YSKang is waiting
+Bossoot is growing a tree on cell 31
+Standard Output Stream:
+WAIT
+52
+93
+Game Summary:
+Round 9/23
+Bossoot is waiting
+Game Summary:
+Round 9 ends
+The sun is now pointing towards direction 4
+Round 10 starts
+Game Summary:
+Round 10/23
+YSKang has collected 5 sun points
+Bossoot has collected 14 sun points
+Standard Error Stream:
+input:10
+input:19
+input:6 20
+input:15 0 0
+input:15
+input:3 3 0 0
+input:6 3 0 0
+input:7 2 1 0
+input:8 0 1 0
+input:14 2 0 0
+input:18 2 1 0
+input:20 1 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 0 1 0
+input:34 2 1 0
+input:35 1 1 0
+input:36 0 1 0
+input:20
+input:WAIT
+input:GROW 32
+input:GROW 8
+input:GROW 36
+input:GROW 35
+input:SEED 18 0
+input:SEED 7 9
+input:SEED 7 21
+input:SEED 18 1
+input:SEED 34 33
+input:SEED 18 19
+input:SEED 18 16
+input:SEED 7 2
+input:SEED 7 19
+input:SEED 34 16
+input:SEED 7 1
+input:SEED 18 5
+input:SEED 18 33
+input:SEED 7 0
+input:SEED 18 2
+prev action is WAIT
+Standard Output Stream:
+GROW 35
+55
+93
+Standard Output Stream:
+GROW 14
+Game Summary:
+Round 10/23
+YSKang is growing a tree on cell 35
+Bossoot is growing a tree on cell 14
+Standard Error Stream:
+input:10
+input:19
+input:0 20
+input:6 0 0
+input:15
+input:3 3 0 0
+input:6 3 0 0
+input:7 2 1 0
+input:8 0 1 0
+input:14 3 0 1
+input:18 2 1 0
+input:20 1 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 0 1 0
+input:34 2 1 0
+input:35 2 1 1
+input:36 0 1 0
+input:1
+input:WAIT
+prev action is GROW 35
+Standard Output Stream:
+WAIT
+56
+93
+Standard Output Stream:
+COMPLETE 3
+Game Summary:
+Round 10/23
+YSKang is waiting
+Bossoot is ending their tree life on cell 3, scoring 23 points
+Standard Output Stream:
+SEED 6 2
+57
+93
+Game Summary:
+Round 10/23
+Bossoot is planting a seed on cell 2 from cell 6
+Standard Output Stream:
+SEED 25 12
+58
+93
+Game Summary:
+Round 10/23
+Bossoot is planting a seed on cell 12 from cell 25
+Standard Output Stream:
+WAIT
+59
+93
+Game Summary:
+Round 10/23
+Bossoot is waiting
+Game Summary:
+Round 10 ends
+The sun is now pointing towards direction 5
+Round 11 starts
+Game Summary:
+Round 11/23
+YSKang has collected 4 sun points
+Bossoot has collected 14 sun points
+Standard Error Stream:
+input:11
+input:18
+input:4 20
+input:15 23 0
+input:16
+input:2 0 0 0
+input:6 3 0 0
+input:7 2 1 0
+input:8 0 1 0
+input:12 0 0 0
+input:14 3 0 0
+input:18 2 1 0
+input:20 1 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 0 1 0
+input:34 2 1 0
+input:35 2 1 0
+input:36 0 1 0
+input:21
+input:WAIT
+input:GROW 32
+input:GROW 8
+input:GROW 36
+input:SEED 7 0
+input:SEED 18 19
+input:SEED 18 5
+input:SEED 35 16
+input:SEED 34 16
+input:SEED 35 1
+input:SEED 7 21
+input:SEED 18 16
+input:SEED 18 1
+input:SEED 34 33
+input:SEED 7 1
+input:SEED 18 33
+input:SEED 35 33
+input:SEED 35 19
+input:SEED 18 0
+input:SEED 7 19
+input:SEED 7 9
+prev action is WAIT
+Standard Output Stream:
+GROW 32
+62
+93
+Standard Output Stream:
+GROW 2
+Game Summary:
+Round 11/23
+YSKang is growing a tree on cell 32
+Bossoot is growing a tree on cell 2
+Standard Error Stream:
+input:11
+input:18
+input:3 20
+input:12 23 0
+input:16
+input:2 1 0 1
+input:6 3 0 0
+input:7 2 1 0
+input:8 0 1 0
+input:12 0 0 0
+input:14 3 0 0
+input:18 2 1 0
+input:20 1 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 1
+input:34 2 1 0
+input:35 2 1 0
+input:36 0 1 0
+input:20
+input:WAIT
+input:GROW 8
+input:GROW 36
+input:SEED 35 16
+input:SEED 35 19
+input:SEED 18 1
+input:SEED 7 1
+input:SEED 7 9
+input:SEED 7 19
+input:SEED 18 5
+input:SEED 34 33
+input:SEED 35 33
+input:SEED 18 19
+input:SEED 35 1
+input:SEED 7 21
+input:SEED 18 0
+input:SEED 7 0
+input:SEED 18 33
+input:SEED 18 16
+input:SEED 34 16
+prev action is GROW 32
+Standard Output Stream:
+GROW 8
+63
+93
+Standard Output Stream:
+GROW 12
+Game Summary:
+Round 11/23
+YSKang is growing a tree on cell 8
+Bossoot is growing a tree on cell 12
+Standard Error Stream:
+input:11
+input:18
+input:1 20
+input:8 23 0
+input:16
+input:2 1 0 1
+input:6 3 0 0
+input:7 2 1 0
+input:8 1 1 1
+input:12 1 0 1
+input:14 3 0 0
+input:18 2 1 0
+input:20 1 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 1
+input:34 2 1 0
+input:35 2 1 0
+input:36 0 1 0
+input:18
+input:WAIT
+input:SEED 35 33
+input:SEED 18 33
+input:SEED 35 16
+input:SEED 18 5
+input:SEED 34 33
+input:SEED 7 1
+input:SEED 7 0
+input:SEED 7 19
+input:SEED 18 1
+input:SEED 35 1
+input:SEED 18 0
+input:SEED 34 16
+input:SEED 18 19
+input:SEED 35 19
+input:SEED 7 9
+input:SEED 7 21
+input:SEED 18 16
+prev action is GROW 8
+Standard Output Stream:
+SEED 35 33
+64
+93
+Standard Output Stream:
+GROW 20
+Game Summary:
+Round 11/23
+YSKang is planting a seed on cell 33 from cell 35
+Bossoot is growing a tree on cell 20
+Standard Error Stream:
+input:11
+input:18
+input:0 20
+input:2 23 0
+input:17
+input:2 1 0 1
+input:6 3 0 0
+input:7 2 1 0
+input:8 1 1 1
+input:12 1 0 1
+input:14 3 0 0
+input:18 2 1 0
+input:20 2 0 1
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 1
+input:33 0 1 1
+input:34 2 1 0
+input:35 2 1 1
+input:36 0 1 0
+input:1
+input:WAIT
+prev action is SEED 35 33
+Standard Output Stream:
+WAIT
+65
+93
+Standard Output Stream:
+WAIT
+Game Summary:
+Round 11/23
+YSKang is waiting
+Bossoot is waiting
+Game Summary:
+Round 11 ends
+The sun is now pointing towards direction 0
+Round 12 starts
+Game Summary:
+Round 12/23
+YSKang has collected 6 sun points
+Bossoot has collected 12 sun points
+Standard Error Stream:
+input:12
+input:18
+input:6 20
+input:14 23 0
+input:17
+input:2 1 0 0
+input:6 3 0 0
+input:7 2 1 0
+input:8 1 1 0
+input:12 1 0 0
+input:14 3 0 0
+input:18 2 1 0
+input:20 2 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 0 1 0
+input:34 2 1 0
+input:35 2 1 0
+input:36 0 1 0
+input:22
+input:WAIT
+input:GROW 33
+input:GROW 36
+input:SEED 34 16
+input:SEED 18 16
+input:SEED 8 21
+input:SEED 18 5
+input:SEED 32 16
+input:SEED 7 0
+input:SEED 35 1
+input:SEED 7 9
+input:SEED 18 1
+input:SEED 18 0
+input:SEED 8 9
+input:SEED 32 15
+input:SEED 7 1
+input:SEED 35 19
+input:SEED 7 21
+input:SEED 35 16
+input:SEED 18 19
+input:SEED 7 19
+input:SEED 8 1
+prev action is WAIT
+Standard Output Stream:
+GROW 33
+68
+93
+Standard Output Stream:
+GROW 2
+Game Summary:
+Round 12/23
+YSKang is growing a tree on cell 33
+Bossoot is growing a tree on cell 2
+Standard Error Stream:
+input:12
+input:18
+input:3 20
+input:7 23 0
+input:17
+input:2 2 0 1
+input:6 3 0 0
+input:7 2 1 0
+input:8 1 1 0
+input:12 1 0 0
+input:14 3 0 0
+input:18 2 1 0
+input:20 2 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 1
+input:34 2 1 0
+input:35 2 1 0
+input:36 0 1 0
+input:20
+input:WAIT
+input:SEED 7 19
+input:SEED 35 16
+input:SEED 8 21
+input:SEED 18 5
+input:SEED 32 16
+input:SEED 18 16
+input:SEED 7 21
+input:SEED 7 1
+input:SEED 7 9
+input:SEED 18 19
+input:SEED 32 15
+input:SEED 34 16
+input:SEED 8 1
+input:SEED 7 0
+input:SEED 35 19
+input:SEED 8 9
+input:SEED 35 1
+input:SEED 18 0
+input:SEED 18 1
+prev action is GROW 33
+Standard Output Stream:
+SEED 35 16
+69
+93
+Standard Output Stream:
+WAIT
+Game Summary:
+Round 12/23
+YSKang is planting a seed on cell 16 from cell 35
+Bossoot is waiting
+Standard Error Stream:
+input:12
+input:18
+input:2 20
+input:7 23 1
+input:18
+input:2 2 0 1
+input:6 3 0 0
+input:7 2 1 0
+input:8 1 1 0
+input:12 1 0 0
+input:14 3 0 0
+input:16 0 1 1
+input:18 2 1 0
+input:20 2 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 1
+input:34 2 1 0
+input:35 2 1 1
+input:36 0 1 0
+input:14
+input:WAIT
+input:SEED 8 21
+input:SEED 7 21
+input:SEED 7 9
+input:SEED 7 1
+input:SEED 8 1
+input:SEED 7 19
+input:SEED 18 0
+input:SEED 18 1
+input:SEED 18 5
+input:SEED 8 9
+input:SEED 18 19
+input:SEED 32 15
+input:SEED 7 0
+prev action is SEED 35 16
+Standard Output Stream:
+SEED 7 9
+70
+93
+Game Summary:
+Round 12/23
+YSKang is planting a seed on cell 9 from cell 7
+Standard Error Stream:
+input:12
+input:18
+input:0 20
+input:7 23 1
+input:19
+input:2 2 0 1
+input:6 3 0 0
+input:7 2 1 1
+input:8 1 1 0
+input:9 0 1 1
+input:12 1 0 0
+input:14 3 0 0
+input:16 0 1 1
+input:18 2 1 0
+input:20 2 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 1
+input:34 2 1 0
+input:35 2 1 1
+input:36 0 1 0
+input:1
+input:WAIT
+prev action is SEED 7 9
+Standard Output Stream:
+WAIT
+71
+93
+Game Summary:
+Round 12/23
+YSKang is waiting
+Game Summary:
+Round 12 ends
+The sun is now pointing towards direction 1
+Round 13 starts
+Game Summary:
+Round 13/23
+YSKang has collected 6 sun points
+Bossoot has collected 16 sun points
+Standard Error Stream:
+input:13
+input:18
+input:6 20
+input:23 23 0
+input:19
+input:2 2 0 0
+input:6 3 0 0
+input:7 2 1 0
+input:8 1 1 0
+input:9 0 1 0
+input:12 1 0 0
+input:14 3 0 0
+input:16 0 1 0
+input:18 2 1 0
+input:20 2 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 0
+input:34 2 1 0
+input:35 2 1 0
+input:36 0 1 0
+input:17
+input:WAIT
+input:GROW 36
+input:GROW 9
+input:GROW 16
+input:SEED 32 15
+input:SEED 8 21
+input:SEED 8 1
+input:SEED 7 0
+input:SEED 18 0
+input:SEED 18 5
+input:SEED 35 19
+input:SEED 7 1
+input:SEED 18 1
+input:SEED 7 21
+input:SEED 18 19
+input:SEED 35 1
+input:SEED 7 19
+prev action is WAIT
+Standard Output Stream:
+GROW 36
+74
+93
+Standard Output Stream:
+GROW 2
+Game Summary:
+Round 13/23
+YSKang is growing a tree on cell 36
+Bossoot is growing a tree on cell 2
+Standard Error Stream:
+input:13
+input:18
+input:2 20
+input:14 23 0
+input:19
+input:2 3 0 1
+input:6 3 0 0
+input:7 2 1 0
+input:8 1 1 0
+input:9 0 1 0
+input:12 1 0 0
+input:14 3 0 0
+input:16 0 1 0
+input:18 2 1 0
+input:20 2 0 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 0
+input:34 2 1 0
+input:35 2 1 0
+input:36 1 1 1
+input:14
+input:WAIT
+input:SEED 8 21
+input:SEED 7 0
+input:SEED 32 15
+input:SEED 7 21
+input:SEED 35 19
+input:SEED 8 1
+input:SEED 35 1
+input:SEED 18 1
+input:SEED 7 1
+input:SEED 7 19
+input:SEED 18 0
+input:SEED 18 5
+input:SEED 18 19
+prev action is GROW 36
+Standard Output Stream:
+SEED 8 21
+75
+93
+Standard Output Stream:
+COMPLETE 6
+Game Summary:
+Round 13/23
+YSKang is planting a seed on cell 21 from cell 8
+Bossoot is ending their tree life on cell 6, scoring 22 points
+Standard Error Stream:
+input:13
+input:17
+input:0 20
+input:10 45 0
+input:19
+input:2 3 0 1
+input:7 2 1 0
+input:8 1 1 1
+input:9 0 1 0
+input:12 1 0 0
+input:14 3 0 0
+input:16 0 1 0
+input:18 2 1 0
+input:20 2 0 0
+input:21 0 1 1
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 0
+input:34 2 1 0
+input:35 2 1 0
+input:36 1 1 1
+input:1
+input:WAIT
+prev action is SEED 8 21
+Standard Output Stream:
+WAIT
+76
+93
+Standard Output Stream:
+GROW 12
+Game Summary:
+Round 13/23
+YSKang is waiting
+Bossoot is growing a tree on cell 12
+Standard Output Stream:
+SEED 14 6
+77
+93
+Game Summary:
+Round 13/23
+Bossoot is planting a seed on cell 6 from cell 14
+Standard Output Stream:
+WAIT
+78
+93
+Game Summary:
+Round 13/23
+Bossoot is waiting
+Game Summary:
+Round 13 ends
+The sun is now pointing towards direction 2
+Round 14 starts
+Game Summary:
+Round 14/23
+YSKang has collected 9 sun points
+Bossoot has collected 17 sun points
+Standard Error Stream:
+input:14
+input:17
+input:9 20
+input:20 45 0
+input:20
+input:2 3 0 0
+input:6 0 0 0
+input:7 2 1 0
+input:8 1 1 0
+input:9 0 1 0
+input:12 2 0 0
+input:14 3 0 0
+input:16 0 1 0
+input:18 2 1 0
+input:20 2 0 0
+input:21 0 1 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 0
+input:34 2 1 0
+input:35 2 1 0
+input:36 1 1 0
+input:24
+input:WAIT
+input:GROW 34
+input:GROW 8
+input:GROW 32
+input:GROW 9
+input:GROW 7
+input:GROW 16
+input:GROW 21
+input:GROW 18
+input:GROW 33
+input:GROW 36
+input:GROW 35
+input:SEED 18 19
+input:SEED 36 19
+input:SEED 35 1
+input:SEED 18 1
+input:SEED 32 15
+input:SEED 7 19
+input:SEED 8 1
+input:SEED 35 19
+input:SEED 18 0
+input:SEED 18 5
+input:SEED 7 0
+input:SEED 7 1
+prev action is WAIT
+Standard Output Stream:
+GROW 7
+81
+93
+Standard Output Stream:
+GROW 6
+Game Summary:
+Round 14/23
+YSKang is growing a tree on cell 7
+Bossoot is growing a tree on cell 6
+Standard Error Stream:
+input:14
+input:17
+input:2 20
+input:18 45 0
+input:20
+input:2 3 0 0
+input:6 1 0 1
+input:7 3 1 1
+input:8 1 1 0
+input:9 0 1 0
+input:12 2 0 0
+input:14 3 0 0
+input:16 0 1 0
+input:18 2 1 0
+input:20 2 0 0
+input:21 0 1 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 0
+input:34 2 1 0
+input:35 2 1 0
+input:36 1 1 0
+input:1
+input:WAIT
+prev action is GROW 7
+Standard Output Stream:
+WAIT
+82
+93
+Standard Output Stream:
+GROW 12
+Game Summary:
+Round 14/23
+YSKang is waiting
+Bossoot is growing a tree on cell 12
+Standard Output Stream:
+COMPLETE 2
+83
+93
+Game Summary:
+Round 14/23
+Bossoot is ending their tree life on cell 2, scoring 21 points
+Standard Output Stream:
+SEED 20 2
+84
+93
+Game Summary:
+Round 14/23
+Bossoot is planting a seed on cell 2 from cell 20
+Standard Output Stream:
+WAIT
+85
+93
+Game Summary:
+Round 14/23
+Bossoot is waiting
+Game Summary:
+Round 14 ends
+The sun is now pointing towards direction 3
+Round 15 starts
+Game Summary:
+Round 15/23
+YSKang has collected 10 sun points
+Bossoot has collected 12 sun points
+Standard Error Stream:
+input:15
+input:16
+input:12 20
+input:17 66 0
+input:20
+input:2 0 0 0
+input:6 1 0 0
+input:7 3 1 0
+input:8 1 1 0
+input:9 0 1 0
+input:12 3 0 0
+input:14 3 0 0
+input:16 0 1 0
+input:18 2 1 0
+input:20 2 0 0
+input:21 0 1 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 0
+input:34 2 1 0
+input:35 2 1 0
+input:36 1 1 0
+input:29
+input:WAIT
+input:COMPLETE 7
+input:GROW 9
+input:GROW 18
+input:GROW 16
+input:GROW 32
+input:GROW 33
+input:GROW 35
+input:GROW 21
+input:GROW 36
+input:GROW 34
+input:GROW 8
+input:SEED 35 19
+input:SEED 18 1
+input:SEED 7 4
+input:SEED 32 15
+input:SEED 35 1
+input:SEED 7 22
+input:SEED 18 5
+input:SEED 7 10
+input:SEED 7 1
+input:SEED 36 19
+input:SEED 7 19
+input:SEED 7 0
+input:SEED 7 3
+input:SEED 7 5
+input:SEED 18 0
+input:SEED 8 1
+input:SEED 18 19
+prev action is WAIT
+Standard Output Stream:
+COMPLETE 7
+88
+93
+Standard Output Stream:
+GROW 2
+Game Summary:
+Round 15/23
+Bossoot is growing a tree on cell 2
+YSKang is ending their tree life on cell 7, scoring 18 points
+Standard Error Stream:
+input:15
+input:15
+input:8 38
+input:14 66 0
+input:19
+input:2 1 0 1
+input:6 1 0 0
+input:8 1 1 0
+input:9 0 1 0
+input:12 3 0 0
+input:14 3 0 0
+input:16 0 1 0
+input:18 2 1 0
+input:20 2 0 0
+input:21 0 1 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 0
+input:34 2 1 0
+input:35 2 1 0
+input:36 1 1 0
+input:24
+input:WAIT
+input:GROW 21
+input:GROW 18
+input:GROW 9
+input:GROW 8
+input:GROW 35
+input:GROW 33
+input:GROW 16
+input:GROW 32
+input:GROW 34
+input:GROW 36
+input:SEED 8 1
+input:SEED 35 1
+input:SEED 36 7
+input:SEED 35 19
+input:SEED 32 15
+input:SEED 8 7
+input:SEED 18 0
+input:SEED 18 19
+input:SEED 18 1
+input:SEED 36 19
+input:SEED 35 7
+input:SEED 18 5
+input:SEED 18 7
+prev action is COMPLETE 7
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of po...
+Standard Output Stream:
+GROW 18
+89
+93
+Standard Output Stream:
+GROW 6
+Game Summary:
+Round 15/23
+YSKang is growing a tree on cell 18
+Bossoot is growing a tree on cell 6
+Standard Error Stream:
+input:15
+input:15
+input:1 38
+input:7 66 0
+input:19
+input:2 1 0 1
+input:6 2 0 1
+input:8 1 1 0
+input:9 0 1 0
+input:12 3 0 0
+input:14 3 0 0
+input:16 0 1 0
+input:18 3 1 1
+input:20 2 0 0
+input:21 0 1 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 0
+input:34 2 1 0
+input:35 2 1 0
+input:36 1 1 0
+input:1
+input:WAIT
+prev action is GROW 18
+Standard Output Stream:
+WAIT
+90
+93
+Standard Output Stream:
+WAIT
+Game Summary:
+Round 15/23
+YSKang is waiting
+Bossoot is waiting
+Game Summary:
+Round 15 ends
+The sun is now pointing towards direction 4
+Round 16 starts
+Game Summary:
+Round 16/23
+YSKang has collected 7 sun points
+Bossoot has collected 18 sun points
+Standard Error Stream:
+input:16
+input:15
+input:8 38
+input:25 66 0
+input:19
+input:2 1 0 0
+input:6 2 0 0
+input:8 1 1 0
+input:9 0 1 0
+input:12 3 0 0
+input:14 3 0 0
+input:16 0 1 0
+input:18 3 1 0
+input:20 2 0 0
+input:21 0 1 0
+input:23 2 0 0
+input:25 2 0 0
+input:28 2 0 0
+input:31 1 0 0
+input:32 1 1 0
+input:33 1 1 0
+input:34 2 1 0
+input:35 2 1 0
+input:36 1 1 0
+input:28
+input:WAIT
+input:COMPLETE 18
+input:GROW 36
+input:GROW 8
+input:GROW 32
+out of pool
+input:GROW 21
+out of pool
+input:GROW 9
+out of pool
+input:GROW 16
+out of pool
+input:GROW 35
+out of pool
+input:GROW 33
+out of pool
+input:GROW 34
+out of pool
+input:SEED 18 0
+out of pool
+input:SEED 18 1
+out of pool
+input:SEED 35 1
+out of pool
+input:SEED 36 19
+out of pool
+input:SEED 18 4
+out of pool
+input:SEED 35 19
+out of pool
+input:SEED 18 3
+out of pool
+input:SEED 18 7
+out of pool
+input:SEED 8 1
+out of pool
+input:SEED 18 19
+out of pool
+input:SEED 35 7
+out of pool
+input:SEED 18 10
+out of pool
+input:SEED 32 15
+out of pool
+input:SEED 18 5
+out of pool
+input:SEED 8 7
+out of pool
+input:SEED 18 15
+out of pool
+input:SEED 36 7
+out of pool
+prev action is WAIT
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out of pool
+out o...
+93
+93
+Standard Output Stream:
+GROW 2
+Game Summary:
+YSKang has not provided an action in time.
+YSKang was disqualified.
+Round 16/23
+YSKang is waiting
+Bossoot is growing a tree on cell 2

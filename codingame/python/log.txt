@@ -1,0 +1,91 @@
+-- trees --
+index: 23, size: 1, mine: True, dormant: False
+index: 26, size: 1, mine: False, dormant: False
+index: 32, size: 1, mine: False, dormant: False
+index: 35, size: 1, mine: True, dormant: False
+-- nutrients --
+20
+-- cells --
+index: 0, richness: 3, neighbors: [1, 2, 3, 4, 5, 6]
+index: 1, richness: 3, neighbors: [7, 8, 2, 0, 6, 18]
+index: 2, richness: 3, neighbors: [8, 9, 10, 3, 0, 1]
+index: 3, richness: 3, neighbors: [2, 10, 11, 12, 4, 0]
+index: 4, richness: 3, neighbors: [0, 3, 12, 13, 14, 5]
+index: 5, richness: 3, neighbors: [6, 0, 4, 14, 15, 16]
+index: 6, richness: 3, neighbors: [18, 1, 0, 5, 16, 17]
+index: 7, richness: 2, neighbors: [19, 20, 8, 1, 18, 36]
+index: 8, richness: 2, neighbors: [20, 21, 9, 2, 1, 7]
+index: 9, richness: 2, neighbors: [21, 22, 23, 10, 2, 8]
+index: 10, richness: 2, neighbors: [9, 23, 24, 11, 3, 2]
+index: 11, richness: 2, neighbors: [10, 24, 25, 26, 12, 3]
+index: 12, richness: 2, neighbors: [3, 11, 26, 27, 13, 4]
+index: 13, richness: 2, neighbors: [4, 12, 27, 28, 29, 14]
+index: 14, richness: 2, neighbors: [5, 4, 13, 29, 30, 15]
+index: 15, richness: 2, neighbors: [16, 5, 14, 30, 31, 32]
+index: 16, richness: 2, neighbors: [17, 6, 5, 15, 32, 33]
+index: 17, richness: 2, neighbors: [35, 18, 6, 16, 33, 34]
+index: 18, richness: 2, neighbors: [36, 7, 1, 6, 17, 35]
+index: 19, richness: 1, neighbors: [-1, -1, 20, 7, 36, -1]
+index: 20, richness: 1, neighbors: [-1, -1, 21, 8, 7, 19]
+index: 21, richness: 1, neighbors: [-1, -1, 22, 9, 8, 20]
+index: 22, richness: 1, neighbors: [-1, -1, -1, 23, 9, 21]
+index: 23, richness: 1, neighbors: [22, -1, -1, 24, 10, 9]
+index: 24, richness: 1, neighbors: [23, -1, -1, 25, 11, 10]
+index: 25, richness: 1, neighbors: [24, -1, -1, -1, 26, 11]
+index: 26, richness: 1, neighbors: [11, 25, -1, -1, 27, 12]
+index: 27, richness: 1, neighbors: [12, 26, -1, -1, 28, 13]
+index: 28, richness: 1, neighbors: [13, 27, -1, -1, -1, 29]
+index: 29, richness: 1, neighbors: [14, 13, 28, -1, -1, 30]
+index: 30, richness: 1, neighbors: [15, 14, 29, -1, -1, 31]
+index: 31, richness: 1, neighbors: [32, 15, 30, -1, -1, -1]
+index: 32, richness: 1, neighbors: [33, 16, 15, 31, -1, -1]
+index: 33, richness: 1, neighbors: [34, 17, 16, 32, -1, -1]
+index: 34, richness: 1, neighbors: [-1, 35, 17, 33, -1, -1]
+index: 35, richness: 1, neighbors: [-1, 36, 18, 17, 34, -1]
+index: 36, richness: 1, neighbors: [-1, 19, 7, 18, 35, -1]
+-- possible actions --
+WAIT
+SEED 23 24
+SEED 23 9
+SEED 23 10
+SEED 35 18
+SEED 35 17
+SEED 23 22
+SEED 35 34
+SEED 35 36
+selection
+playout
+backpropagation
+selection
+playout
+backpropagation
+selection
+playout
+backpropagation
+selection
+playout
+backpropagation
+selection
+playout
+backpropagation
+selection
+playout
+backpropagation
+selection
+playout
+backpropagation
+selection
+playout
+backpropagation
+selection
+playout
+backpropagation
+selection
+playout
+backpropagation
+Standard Output Stream:
+WAIT
+002
+112
+Standard Output Stream:
+SEED 32 33
