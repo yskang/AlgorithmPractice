@@ -10,3 +10,4 @@ a.out.dSYM/
 /venv
 tempCodeRunnerFile.py
 rust_out
+rust_out.dSYM/
