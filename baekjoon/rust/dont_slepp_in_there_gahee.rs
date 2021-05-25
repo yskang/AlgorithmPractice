@@ -1,41 +1,35 @@
-use std::io::{BufRead};
+use std::io::{stdin};
 
 fn main() {
-    let mut r: usize;
-    let mut c: usize;
-    let mut rg: usize;
-    let mut cg: usize;
-    let mut rp: usize;
-    let mut cp: usize;
+    let r: usize;
+    let rp: usize;
+    let cp: usize;
 
     let mut line = String::new();
-    std::io::stdin().read_line(&mut line);
-    let mut line_in: Vec::<usize> = line
-                                    .trim()
-                                    .split_whitespace()
-                                    .into_iter()
-                                    .map(|x| x.parse::<usize>().unwrap())
-                                    .collect();
-    r = line_in[0];
-    c = line_in[1];
+    stdin().read_line(&mut line).expect("can't read input");
+    let rc_in: Vec::<usize> = line
+                                .trim()
+                                .split_whitespace()
+                                .into_iter()
+                                .map(|x| x.parse::<usize>().unwrap())
+                                .collect();
+    r = rc_in[0];
     
-    line.clear();
-    std::io::stdin().read_line(&mut line);
-    line_in = line
-                .trim()
-                .split_whitespace()
-                .into_iter()
-                .map(|x| x.parse::<usize>().unwrap())
-                .collect();
-    rg = line_in[0];
-    cg = line_in[1];
-    rp = line_in[2];
-    cp = line_in[3];
+    let mut line = String::new();
+    stdin().read_line(&mut line).expect("can't read input");
+    let gprc_in: Vec::<usize> = line
+                                .trim()
+                                .split_whitespace()
+                                .into_iter()
+                                .map(|x| x.parse::<usize>().unwrap())
+                                .collect();
+    rp = gprc_in[2];
+    cp = gprc_in[3];
     
     let mut count_p = 0;
     let mut lines = String::new();
-    for i in 0..r {
-        std::io::stdin().read_line(&mut lines);
+    for _ in 0..r {
+        std::io::stdin().read_line(&mut lines).expect("can't read input");
         lines = lines
                 .trim()
                 .parse::<String>()
@@ -44,10 +38,9 @@ fn main() {
         lines.clear();
     }
 
-    if count_p == (cp*rp).into() {
-        println!("0");
-    } else {
-        println!("1");
+    match count_p {
+        value if value == cp*rp => println!("0"),
+        _ => println!("1"),
     }
  
 }
