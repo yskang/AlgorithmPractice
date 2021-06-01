@@ -1,43 +1,50 @@
 use std::io::{stdin};
+use std::collections::HashMap;
 
 struct UnionFind {
-    p: Vec<usize>
+    sizes: Vec<usize>,
+    rank: Vec<usize>,
+    parent: Vec<usize>
 }
 
 impl UnionFind {
-    fn new(s: usize) -> UnionFind {
-        let p = vec![0; s];
-        UnionFind { 
-            p
-        }
+    fn new(&mut self, n: usize) -> UnionFind {
+        self.sizes = vec![1; n];
+        self.rank = vec![1; n];
+        self.parent = (0..n).collect();
     }
 
-    fn find(&mut self, a: usize) -> usize {
-        if self.p[a] < 0 {
-            return a
+    fn find(&mut self, x: usize) -> usize {
+        if self.parent[x] != x {
+            self.parent[x] = self.find(self.parent[x]);
         }
-        self.p[a] = self.find(self.p[a]);
-        self.p[a]
+        self.parent[x]
     }
 
-    fn union(&mut self, mut a: usize, mut b: usize) -> bool {
-        a = self.find(a);
-        b = self.find(b);
-        if a == b {
-            return false
+    fn union(&mut self, x: usize, y:usize) {
+        let xset = self.find(x);
+        let yset = self.find(y);
+
+        if xset == yset {
+            return;
         }
-        if self.p[a] < self.p[b] {
-            self.p[a] += self.p[b];
-            self.p[b] = a;
+
+        if self.rank[xset] < self.rank[yset] {
+            self.parent[xset] = yset;
+            self.sizes[yset] += self.sizes[xset];
+        } else if self.rank[xset] > self.rank[yset] {
+            self.parent[yset] = xset;
+            self.sizes[xset] += self.sizes[yset];
         } else {
-            self.p[b] += self.p[a];
-            self.p[a] = b;
+            self.parent[yset] = xset;
+            self.rank[xset] = self.rank[yset] + 1;
+            self.sizes[xset] += self.sizes[yset];
         }
-        true
     }
 
-    fn size(&mut self, a: usize) -> usize {
-        self.p[self.find(a)]
+    fn get_size(&mut self, x: usize) -> usize {
+        let i = self.find(x);
+        self.sizes[i]
     }
 }
 
@@ -45,23 +52,37 @@ impl UnionFind {
 fn main() {
     let t: u128;
     let mut line = String::new();
+    
     stdin().read_line(&mut line).expect("can't read T.");
     t = line.trim().parse().expect("can't parse to int.");
     for _ in 0..t {
+        let mut name_to_int = HashMap::new();
         let f: usize;
         let mut line = String::new();
         stdin().read_line(&mut line).expect("can't read f.");
         f = line.trim().parse().expect("can't parse to int.");
 
-        let mut friends: Vec<Vec<String>> = vec![Vec::new(); f];
+        let disjoint = UnionFind::new(2*f+1);
+
+
         for i in 0..f {
             let mut line = String::new();
             stdin().read_line(&mut line).expect("can't read friends");
-
+            let mut name_idx:Vec<usize> = Vec::new();
             line.split_whitespace()
                 .map(String::from)
-                .for_each(|x| friends[i].push(x))
+                .for_each(|x| {
+                    match name_to_int.get_key_value(&x) {
+                        // Some((k, v)) => println!("{} has value {}", k, v),
+                        None => {
+                                    println!("{} has no value, so create!!", x);
+                                    name_to_int.insert(x, name_to_int.len());
+                                },
+                        _ => ()
+                    };
+                    name_idx.add(name_to_int.get(x).unwrap());
+                });
+            disjoint.union(name_to_int[0], name_to_int[1]);
         }
-        println!("{:?}", friends);
     }
 }
