@@ -1,4 +1,4 @@
-use std::io::{stdin};
+use std::io::{stdin, stdout, BufRead, BufReader, BufWriter, Write};
 use std::collections::HashMap;
 
 struct UnionFind {
@@ -8,10 +8,12 @@ struct UnionFind {
 }
 
 impl UnionFind {
-    fn new(&mut self, n: usize) -> UnionFind {
-        self.sizes = vec![1; n];
-        self.rank = vec![1; n];
-        self.parent = (0..n).collect();
+    fn new(n: usize) -> UnionFind {
+        UnionFind {
+            sizes : vec![1; n],
+            rank : vec![1; n],
+            parent : (0..n).collect(),
+        }
     }
 
     fn find(&mut self, x: usize) -> usize {
@@ -50,39 +52,52 @@ impl UnionFind {
 
 
 fn main() {
+    let mut buf = BufReader::new(stdin());
+    let mut out = BufWriter::new(stdout());
     let t: u128;
     let mut line = String::new();
     
-    stdin().read_line(&mut line).expect("can't read T.");
-    t = line.trim().parse().expect("can't parse to int.");
+    buf.read_line(&mut line).unwrap();
+    t = line.trim().parse().unwrap();
+
     for _ in 0..t {
-        let mut name_to_int = HashMap::new();
+        let mut name_to_int = HashMap::<String, usize>::new();
         let f: usize;
         let mut line = String::new();
-        stdin().read_line(&mut line).expect("can't read f.");
-        f = line.trim().parse().expect("can't parse to int.");
+        buf.read_line(&mut line).unwrap();
+        f = line.trim().parse().unwrap();
 
-        let disjoint = UnionFind::new(2*f+1);
-
+        let mut disjoint = UnionFind::new(2*f+1);
 
         for i in 0..f {
             let mut line = String::new();
-            stdin().read_line(&mut line).expect("can't read friends");
-            let mut name_idx:Vec<usize> = Vec::new();
-            line.split_whitespace()
-                .map(String::from)
-                .for_each(|x| {
-                    match name_to_int.get_key_value(&x) {
-                        // Some((k, v)) => println!("{} has value {}", k, v),
-                        None => {
-                                    println!("{} has no value, so create!!", x);
-                                    name_to_int.insert(x, name_to_int.len());
-                                },
-                        _ => ()
-                    };
-                    name_idx.add(name_to_int.get(x).unwrap());
-                });
-            disjoint.union(name_to_int[0], name_to_int[1]);
-        }
+            buf.read_line(&mut line).unwrap();
+            let friends = line
+                            .split_whitespace()
+                            .map(|x| String::from(x))
+                            .collect::<Vec<_>>();
+            
+            let a = &friends[0];
+            let b = &friends[1];
+
+            match name_to_int.get(a) {
+                Some(x) => (),
+                None => {
+                   name_to_int.insert(a.to_string(), name_to_int.len());
+                }
+            }
+ 
+            match name_to_int.get(b) {
+                Some(x) => (),
+                None => {
+                    name_to_int.insert(b.to_string(), name_to_int.len());
+                }
+            }
+
+            disjoint.union(*name_to_int.get(a).unwrap(), *name_to_int.get(b).unwrap());
+            // println!("{}", disjoint.get_size(*name_to_int.get(a).unwrap()));
+            writeln!(out, "{}", disjoint.get_size(*name_to_int.get(a).unwrap()));
+            out.flush().unwrap();
+       }
     }
 }

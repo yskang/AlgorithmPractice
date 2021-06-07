@@ -35,7 +35,7 @@ class UnionFind:
             self.parent[yset] = xset
             self.rank[xset] = self.rank[yset] + 1
             self.sizes[xset] += self.sizes[yset]
-    
+
     def get_size(self, x: int) -> int:
         return self.sizes[self.find(x)]
 
