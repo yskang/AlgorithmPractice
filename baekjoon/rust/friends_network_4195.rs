@@ -69,7 +69,7 @@ fn main() {
 
         let mut disjoint = UnionFind::new(2*f+1);
 
-        for i in 0..f {
+        for _ in 0..f {
             let mut line = String::new();
             buf.read_line(&mut line).unwrap();
             let friends = line
@@ -77,27 +77,23 @@ fn main() {
                             .map(|x| String::from(x))
                             .collect::<Vec<_>>();
             
-            let a = &friends[0];
-            let b = &friends[1];
-
-            match name_to_int.get(a) {
-                Some(x) => (),
+            match name_to_int.get(&friends[0]) {
+                Some(_) => (),
                 None => {
-                   name_to_int.insert(a.to_string(), name_to_int.len());
+                   name_to_int.insert(friends[0].to_string(), name_to_int.len());
                 }
             }
  
-            match name_to_int.get(b) {
-                Some(x) => (),
+            match name_to_int.get(&friends[1]) {
+                Some(_) => (),
                 None => {
-                    name_to_int.insert(b.to_string(), name_to_int.len());
+                    name_to_int.insert(friends[1].to_string(), name_to_int.len());
                 }
             }
 
-            disjoint.union(*name_to_int.get(a).unwrap(), *name_to_int.get(b).unwrap());
-            // println!("{}", disjoint.get_size(*name_to_int.get(a).unwrap()));
-            writeln!(out, "{}", disjoint.get_size(*name_to_int.get(a).unwrap()));
-            out.flush().unwrap();
-       }
+            disjoint.union(*name_to_int.get(&friends[0]).unwrap(), *name_to_int.get(&friends[1]).unwrap());
+            writeln!(out, "{}", disjoint.get_size(*name_to_int.get(&friends[0]).unwrap())).unwrap();
+        }
     }
+    out.flush().unwrap();
 }
