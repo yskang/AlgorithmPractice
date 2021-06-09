@@ -1,39 +1,67 @@
 use std::io::{stdin, stdout, BufRead, BufReader, BufWriter, Write};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
-fn dfs(graph: &mut Vec<Vec<usize>>, node: usize, visited: &mut Vec<bool>, line: &mut Vec<usize>) {
-    match visited[node] {
-        true => {
-            return;
-        },
-        false => {
-            visited.insert(node, true);
-        },
-        _ => {
-            return;
-        },
+
+struct Graph {
+    childs_of: HashMap<usize, HashSet<usize>>,
+}
+
+impl Graph {
+    fn new() -> Graph {
+        Graph {
+            childs_of: HashMap::new(),
+        }
     }
-    for child in graph[node].iter_mut() {
-        dfs(graph, *child, visited, line);
+
+    fn add_node(&mut self, node: &usize) {
+        if !self.childs_of.contains_key(node) {
+            self.childs_of.insert(*node, HashSet::new());
+        }
     }
+
+    fn add_edge(&mut self, x: &usize, y: &usize) {
+        if let Some(v) = self.childs_of.get_mut(x) {
+            v.insert(*y);
+        }
+    }
+}
+
+
+fn dfs(graph: &Graph, node: usize, visited: &mut Vec<bool>, line: &mut Vec<usize>) {
+    if let Some(v) = visited.get(node) {
+        if *v {
+            return;
+        } else {
+            visited[node] = true;
+        }
+    }
+
+    if let Some(v) = graph.childs_of.get(&node) {
+        let mut iter = v.iter();
+        while let Some(child) = iter.next() {
+            dfs(graph, *child, visited, line);
+        }
+    }
+
     line.push(node);
 }
 
-fn solution(n: usize, m: usize, g: &mut Vec<Vec<usize>>) {
-    println!("n: {}, m: {}, g: {:?}", n, m, g);
+
+fn solution(n: usize, g: &Graph) -> String {
+    // println!("n: {}, m: {}, g: {:?}", n, m, g);
     let mut visited: Vec<bool> = vec![false; n+1];
     let mut line: Vec<usize> = Vec::new();
 
-    for node in 0..n+1 {
+    for node in 1..n+1 {
         if !visited[node] {
             dfs(g, node, &mut visited, &mut line);
         }
     }
-
-    // line.map(|x| String::from(x))
-    //     .collect::<Vec<_>>()
-    //     .join(" ");
-    println!("{:?}", line);
+    line.reverse();
+    let ans = line.iter().map(|x| x.to_string())
+        .collect::<Vec<_>>()
+        .join(" ");
+    ans
 }
 
 
@@ -43,7 +71,6 @@ fn main() {
     let mut buffer = String::new();
 
     buf.read_line(&mut buffer).unwrap();
-    // println!("{:?}", buffer);
     let mut values: Vec<usize>;
     let n: usize;
     let m: usize;
@@ -52,8 +79,9 @@ fn main() {
                     .collect();
     n = values[0];
     m = values[1];
-    // println!("{}, {}", n, m);
-    let mut g: Vec<Vec<usize>> = vec![Vec::new(); n+1];
+
+    let mut graph = Graph::new();
+
     for _ in 0..m {
         buffer.clear();
         buf.read_line(&mut buffer).unwrap();
@@ -61,8 +89,11 @@ fn main() {
         values = buffer.split_whitespace()
                         .map(|x| x.parse::<usize>().unwrap())
                         .collect();
-        g[values[0]].push(values[1])
+
+        graph.add_node(&values[0]);
+        graph.add_node(&values[1]);
+        graph.add_edge(&values[0], &values[1]);
     }
-    // println!("{:?}", g);
-    solution(n, m, &mut g);
+    writeln!(out, "{}", solution(n, &graph)).unwrap();
+    out.flush().unwrap();
 }
