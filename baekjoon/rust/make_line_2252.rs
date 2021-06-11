@@ -1,6 +1,5 @@
-use std::io::{stdin, stdout, BufRead, BufReader, BufWriter, Write};
 use std::collections::{HashMap, HashSet};
-
+use std::io::{stdin, stdout, BufRead, BufReader, BufWriter, Write};
 
 struct Graph {
     childs_of: HashMap<usize, HashSet<usize>>,
@@ -26,7 +25,6 @@ impl Graph {
     }
 }
 
-
 fn dfs(graph: &Graph, node: usize, visited: &mut Vec<bool>, line: &mut Vec<usize>) {
     if let Some(v) = visited.get(node) {
         if *v {
@@ -46,24 +44,24 @@ fn dfs(graph: &Graph, node: usize, visited: &mut Vec<bool>, line: &mut Vec<usize
     line.push(node);
 }
 
-
 fn solution(n: usize, g: &Graph) -> String {
     // println!("n: {}, m: {}, g: {:?}", n, m, g);
-    let mut visited: Vec<bool> = vec![false; n+1];
+    let mut visited: Vec<bool> = vec![false; n + 1];
     let mut line: Vec<usize> = Vec::new();
 
-    for node in 1..n+1 {
+    for node in 1..n + 1 {
         if !visited[node] {
             dfs(g, node, &mut visited, &mut line);
         }
     }
     line.reverse();
-    let ans = line.iter().map(|x| x.to_string())
+    let ans = line
+        .iter()
+        .map(|x| x.to_string())
         .collect::<Vec<_>>()
         .join(" ");
     ans
 }
-
 
 fn main() {
     let mut buf = BufReader::new(stdin());
@@ -74,9 +72,10 @@ fn main() {
     let mut values: Vec<usize>;
     let n: usize;
     let m: usize;
-    values = buffer.split_whitespace()
-                    .map(|x| x.parse::<usize>().unwrap())
-                    .collect();
+    values = buffer
+        .split_whitespace()
+        .map(|x| x.parse::<usize>().unwrap())
+        .collect();
     n = values[0];
     m = values[1];
 
@@ -86,9 +85,10 @@ fn main() {
         buffer.clear();
         buf.read_line(&mut buffer).unwrap();
         values.clear();
-        values = buffer.split_whitespace()
-                        .map(|x| x.parse::<usize>().unwrap())
-                        .collect();
+        values = buffer
+            .split_whitespace()
+            .map(|x| x.parse::<usize>().unwrap())
+            .collect();
 
         graph.add_node(&values[0]);
         graph.add_node(&values[1]);
