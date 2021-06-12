@@ -14,36 +14,36 @@ impl BIT {
         }
     }
 
-    fn update(&mut self, p: &mut isize, v: &mut isize) {
-        while *p <= self.n {
-            self.bit[*p as usize] += *v;
-            *p += *p & (-*p);
+    fn update(&mut self, mut p: isize, v: isize) {
+        while p <= self.n {
+            self.bit[p as usize] += v;
+            p += p & (-p);
         }
     }
 
-    fn _query(&self, b: &mut isize) -> isize {
+    fn _query(&self, mut b: isize) -> isize {
         let mut s = 0;
-        while *b > 0 {
-            s += self.bit[*b as usize];
-            *b -= *b & (-*b);
+        while b > 0 {
+            s += self.bit[b as usize];
+            b -= b & (-b);
         }
         s
     }
 
-    fn query(&self, a: &mut isize, b: &mut isize) -> isize {
-        self._query(b) - self._query(&mut (*a - 1))
+    fn query(&self, a: isize, b: isize) -> isize {
+        self._query(b) - self._query(a - 1)
     }
 }
 
-fn solution(n: i64, mut islands: BTreeMap<i64, Vec<i64>>, mut xs: HashMap<i64, i64>) -> String {
+fn solution(n: i64, mut islands: BTreeMap<i64, Vec<i64>>, xs: HashMap<i64, i64>) -> String {
     let mut ans = 0;
     let mut bit = BIT::new((n + 1) as isize);
 
     for (_key, value) in islands.iter_mut() {
-        (*value).sort_unstable();
+        value.sort_unstable();
         for x in value {
-            ans += bit.query(&mut 1, &mut (*xs.get_mut(&x).unwrap() as isize));
-            bit.update(&mut (*xs.get_mut(&x).unwrap() as isize), &mut 1);
+            ans += bit.query(1, *xs.get(&x).unwrap() as isize);
+            bit.update(*xs.get(&x).unwrap() as isize, 1);
         }
     }
     String::from(ans.to_string())
