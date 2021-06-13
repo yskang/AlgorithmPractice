@@ -41,11 +41,6 @@ fn main() {
     let mut buffer = String::new();
 
     reader.read_line(&mut buffer).unwrap();
-    let word = buffer
-        .trim()
-        .as_bytes()
-        .iter()
-        .map(|x| (*x as char).to_string())
-        .collect::<Vec<_>>();
+    let word = buffer.trim().chars().map(|x| x.to_string()).collect();
     solution(word);
 }
