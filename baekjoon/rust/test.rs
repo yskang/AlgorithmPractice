@@ -1,20 +1,30 @@
 use std::collections::BTreeMap;
 
 fn main() {
-    let mut map = BTreeMap::new();
-    map.insert(3, "c");
-    map.insert(0, "x");
-    map.insert(2, "a");
+    let a = (0..10).collect::<Vec<i32>>();
+    let b = vec![false; 10];
+    let c = a.iter().zip(b);
 
-    for (key, value) in map.iter() {
-        println!("{} {}", key, value);
-    }
+    let mut d = c.collect::<Vec<_>>();
+    d.sort_by_key(|x| -1 * x.0);
+    println!("{:?}", d);
 
-    let mut iter = map.iter_mut();
-    while let Some((k, v)) = iter.next() {
-        println!("{} {}", k, v);
-    }
+    let word = vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
+    println!("{:?}", word);
+    let iter = word[2..4].iter();
 
-    map.insert(0, "z");
-    println!("{:?}", map);
+    let s = String::from("helloWorld");
+    let vs = s.split("").collect::<Vec<_>>();
+    fun_a(&vs);
+    fun_a(&vs);
+    fun_a(&vs);
+    fun_a(&vs);
+    fun_a(&vs);
+    fun_a(&vs);
+    fun_a(&vs);
+}
+
+fn fun_a(s: &Vec<&str>) {
+    println!("{:?}", s);
+    println!("{}", s.join(""));
 }
