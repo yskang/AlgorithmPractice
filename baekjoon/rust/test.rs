@@ -22,6 +22,12 @@ fn main() {
     fun_a(&vs);
     fun_a(&vs);
     fun_a(&vs);
+
+    let mut v: Vec<usize> = vec![1; 10];
+    v[2] = 200;
+    println!("{:?}", v);
+
+    println!("{}", v.last().unwrap());
 }
 
 fn fun_a(s: &Vec<&str>) {
