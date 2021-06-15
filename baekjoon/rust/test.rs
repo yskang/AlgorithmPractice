@@ -28,6 +28,15 @@ fn main() {
     println!("{:?}", v);
 
     println!("{}", v.last().unwrap());
+
+    let x = 2;
+    let y = 2;
+    let z = 2;
+    if (x == y) && (y == z) {
+        println!("it's same for all words.");
+    }
+
+    println!("{}", (10 / 3));
 }
 
 fn fun_a(s: &Vec<&str>) {
