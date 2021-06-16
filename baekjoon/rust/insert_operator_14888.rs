@@ -44,26 +44,38 @@ fn build_operator(op: &Operator, offset: (i64, i64, i64, i64)) -> Operator {
     }
 }
 
-fn dfs(
-    ns: &Vec<i64>,
-    idx: usize,
-    res: i64,
-    operator: Operator,
-    min_max: &mut (i64, i64),
-) {
+fn dfs(ns: &Vec<i64>, idx: usize, res: i64, operator: Operator, min_max: &mut (i64, i64)) {
     if idx == ns.len() {
         min_max.0 = min(min_max.0, res);
         min_max.1 = max(min_max.1, res);
         return;
     }
     if operator.plus != 0 {
-        dfs(ns, idx + 1, res + ns[idx], build_operator(&operator, (-1, 0, 0, 0)), min_max);
+        dfs(
+            ns,
+            idx + 1,
+            res + ns[idx],
+            build_operator(&operator, (-1, 0, 0, 0)),
+            min_max,
+        );
     }
     if operator.minus != 0 {
-        dfs(ns, idx + 1, res - ns[idx], build_operator(&operator, (0, -1, 0, 0)), min_max);
+        dfs(
+            ns,
+            idx + 1,
+            res - ns[idx],
+            build_operator(&operator, (0, -1, 0, 0)),
+            min_max,
+        );
     }
     if operator.multiples != 0 {
-        dfs(ns, idx + 1, res * ns[idx], build_operator(&operator, (0, 0, -1, 0)), min_max);
+        dfs(
+            ns,
+            idx + 1,
+            res * ns[idx],
+            build_operator(&operator, (0, 0, -1, 0)),
+            min_max,
+        );
     }
     if operator.divides != 0 {
         let sign_a = if res > 0 { 1 } else { -1 };
@@ -90,7 +102,7 @@ fn main() {
     read_to_tuple!(reader, i64);
     let ns = read_to_vector!(reader, i64);
     let (plus, minus, multiples, divides) = read_to_tuple!(reader, i64, i64, i64, i64);
-    let mut operator = Operator {
+    let operator = Operator {
         plus: plus,
         minus: minus,
         multiples: multiples,
