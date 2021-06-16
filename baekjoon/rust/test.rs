@@ -37,6 +37,13 @@ fn main() {
     }
 
     println!("{}", (10 / 3));
+
+    let mut k = [vec![0], vec![1], vec![3]].concat();
+    println!("{:?}", k);
+
+    let aa = 10usize;
+    let bb = 100usize;
+    println!("{}", (aa - bb));
 }
 
 fn fun_a(s: &Vec<&str>) {
