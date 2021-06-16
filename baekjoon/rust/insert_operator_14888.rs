@@ -28,112 +28,75 @@ macro_rules! read_to_vector {
     }};
 }
 
-fn dfs(
-    ns: &Vec<i64>,
-    idx: i64,
-    res: i64,
+struct Operator {
     plus: i64,
     minus: i64,
     multiples: i64,
     divides: i64,
-    minimum: &mut Vec<i64>,
-    maximum: &mut Vec<i64>,
-    call: &mut Vec<i64>,
+}
+
+fn build_operator(op: &Operator, offset: (i64, i64, i64, i64)) -> Operator {
+    Operator {
+        plus: op.plus + offset.0,
+        minus: op.minus + offset.1,
+        multiples: op.multiples + offset.2,
+        divides: op.divides + offset.3,
+    }
+}
+
+fn dfs(
+    ns: &Vec<i64>,
+    idx: usize,
+    res: i64,
+    operator: Operator,
+    min_max: &mut (i64, i64),
 ) {
-    call[0] = call[0] + 1;
-    if idx == ns.len() as i64 {
-        minimum[0] = min(minimum[0], res);
-        maximum[0] = max(maximum[0], res);
+    if idx == ns.len() {
+        min_max.0 = min(min_max.0, res);
+        min_max.1 = max(min_max.1, res);
         return;
     }
-    if plus != 0 {
-        dfs(
-            ns,
-            idx + 1,
-            res + ns[idx as usize],
-            plus - 1,
-            minus,
-            multiples,
-            divides,
-            minimum,
-            maximum,
-            call,
-        );
+    if operator.plus != 0 {
+        dfs(ns, idx + 1, res + ns[idx], build_operator(&operator, (-1, 0, 0, 0)), min_max);
     }
-    if minus != 0 {
-        dfs(
-            ns,
-            idx + 1,
-            res - ns[idx as usize],
-            plus,
-            minus - 1,
-            multiples,
-            divides,
-            minimum,
-            maximum,
-            call,
-        );
+    if operator.minus != 0 {
+        dfs(ns, idx + 1, res - ns[idx], build_operator(&operator, (0, -1, 0, 0)), min_max);
     }
-    if multiples != 0 {
-        dfs(
-            ns,
-            idx + 1,
-            res * ns[idx as usize],
-            plus,
-            minus,
-            multiples - 1,
-            divides,
-            minimum,
-            maximum,
-            call,
-        );
+    if operator.multiples != 0 {
+        dfs(ns, idx + 1, res * ns[idx], build_operator(&operator, (0, 0, -1, 0)), min_max);
     }
-    if divides != 0 {
+    if operator.divides != 0 {
         let sign_a = if res > 0 { 1 } else { -1 };
-        let sign_b = if ns[idx as usize] > 0 { 1 } else { -1 };
+        let sign_b = if ns[idx] > 0 { 1 } else { -1 };
         dfs(
             ns,
             idx + 1,
-            sign_a * sign_b * (res.abs() / ns[idx as usize].abs()),
-            plus,
-            minus,
-            multiples,
-            divides - 1,
-            minimum,
-            maximum,
-            call,
+            sign_a * sign_b * (res.abs() / ns[idx].abs()),
+            build_operator(&operator, (0, 0, 0, -1)),
+            min_max,
         );
     }
 }
 
-fn solution(ns: Vec<i64>, ops: Vec<i64>) -> String {
-    let mut minimum = vec![i64::MAX];
-    let mut maximum = vec![i64::MIN];
-    let mut call = vec![0];
-
-    dfs(
-        &ns,
-        1,
-        ns[0],
-        ops[0],
-        ops[1],
-        ops[2],
-        ops[3],
-        &mut minimum,
-        &mut maximum,
-        &mut call,
-    );
-    String::from(format!("{}\n{}", maximum[0], minimum[0]))
+fn solution(ns: Vec<i64>, ops: Operator) -> String {
+    let mut min_max = (i64::MAX, i64::MIN);
+    dfs(&ns, 1, ns[0], ops, &mut min_max);
+    String::from(format!("{}\n{}", min_max.1, min_max.0))
 }
 
 fn main() {
     let mut reader = BufReader::new(stdin());
     let mut writer = BufWriter::new(stdout());
-
     read_to_tuple!(reader, i64);
     let ns = read_to_vector!(reader, i64);
-    let ops = read_to_vector!(reader, i64);
+    let (plus, minus, multiples, divides) = read_to_tuple!(reader, i64, i64, i64, i64);
+    let mut operator = Operator {
+        plus: plus,
+        minus: minus,
+        multiples: multiples,
+        divides: divides,
+    };
 
-    writeln!(writer, "{}", solution(ns, ops)).unwrap();
+    writeln!(writer, "{}", solution(ns, operator)).unwrap();
     writer.flush().unwrap();
 }
