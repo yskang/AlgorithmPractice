@@ -1,5 +1,5 @@
 # Title: 두 용액
-# Link: https://www.acmicpc.net/problem/2407
+# Link: https://www.acmicpc.net/problem/2470
 
 import sys
 
