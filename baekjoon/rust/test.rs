@@ -1,4 +1,5 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap, HashSet};
+use std::mem::swap;
 
 fn main() {
     let a = (0..10).collect::<Vec<i32>>();
@@ -43,7 +44,42 @@ fn main() {
 
     let aa = 10usize;
     let bb = 100usize;
-    println!("{}", (aa - bb));
+    println!("{}", bb);
+
+    let vv: Vec<usize> = vec![];
+    println!("{:?}", vv);
+
+    let mut v = vec![false; 10];
+    println!("{:?}", v);
+    v = vec![true; 10];
+    println!("{:?}", v);
+
+    let j = (0..10).map(|x| vec![x]).collect::<Vec<_>>();
+    println!("{:?}", j);
+
+    let ss: HashSet<usize> = (1..10).collect();
+    println!("{:?}", ss);
+
+    let mut graph: HashMap<usize, HashSet<usize>> = HashMap::new();
+    println!("{:?}", graph);
+    graph.insert(0, HashSet::new());
+    println!("{:?}", graph);
+    graph.insert(1, (1..5).collect());
+    println!("{:?}", graph);
+
+    let mut out: HashSet<usize> = [1, 2, 3].iter().cloned().collect();
+    let mut out_2: HashSet<usize> = [2, 3, 4].iter().cloned().collect();
+    println!("{:?}", out);
+    println!("{:?}", out_2);
+    out.retain(|x| !out_2.contains(x));
+    println!("{:?}", out);
+
+    let mut j = vec![0, 1, 2];
+    let mut jj = vec![4, 5, 6];
+
+    swap(&mut j, &mut jj);
+
+    println!("{:?}", j);
 }
 
 fn fun_a(s: &Vec<&str>) {
