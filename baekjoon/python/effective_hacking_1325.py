@@ -39,6 +39,7 @@ def get_scc_iter(vertices, edges):
                         scc = set(stack[index[v]:])
                         del stack[index[v]:]
                         identified.update(scc)
+                        print(scc)
                         yield scc
 
 
