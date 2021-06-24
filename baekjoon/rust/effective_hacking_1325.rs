@@ -1,7 +1,6 @@
 // Title: 효율적인 해킹
 // Link: https://www.acmicpc.net/problem/1325
 
-use std::cmp::max;
 use std::collections::{HashMap, HashSet};
 use std::io::{stdin, stdout, BufRead, BufReader, BufWriter, Write};
 use std::mem::swap;
@@ -16,18 +15,6 @@ macro_rules! read_to_tuple {
             $(it.next().unwrap().parse::<$t>().unwrap()),+
         )
     }}
-}
-
-macro_rules! read_to_vector {
-    ($buffer:expr, $t:ty) => {{
-        let mut line = String::new();
-        let buffer = &mut $buffer;
-        buffer.read_line(&mut line).unwrap();
-        line.trim()
-            .split_whitespace()
-            .map(|x| x.parse::<$t>().unwrap())
-            .collect::<Vec<$t>>()
-    }};
 }
 
 fn get_scc_iter(
@@ -48,13 +35,15 @@ fn get_scc_iter(
                 if operation_type == "VISIT" {
                     index.insert(vv, stack.len());
                     stack.push(vv);
-                    boundaries.push(index[&vv]);
+                    boundaries.push(*index.get(&vv).unwrap());
                     to_do.push(("POSTVISIT", vv));
-                    let rev: Vec<(&str, usize)> = Vec::new();
-                    for w in edges[&vv] {
-                        rev.push(("VISITEDGE", w))
+
+                    let mut rev: Vec<(&str, usize)> = Vec::new();
+                    for w in edges.entry(vv).or_default().iter() {
+                        rev.push(("VISITEDGE", *w));
                     }
                     rev.reverse();
+
                     for tup in rev {
                         to_do.push(tup);
                     }
@@ -62,7 +51,7 @@ fn get_scc_iter(
                     if !index.contains_key(&vv) {
                         to_do.push(("VISIT", vv))
                     } else if !identified.contains(&vv) {
-                        while index[&vv] < *boundaries.last().unwrap() {
+                        while *index.get(&vv).unwrap() < *boundaries.last().unwrap() {
                             boundaries.pop();
                         }
                     }
@@ -70,14 +59,14 @@ fn get_scc_iter(
                     if *boundaries.last().unwrap() == index[&vv] {
                         boundaries.pop();
                         let mut scc: HashSet<usize> = HashSet::new();
-                        for t in stack[index[&vv]..].iter_mut() {
+                        for t in stack[*index.get(&vv).unwrap()..].iter_mut() {
                             scc.insert(*t);
                         }
-                        for s in scc {
-                            identified.insert(s);
+                        stack.resize(*index.get(&vv).unwrap(), 0);
+                        for s in scc.iter() {
+                            identified.insert(*s);
                         }
                         sccs.push(scc);
-                        stack.resize(index[&vv], 0);
                     }
                 }
             }
@@ -88,9 +77,9 @@ fn get_scc_iter(
 
 fn solution(
     n: usize,
-    pairs: HashMap<usize, HashSet<usize>>,
-    starts: HashSet<usize>,
-    pairs_rev: HashMap<usize, HashSet<usize>>,
+    mut pairs: HashMap<usize, HashSet<usize>>,
+    mut starts: HashSet<usize>,
+    mut pairs_rev: HashMap<usize, HashSet<usize>>,
 ) -> String {
     let mut counts: HashMap<usize, HashSet<usize>> = HashMap::new();
     let mut nodes = (1..n + 1).collect::<Vec<usize>>();
@@ -99,31 +88,34 @@ fn solution(
 
     for scc in get_scc_iter(&mut nodes, &mut pairs) {
         if scc.len() > 1 {
-            scc_map.insert(new_node, HashSet::new());
+            scc_map.insert(new_node, scc.clone());
             let mut outs: HashSet<usize> = HashSet::new();
             let mut ins: HashSet<usize> = HashSet::new();
-            for node in scc {
-                pairs.get(&node).unwrap().iter().for_each(|x| {
+            for node in scc.iter() {
+                pairs.entry(*node).or_default().iter().for_each(|x| {
                     outs.insert(*x);
                 });
-                pairs_rev.get(&node).unwrap().iter().for_each(|x| {
+                pairs_rev.entry(*node).or_default().iter().for_each(|x| {
                     ins.insert(*x);
                 });
             }
             outs.retain(|x| !scc.contains(x));
             ins.retain(|x| !scc.contains(x));
             outs.iter().for_each(|x| {
-                pairs.get(&new_node).unwrap().insert(*x);
+                pairs.entry(new_node).or_default().insert(*x);
             });
 
-            for node in ins {
-                pairs.get(&node).unwrap().retain(|x| !scc.contains(x));
-                pairs.get(&node).unwrap().insert(new_node);
+            for node in ins.iter() {
+                pairs.entry(*node).or_default().retain(|x| !scc.contains(x));
+                pairs.entry(*node).or_default().insert(new_node);
             }
 
-            for node in outs {
-                pairs_rev.get(&node).unwrap().retain(|x| !scc.contains(x));
-                pairs_rev.get(&node).unwrap().insert(new_node);
+            for node in outs.iter() {
+                pairs_rev
+                    .entry(*node)
+                    .or_default()
+                    .retain(|x| !scc.contains(x));
+                pairs_rev.entry(*node).or_default().insert(new_node);
             }
 
             counts.insert(new_node, scc);
@@ -134,21 +126,25 @@ fn solution(
         }
     }
 
-    let temp: HashSet<usize> = HashSet::new();
+    let mut temp: HashSet<usize> = HashSet::new();
     loop {
-        for node in starts {
-            for manto in pairs.get(&node).unwrap() {
-                if counts.get(&node).unwrap().len() == 0 {
-                    counts.get(&node).unwrap().insert(node);
+        for node in starts.iter() {
+            for manto in pairs.entry(*node).or_default().iter() {
+                if counts.entry(*node).or_default().len() == 0 {
+                    counts.entry(*node).or_default().insert(*node);
                 }
-                if counts.get(manto).unwrap().len() == 0 {
-                    counts.get(manto).unwrap().insert(*manto);
+
+                if counts.entry(*manto).or_default().len() == 0 {
+                    counts.entry(*manto).or_default().insert(*manto);
                 }
-                counts.get(&node).unwrap().iter().for_each(|x| {
-                    counts.get(manto).unwrap().insert(*x);
-                });
-                pairs_rev.get(manto).unwrap().remove(&node);
-                if pairs_rev.get(manto).unwrap().len() == 0 {
+
+                let temp2 = counts.entry(*node).or_default().clone();
+                for x in temp2.iter() {
+                    counts.entry(*manto).or_default().insert(*x);
+                }
+
+                pairs_rev.entry(*manto).or_default().remove(&node);
+                if pairs_rev.entry(*manto).or_default().len() == 0 {
                     temp.insert(*manto);
                 }
             }
@@ -160,20 +156,27 @@ fn solution(
         }
     }
 
-    let res: Vec<usize> = vec![];
+    let mut res: Vec<usize> = vec![];
 
-    let counts_lens: HashMap<usize, usize> = HashMap::new();
-    for (node, _) in counts {
-        counts_lens.insert(node, (counts.get(&node).unwrap()).len());
+    let mut counts_lens: HashMap<usize, usize> = HashMap::new();
+
+    let nodes = counts.keys().cloned().collect::<Vec<_>>();
+    for node in nodes {
+        counts_lens.insert(node, (counts.entry(node).or_default()).len());
     }
 
-    let mut max_count = counts_lens.values().max().unwrap();
-    for (node, _) in counts_lens {
-        if counts_lens.get(&node).unwrap() == max_count {
-            res.push(node);
+    let max_count = counts_lens.values().max().unwrap();
+
+    let nodes = counts_lens.keys().cloned().collect::<Vec<_>>();
+    for node in nodes {
+        if let Some(len) = counts_lens.get(&node) {
+            if len == max_count {
+                res.push(node);
+            }
         }
     }
-    let ans: HashSet<usize> = HashSet::new();
+
+    let mut ans: HashSet<usize> = HashSet::new();
     for r in res {
         if scc_map.contains_key(&r) {
             for c in scc_map.get(&r).unwrap() {
@@ -183,7 +186,7 @@ fn solution(
             ans.insert(r);
         }
     }
-    let vec_ans: Vec<usize> = ans.into_iter().collect();
+    let mut vec_ans: Vec<usize> = ans.into_iter().collect();
     vec_ans.sort();
     vec_ans
         .iter()
@@ -203,16 +206,8 @@ fn main() {
 
     for _ in 0..m {
         let (manti, manto) = read_to_tuple!(reader, usize, usize);
-        if let Some(mantos) = pairs.get(&manti) {
-            mantos.insert(manto);
-        } else {
-            pairs.insert(manti, (manto..manto + 1).collect());
-        }
-        if let Some(mantis) = pairs.get(&manto) {
-            mantis.insert(manti);
-        } else {
-            pairs.insert(manto, (manti..manti + 1).collect());
-        }
+        pairs.entry(manti).or_default().insert(manto);
+        pairs_rev.entry(manto).or_default().insert(manti);
         starts.remove(&manto);
     }
 

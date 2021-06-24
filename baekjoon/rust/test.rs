@@ -1,23 +1,42 @@
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::mem::swap;
 
-fn main() {
-    let mut v: Vec<(&str, usize)> = Vec::new();
-    v.push(("Hello", 1));
-    v.push(("World", 2));
-    v.push(("Good", 3));
-    v.push(("Morning", 4));
-    v.push(("YSKang", 5));
-    println!("{:?}", v);
-
-
-    let h: HashMap<i64, i64> = HashMap::new();
-    h.insert(1, 2);
-    h.insert(3, 4);
-    for 
+#[derive(Debug)]
+struct MyBox {
+    key: usize,
+    set: HashSet<usize>,
 }
 
-fn fun_a(s: &Vec<&str>) {
-    println!("{:?}", s);
-    println!("{}", s.join(""));
+impl MyBox {
+    fn new(key: usize, set: HashSet<usize>) -> MyBox {
+        MyBox { key: key, set: set }
+    }
+
+    fn extend(&mut self, other: &MyBox) {
+        self.set.extend(other.set);
+    }
+}
+
+fn main() {
+    let mut v: Vec<MyBox> = Vec::new();
+    v.push(MyBox::new(0, HashSet::new()));
+    v.push(MyBox::new(1, HashSet::new()));
+    v.push(MyBox::new(2, HashSet::new()));
+    v.push(MyBox::new(3, HashSet::new()));
+    v.push(MyBox::new(4, HashSet::new()));
+    v.push(MyBox::new(5, HashSet::new()));
+
+    println!("{:?}", v);
+
+    v[0].set.insert(0);
+    v[0].set.insert(1);
+    v[0].set.insert(2);
+    v[1].set.insert(2);
+    v[1].set.insert(3);
+    v[1].set.insert(4);
+    v[1].set.insert(5);
+
+    println!("{:?}", v);
+
+    v[0].extend(&v[1]);
 }
