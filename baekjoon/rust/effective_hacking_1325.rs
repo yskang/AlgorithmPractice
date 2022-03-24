@@ -85,9 +85,11 @@ fn solution(
     let mut nodes = (1..n + 1).collect::<Vec<usize>>();
     let mut new_node = n + 1;
     let mut scc_map: HashMap<usize, HashSet<usize>> = HashMap::new();
+    
+    let mut scc_list = get_scc_iter(&mut nodes, &mut pairs);
 
-    for scc in get_scc_iter(&mut nodes, &mut pairs) {
-        if scc.len() > 1 {
+    for scc_idx in 0..scc_list.len() {
+        if scc_list[scc_idx].len() > 1 {
             scc_map.insert(new_node, scc.clone());
             let mut outs: HashSet<usize> = HashSet::new();
             let mut ins: HashSet<usize> = HashSet::new();

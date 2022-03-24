@@ -1,8 +1,5 @@
-import random
-
-
 class Solution(object):
-    def maximalRectangle(self, matrix):
+    def maximal_rectangle(self, matrix):
         if not matrix or not matrix[0]:
             return 0
 
@@ -27,7 +24,7 @@ class Solution(object):
 
 if __name__ == "__main__":
     sol = Solution()
-    print(sol.maximalRectangle([["1", "0", "1", "0", "0"],
+    print(sol.maximal_rectangle([["1", "0", "1", "0", "0"],
                                 ["1", "0", "1", "1", "1"],
                                 ["1", "1", "1", "1", "1"],
                                 ["1", "0", "1", "1", "0"]]))

@@ -4,14 +4,15 @@
 # def isBadVersion(version):
 
 
-def isBadVersion(version):
+def is_bad_version(version):
     if version >= 100:
         return True
     else:
         return False
 
+
 class Solution(object):
-    def firstBadVersion(self, n):
+    def first_bad_version(self, n):
         """
         :type n: int
         :rtype: int
@@ -20,10 +21,11 @@ class Solution(object):
         end = n
 
         while True:
-            if isBadVersion(start - 1 + int((end-start) / 2)) == False and isBadVersion(start + int((end-start)/2)) == True:
+            if not is_bad_version(start - 1 + int((end-start) / 2)) \
+               and is_bad_version(start + int((end-start)/2)):
                 return start + int((end-start)/2)
 
-            if isBadVersion(start + int((end - start) / 2)):
+            if is_bad_version(start + int((end - start) / 2)):
                 end = start + int((end-start)/2)
             else:
                 start += int((end - start) / 2)
@@ -32,8 +34,5 @@ class Solution(object):
                 return n
 
 
-
-
-
 sol = Solution()
-print(sol.firstBadVersion(100))
+print(sol.first_bad_version(100))
