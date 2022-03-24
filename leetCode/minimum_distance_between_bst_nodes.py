@@ -8,6 +8,7 @@ class TreeNode:
         self.left = left
         self.right = right
 
+
 class Problem:
     def __init__(self) -> None:
         self.last = -10**10
@@ -18,11 +19,12 @@ class Problem:
             self.minDiffInBST(root.left)
         self.min_diff = min(self.min_diff, root.val - self.last)
         self.last = root.val
-        
+
         if root.right:
             self.minDiffInBST(root.right)
-        
+
         return self.min_diff
+
 
 def solution():
     root = TreeNode()

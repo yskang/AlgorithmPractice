@@ -3,11 +3,13 @@
 
 from typing import List
 
+
 class Problem:
     def letter_combinations(self, digits: str) -> List[str]:
         if not digits:
             return []
-        digit_dict = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz']
+        digit_dict = ['', '', 'abc', 'def', 'ghi',
+                      'jkl', 'mno', 'pqrs', 'tuv', 'wxyz']
         ans = ['']
         new_ans = []
         for digit in digits:
