@@ -38,8 +38,8 @@ def solution(n: int, m: int, maze: list):
 
     xys = zip(xs, ys, zs)
 
-    for x, y, zs in xys:
-        if maze[y][x] == zs:
+    for x, y, z in xys:
+        if maze[y][x] == z:
             dfs(x, y, maze, possibles)
 
     ans = 0
