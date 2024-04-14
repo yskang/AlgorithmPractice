@@ -2,7 +2,7 @@
 # Link: https://www.acmicpc.net/problem/1202
 
 import sys
-from heapq import heappop, heappush, heapify
+from heapq import heappop, heappush
 
 
 def read_list_int() -> list:
@@ -14,7 +14,7 @@ def read_single_int() -> int:
 
 
 def solution(jewels: list, bags: list) -> int:
-    heapify(jewels)
+    jewels.sort(key=lambda x: x[0], reverse=True)
     bags.sort()
     ans = 0
 
@@ -22,11 +22,11 @@ def solution(jewels: list, bags: list) -> int:
 
     for bag in bags:
         while jewels:
-            weight, value = heappop(jewels)
+            weight, value = jewels[-1]
             if weight > bag:
-                heappush(jewels, (weight, value))
                 break
             else:
+                jewels.pop()
                 heappush(poped_jewels, -value)
         if poped_jewels:
             ans += heappop(poped_jewels)
