@@ -2,11 +2,11 @@
 # Link: https://www.acmicpc.net/problem/1325
 
 import sys
-from typing import DefaultDict, Set
 from collections import defaultdict
 
 
-read_list_int = lambda: list(map(int, sys.stdin.readline().strip().split(' ')))
+def read_list_int():
+    return list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
 def get_scc_iter(vertices, edges):
@@ -39,41 +39,46 @@ def get_scc_iter(vertices, edges):
                         scc = set(stack[index[v]:])
                         del stack[index[v]:]
                         identified.update(scc)
-                        print(scc)
+                        # print(scc)
                         yield scc
 
 
-
-def solution(n: int, pairs: DefaultDict, starts: Set, pairs_rev: DefaultDict) -> str:
+def solution(n: int, pairs, starts, pairs_rev) -> str:
     counts = defaultdict(lambda: set())
     nodes = [i for i in range(1, n+1)]
     new_node = n+1
-    scc_map = defaultdict(lambda:None)
+    scc_map = defaultdict(lambda: None)
 
+    all_scc = []
     for scc in get_scc_iter(nodes, pairs):
         if len(scc) > 1:
-            scc_map[new_node] = set(scc)
-            outs = set()
-            ins = set()
-            for node in scc:
-                outs.update(pairs[node])
-                ins.update(pairs_rev[node])
-            outs = outs.difference(scc)
-            ins = ins.difference(scc)
-            pairs[new_node].update(outs)
+            all_scc.append(scc)
 
-            for node in ins:
-                pairs[node] = pairs[node].difference(scc)
-                pairs[node].add(new_node)
+    del nodes
 
-            for node in outs:
-                pairs_rev[node] = pairs_rev[node].difference(scc)
-                pairs_rev[node].add(new_node)
+    for scc in all_scc:
+        scc_map[new_node] = set(scc)
+        outs = set()
+        ins = set()
+        for node in scc:
+            outs.update(pairs[node])
+            ins.update(pairs_rev[node])
+        outs = outs.difference(scc)
+        ins = ins.difference(scc)
+        pairs[new_node].update(outs)
 
-            counts[new_node] = scc
-            if len(ins) == 0:
-                starts.add(new_node)
-            new_node += 1
+        for node in ins:
+            pairs[node] = pairs[node].difference(scc)
+            pairs[node].add(new_node)
+
+        for node in outs:
+            pairs_rev[node] = pairs_rev[node].difference(scc)
+            pairs_rev[node].add(new_node)
+
+        counts[new_node] = scc
+        if len(ins) == 0:
+            starts.add(new_node)
+        new_node += 1
 
     temp = set()
     while True:
@@ -91,6 +96,10 @@ def solution(n: int, pairs: DefaultDict, starts: Set, pairs_rev: DefaultDict) ->
         if len(starts) == 0:
             break
 
+    del pairs
+    del pairs_rev
+    del starts
+
     res = []
 
     counts_lens = defaultdict(lambda: 0)
@@ -101,7 +110,10 @@ def solution(n: int, pairs: DefaultDict, starts: Set, pairs_rev: DefaultDict) ->
     for node in counts_lens:
         if counts_lens[node] == max_count:
             res.append(node)
-    ans  = set()
+
+    del counts_lens
+
+    ans = set()
     for r in res:
         if r in scc_map:
             for c in scc_map[r]:
