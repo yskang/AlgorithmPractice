@@ -29,7 +29,6 @@ def solution(n: int, m: int, maze: list) -> int:
     queue = []
     # time, r, c, change_row, change_col, prev_position(0: start, 1: from up, 2: from right, 3: from down, 4: from left)
     heappush(queue, (0, 0, 0, 0, 0, 0))
-    visited[0][0][0][0] = 0
 
     t1, t2, xr, xc = 0, 0, 0, 0
 

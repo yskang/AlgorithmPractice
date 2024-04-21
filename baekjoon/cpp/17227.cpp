@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int n, m;
+int n, m, k;
 vector<int>vec[100010];
 bool dele[100010];
 int ind[100010];
@@ -46,7 +46,7 @@ pair<int, int> back(int now, bool flag) {
 
 
 int main() {
-	scanf("%d %d", &n, &m);
+	scanf("%d %d %k", &n, &m, &k);
 	for (int i = 1; i <= m; i++) {
 		int u, v;
 		scanf("%d %d", &u, &v);
