@@ -11,3 +11,5 @@ a.out.dSYM/
 tempCodeRunnerFile.py
 rust_out
 rust_out.dSYM/
+*.dSYM
+*.out.dSYM
