@@ -1,80 +1,73 @@
 import sys
-from collections import deque
-input = lambda: sys.stdin.readline().rstrip()
-output = sys.stdout.write
+input = sys.stdin.readline
+import heapq
+INF = int(1e10)
+#################################################
+n, m, k = map(int, input().split())
 
-direction = {
-    "A": (0,1,2,3),
-    "B": (),
-    "C": ((0, 2),(1, 3)),
-    "D": ((1, 3),(0, 2))
-}
+market = [0] + list(map(int, input().split()))
 
-dx = (-1, 0, 1, 0)
-dy = (0, 1, 0, -1)
+graph = [[] for _ in range(n+1)]
 
-revDir = (2, 3, 0, 1)
+for _ in range(m):
+    a, b, c = map(int, input().split())
+    if a == b:
+        continue
 
-def solve():
-    n, m = map(int, input().split())
-    graph = [list(input()) for i in range(n)]
-    visited = [[[[False for i in range(128)] for i in range(128)] for i in range(m)] for i in range(n)]
+    graph[a].append([b, c])
+    graph[b].append([a, c])
 
-    q = deque()
-    q.append((0, 0, 0, 0, 0))
-    visited[0][0][0][0] = True
+visit = []
+heapq.heappush(visit, [0, 1, 0])
 
-    while q:
-        cx, cy, curr, rState, cState = q.popleft()
+distance = [[INF, 0, 0] for _ in range(n+1)]
+# visited = [False for _ in range(n+1)]
+# visited[1] = True
+distance[1][0] = 0
 
-        if cx == n - 1 and cy == m - 1:
-            return curr
 
-        for i in range(4):
-            nx = cx + dx[i]
-            ny = cy + dy[i]
-            revD = revDir[i]
+while visit:
+    cost, node, root = heapq.heappop(visit)
+    if market[node] > 0:
+        root = node
 
-            if nx < 0 or nx >= n or ny < 0 or ny >= m:
-                continue
+    for next_node, dis in graph[node]:
+        if dis + cost < distance[next_node][0]:
+            distance[next_node][0] = dis + cost
+            distance[next_node][1] = node
+            distance[next_node][2] = root
+            heapq.heappush(visit, [dis+cost, next_node, root])
 
-            if graph[cx][cy] == 'B':
-                continue
-            elif graph[cx][cy] == 'A':
-                pass
-            else:
-                check = ((rState & (1 << cx) != 0) + (cState & (1 << cy) != 0)) % 2
-                checkArr = direction[graph[cx][cy]][check]
-                if i not in checkArr:
-                    continue
+        elif dis + cost == distance[next_node][0]:
+            if distance[next_node][1] < node:
+                distance[next_node][1] = node
+                distance[next_node][2] = root
 
-            if graph[nx][ny] == 'B':
-                continue
-            elif graph[nx][ny] == 'A':
-                pass
-            else:
-                check = ((rState & (1 << nx) != 0) + (cState & (1 << ny) != 0)) % 2
-                checkArr = direction[graph[nx][ny]][check]
-                if revD not in checkArr:
-                    continue
+        # if visited[next_node]:
+        #     continue
+        #
+        # visited[next_node] = True
+check = [True for _ in range(n+1)]
+for _ in range(k):
+    n = int(input())
+    now_mart = n
+    path = [now_mart]
+    if distance[now_mart][0] == INF or not check:
+        print(-1)
+        continue
 
-            if visited[nx][ny][rState][cState]:
-                continue
+    while True:
+        if now_mart == 0 or not check:
+            for node in path:
+                check[node] = False
+            print(-1)
+            break
 
-            visited[nx][ny][rState][cState] = True 
-            q.append((nx, ny, curr + 1, rState, cState))
+        if market[now_mart] > 0:
+            market[now_mart] -= 1
+            print(now_mart)
+            break
 
-        
-        rState ^= (1 << cx) 
-        cState ^= (1 << cy)
-
-        if visited[cx][cy][rState][cState]:
-            continue
-        
-        visited[cx][cy][rState][cState] = True
-        q.append((cx, cy, curr + 1, rState, cState))
-
-    return -1 
-        
-if __name__ == "__main__":
-    print(solve())
+        now_mart = distance[now_mart][2]
+        distance[n][2] = now_mart
+        path.append(now_mart)
