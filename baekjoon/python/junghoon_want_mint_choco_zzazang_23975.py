@@ -14,9 +14,9 @@ def read_list_int() -> list:
     return list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
-def djikstra(start: int, graph: dict):
-    dist = defaultdict(lambda: float('inf'))
-    path = defaultdict(lambda: float('inf'))
+def djikstra(start: int, graph: list):
+    dist = [float('inf') for _ in range(len(graph))]
+    path = [float('inf') for _ in range(len(graph))]
     dist[start] = 0
     queue = []
     heappush(queue, (0, start))
@@ -35,10 +35,11 @@ def djikstra(start: int, graph: dict):
     return dist, path
 
 
-def solution(n: int, m: int, k: int, left_ramens: list, graph: dict, junghoon_position: list):
+def solution(n: int, m: int, k: int, left_ramens: list, graph: list, junghoon_position: list):
     left_ramens = [0] + left_ramens
-    dist, path = djikstra(1, graph)
+    _, path = djikstra(1, graph)
     for start in junghoon_position:
+        temp_path = []
         if start == 1:
             if left_ramens[start] > 0:
                 left_ramens[start] -= 1
@@ -58,10 +59,17 @@ def solution(n: int, m: int, k: int, left_ramens: list, graph: dict, junghoon_po
             if left_ramens[current] > 0:
                 left_ramens[current] -= 1
                 print(current)
+                if current != start:
+                    for p in temp_path:
+                        path[p] = current
                 break
             if current == 1:
                 print(-1)
+                if current != start:
+                    for p in temp_path:
+                        path[p] = current
                 break
+            temp_path.append(current)
             current = path[current]
     return
 
@@ -69,7 +77,7 @@ def solution(n: int, m: int, k: int, left_ramens: list, graph: dict, junghoon_po
 def main():
     n, m, k = read_list_int()
     left_ramens = read_list_int()
-    graph = defaultdict(lambda: [])
+    graph = [[] for _ in range(n + 1)]
     for _ in range(m):
         a, b, c = read_list_int()
         graph[a].append((b, c))
