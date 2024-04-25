@@ -14,3 +14,5 @@ rust_out.dSYM/
 *.dSYM
 *.out.dSYM
 *.out
+*.out.dSYM/
+/build
