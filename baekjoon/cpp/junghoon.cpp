@@ -102,10 +102,6 @@ int main() {
 }
 
 
-
-
-
-
 void solution(int n, int m, int k, vector<int> ramens, vector<vector<pair<int, int> > > graph, vector<int> start_positions)
 {
     ramens.insert(ramens.begin(), 0);
