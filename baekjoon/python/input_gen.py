@@ -1,10 +1,8 @@
-import random
+from random import randint
 
-def main():
-    n = random.randint(1,10)
-    print(n)
-    for _ in range(n):
-        print(random.randint(1, 10))
+v = randint(2, 5)
+e = randint(1, v*(v-1)//2)
 
-if __name__ == '__main__':
-    main()
+print(v, e)
+for _ in range(e):
+    print(randint(1, v), randint(1, v))

@@ -3,7 +3,6 @@
 
 import sys
 from heapq import heappop, heappush
-from collections import defaultdict
 
 
 def read_single_int() -> int:
@@ -22,16 +21,17 @@ def djikstra(start: int, graph: list):
     heappush(queue, (0, start))
     while queue:
         cost, node = heappop(queue)
+        node = -node
         if dist[node] < cost:
             continue
         for next_node, next_cost in graph[node]:
             new_cost = cost + next_cost
             if new_cost < dist[next_node]:
                 dist[next_node] = new_cost
-                heappush(queue, (new_cost, next_node))
+                heappush(queue, (new_cost, -next_node))
                 path[next_node] = node
-            elif new_cost == dist[next_node]:
-                path[next_node] = max(node, path[next_node])
+            # elif new_cost == dist[next_node]:
+            #     path[next_node] = max(node, path[next_node])
     return dist, path
 
 
