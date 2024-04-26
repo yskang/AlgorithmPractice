@@ -52,13 +52,14 @@ void solution()
         }
     }
 
-    for (auto it = groups.begin(); it != groups.end(); it++)
+    for (const pair<int, vector<int> >& group : groups)
     {
         int odd_num = 0, even_num = 0;
         set<int> temp_list;
-        temp_list.insert(it->first);
-        for (int node : it->second)
+        temp_list.insert(group.first);
+        for (auto it = group.second.begin(); it != group.second.end(); ++it)
         {
+            int node = *it;
             temp_list.insert(node);
         }
         for (int node : temp_list) {
