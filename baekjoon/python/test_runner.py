@@ -18,11 +18,11 @@ def run_input_generater(script_name: str):
 def run_solution(solution: str):
     input_file = open(TEST_FILE_NAME, 'r')
     if solution.endswith('py'):
-        res = subprocess.check_output(['time','python3', solution], encoding='UTF-8', stdin=input_file)
+        res = subprocess.check_output(['time', 'python3', solution], encoding='UTF-8', stdin=input_file)
     else:
         res = subprocess.check_output(['./' + solution], encoding='UTF-8', stdin=input_file)
     input_file.close
-    return res
+    return res.strip()
 
 def run_verifier(verifier: str):
     res = subprocess.check_output(['python3', verifier, TEST_FILE_NAME, OUT_FILE_NAME], encoding='UTF-8')
