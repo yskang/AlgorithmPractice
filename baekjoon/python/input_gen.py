@@ -1,5 +1,13 @@
 from random import randint
 
-cards = [randint(0, 5) for _ in range(10)]
+n = randint(2, 10)
+print(n)
 
-print(' '.join(map(str, cards)))
+ps = set()
+
+while len(ps) < n:
+    ps.add(randint(1, 1000))
+
+for _ in range(n):
+    c = randint(1, 1000)
+    print(f'{ps.pop()} {c}')
