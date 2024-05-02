@@ -2,7 +2,10 @@
 # Link: https://www.acmicpc.net/problem/2162
 
 import sys
+<<<<<<< HEAD
 from collections import defaultdict
+=======
+>>>>>>> b1598dd0ae5d4f8b3adc13b93a8f30f48deccce8
 
 
 def read_list_int() -> list:
@@ -40,6 +43,7 @@ class UnionFind:
         return -self.p[self.find(a)]
 
 
+<<<<<<< HEAD
 def ccw(ax, ay, bx, by, cx, cy) -> int:
     t = (bx - ax) * (cy - ay) - (cx - ax) * (by - ay)
     if t > 0:
@@ -80,6 +84,16 @@ def solution(n: int, lines: list) -> str:
     max_group = max(list(groups.values()))
 
     return f"{len(groups)}\n{max_group}"
+=======
+def solution():
+    uf = UnionFind(3001)
+    for i, first_line in enumerate(lines):
+        for second_line in lines[i+1:]:
+            if is_met(first_line, second_line):
+                uf.union(i, lines.index(second_line))
+    return uf.size(0), uf.size(1)
+
+>>>>>>> b1598dd0ae5d4f8b3adc13b93a8f30f48deccce8
 
 
 def main():
@@ -91,4 +105,8 @@ def main():
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     main()
+=======
+    main()
+>>>>>>> b1598dd0ae5d4f8b3adc13b93a8f30f48deccce8
