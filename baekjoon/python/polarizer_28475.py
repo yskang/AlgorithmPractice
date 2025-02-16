@@ -8,7 +8,7 @@ def read_list_int() -> list:
     return list(map(int, sys.stdin.readline().strip().split(' ')))
 
 
-class SetmentTree:
+class SegmentTree:
     def __init__(self, array: list):
         self.array = array
         self.start = 0
@@ -72,7 +72,7 @@ class SetmentTree:
 
 
 def solution(n: int, m: int, initial_state: list, quries: list) -> str:
-    seg_tree = SetmentTree(initial_state)
+    seg_tree = SegmentTree(initial_state)
     for q, a, b in quries:
         if q == 1:
             seg_tree.update(a-1, b)

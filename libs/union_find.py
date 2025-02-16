@@ -20,9 +20,10 @@ class UnionFind:
             self.p[b] += self.p[a]
             self.p[a] = b
         return True
-    
+
     def size(self, a: int):
         return -self.p[self.find(a)]
+
 
 if __name__ == "__main__":
     uf = UnionFind(10)
